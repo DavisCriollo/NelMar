@@ -596,14 +596,16 @@ List get getListaDeProductos=>_listaDeProductos;
 void setListaDeProductos(List _list){
   _listaDeProductos=[]; 
   _listaDeProductos.addAll(_list); 
-  // print('TODOS LOS PRODUCTOS :$_listaDeProductos');
+  print('TODOS LOS PRODUCTOS :$_listaDeProductos');
   notifyListeners();
 }
 
 
 
 
- Future buscaAllProductos() async {
+
+
+ Future buscaAllProductos( String _type) async {
     final dataUser = await Auth.instance.getSession();
 // print('usuario : ${dataUser!.rucempresa}');
     final response = await _api.searchAllProductos(
@@ -614,8 +616,21 @@ void setListaDeProductos(List _list){
     if (response != null) {
 
       
-        setListaDeProductos(response);
-setListFilter( response);
+        // setListaDeProductos(response);
+
+       List<dynamic> filteredData = response.where((item) {
+    if (_type == 'MOTOS') {
+      return item['invCategoria'] == 'MOTOS';
+    } else if (_type == 'VEHICULOS') {
+      return item['invCategoria'] == 'VEHICULOS';
+    }
+    return false;
+  }).toList();
+
+
+
+        setListaDeProductos(filteredData);
+        setListFilter( filteredData);
 
 
     }
@@ -626,7 +641,13 @@ setListFilter( response);
    
       return null;
     }
+
  }
+
+
+
+
+
 
 //*********ENVIA ITEM PARA CALCULO***********//
 
@@ -848,8 +869,8 @@ _allItemsFilters.addAll(_list);
     } else {
       _allItemsFilters = originalList.where((estudiante) {
         return 
-        // resident['resCedula'].toLowerCase().contains(query.toLowerCase()) ||
-               estudiante['invNombre'].toLowerCase().contains(query.toLowerCase()) ;
+        estudiante['invNombre'].toLowerCase().contains(query.toLowerCase())&&
+             estudiante['invCategoria'] == _typeAction; // Condición adicional para que sea "MOTOS" ;
       }).toList();
     }
     notifyListeners();
@@ -893,6 +914,60 @@ _allItemsFilters.addAll(_list);
   resetCorreos(){
      _listaAddCorreos!.clear();
   }
+
+
+
+
+
+
+//*********************//
+
+List<dynamic> _listaFormasPago = [];
+   List<dynamic> get getListaFormasPago => _listaFormasPago;
+
+  void setListaFormasPago( List<dynamic> data) {
+    _listaFormasPago = [];
+   _listaFormasPago=data;
+
+    notifyListeners();
+  }
+
+Future<dynamic> getAllFormaPago() async {
+    final dataUser = await Auth.instance.getSession();
+    
+    final response = await _api.getAllFormaDePago(
+   
+      token: '${dataUser!.token}',
+    );
+
+    if (response != null) {
+
+setListaFormasPago(response['data']);
+      notifyListeners();
+      return null;
+    }
+
+    notifyListeners();
+    return null;
+  }
+
+
+
+
+
+ String _typeAction='';
+String get getTypeAction=>_typeAction;
+
+void setTypeAction(String _type){
+_typeAction =_type;
+
+  notifyListeners();
+}
+
+
+
+
+
 
 
 }

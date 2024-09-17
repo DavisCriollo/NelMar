@@ -13,6 +13,7 @@ import 'package:neitorcont/src/pages/crear_comprobante_print.dart';
 import 'package:neitorcont/src/pages/views_pdf.dart';
 import 'package:neitorcont/src/services/notifications_service.dart';
 import 'package:neitorcont/src/services/socket_service.dart';
+import 'package:neitorcont/src/theme/theme_provider.dart';
 import 'package:neitorcont/src/theme/themes_app.dart';
 import 'package:neitorcont/src/utils/responsive.dart';
 import 'package:neitorcont/src/utils/theme.dart';
@@ -93,7 +94,7 @@ class _ListarProformasProformasState extends State<ListarProformasProformas> {
   @override
   Widget build(BuildContext context) {
     final Responsive size = Responsive.of(context);
-       final  themeColor=context.read<AppTheme>();
+       final  themeColor=context.read<ThemeProvider>();
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -2982,13 +2983,76 @@ Consumer<ProformasController>(
 
           
            floatingActionButton: 
-         FloatingActionButton(
-                      child: const Icon(
-                        Icons.add,
-                        color: Colors.white,
-                      ),
-                      onPressed: () {
-                        //  final _ctrl =context.read<ComprobantesController>();
+    //      FloatingActionButton(
+    //                   child: const Icon(
+    //                     Icons.add,
+    //                     color: Colors.white,
+    //                   ),
+    //                   onPressed: () {
+    //                     //  final _ctrl =context.read<ComprobantesController>();
+
+    //                     //       _ctrl.setTotal();
+    //                     //       _ctrl.setTarifa({});
+    //                     //        _ctrl.setTipoDocumento('');
+    //                     //     Navigator.of(context).push(MaterialPageRoute(
+    //                     //         builder: (context) =>
+    //                     //             const CrearComprobante(
+    //                     //               tipo: 'CREATE',
+    //                     //             )));
+
+    //                          final _ctrl =context.read<ComprobantesController>();
+    //                           _ctrl.resetListasProdutos();
+    //                           _ctrl.resetPlacas();
+    //                             _ctrl.setDocumento('');
+    //                             _ctrl.setFacturaOk(false);
+    //                                _ctrl.setFormaDePago('EFECTIVO');
+    //                             _ctrl.setTipoDeTransaccion('P');
+    //                        _ctrl.setClienteComprbante({
+		// 	"perId": 1,
+		// 	"perNombre": "CONSUMIDOR FINAL",
+		// 	"perDocNumero": "9999999999999",
+		// 	"perDocTipo": "RUC",
+		// 	"perTelefono": "0000000001",
+		// 	"perDireccion": "s/n",
+		// 	"perEmail": [
+		// 		"sin@sincorreo.com"
+		// 	],
+		// 	"perCelular": [],
+		// 	"perOtros": [
+		// 		"ZZZ9999"
+		// 	]
+		// });
+    //   //*************** RESET LA VARIABLE DE RESPONSE SOCKET***************************//
+    // final ctrlSocket=context.read<SocketService>();
+    //  ctrlSocket.resetResponseSocket();
+    //   //******************************************//
+    //     _ctrl.setExistCliente(true);
+    //                           _ctrl.setTotal();
+    //                           _ctrl.setTarifa({});
+    //                            _ctrl.setTipoDocumento('');
+    //                         Navigator.of(context).push(MaterialPageRoute(
+    //                             builder: (context) =>
+    //                                  CrearComprobante(
+    //                                    user:_usuario ,
+    //                                   tipo: 'CREATE',
+    //                                 )));
+
+                       
+    //                   }
+                  
+    //         ,
+    //       ),
+          
+          Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            // Primer FloatingActionButton con imagen 1
+            FloatingActionButton(
+              backgroundColor:themeColor.appTheme.primaryColor,
+              onPressed: () {
+                // Acción del primer botón
+                print("Botón 1 presionado");
+                   final _ctrl =context.read<ComprobantesController>();
 
                         //       _ctrl.setTotal();
                         //       _ctrl.setTarifa({});
@@ -2999,7 +3063,6 @@ Consumer<ProformasController>(
                         //               tipo: 'CREATE',
                         //             )));
 
-                             final _ctrl =context.read<ComprobantesController>();
                               _ctrl.resetListasProdutos();
                               _ctrl.resetPlacas();
                                 _ctrl.setDocumento('');
@@ -3029,20 +3092,86 @@ Consumer<ProformasController>(
                               _ctrl.setTotal();
                               _ctrl.setTarifa({});
                                _ctrl.setTipoDocumento('');
+
+    _ctrl.setTypeAction('MOTOS');
+
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) =>
                                      CrearComprobante(
+                                  
                                        user:_usuario ,
                                       tipo: 'CREATE',
                                     )));
 
-                       
-                      }
-                  
-            ,
-          ),
-          
-          
+              },
+              child: Icon(Icons.two_wheeler_outlined,size:size.iScreen(4.5)), // Imagen 1
+              heroTag: 'btn1', // Etiqueta única
+            ),
+            SizedBox(width: 20), // Espacio entre los dos botones
+            // Segundo FloatingActionButton con imagen 2
+            FloatingActionButton(
+              backgroundColor: themeColor.appTheme.accentColor,
+              onPressed: () {
+                // Acción del segundo botón
+                print("Botón 2 presionado");
+
+                   final _ctrl =context.read<ComprobantesController>();
+
+                        //       _ctrl.setTotal();
+                        //       _ctrl.setTarifa({});
+                        //        _ctrl.setTipoDocumento('');
+                        //     Navigator.of(context).push(MaterialPageRoute(
+                        //         builder: (context) =>
+                        //             const CrearComprobante(
+                        //               tipo: 'CREATE',
+                        //             )));
+
+                              _ctrl.resetListasProdutos();
+                              _ctrl.resetPlacas();
+                                _ctrl.setDocumento('');
+                                _ctrl.setFacturaOk(false);
+                                   _ctrl.setFormaDePago('EFECTIVO');
+                                _ctrl.setTipoDeTransaccion('P');
+                           _ctrl.setClienteComprbante({
+			"perId": 1,
+			"perNombre": "CONSUMIDOR FINAL",
+			"perDocNumero": "9999999999999",
+			"perDocTipo": "RUC",
+			"perTelefono": "0000000001",
+			"perDireccion": "s/n",
+			"perEmail": [
+				"sin@sincorreo.com"
+			],
+			"perCelular": [],
+			"perOtros": [
+				"ZZZ9999"
+			]
+		});
+      //*************** RESET LA VARIABLE DE RESPONSE SOCKET***************************//
+    final ctrlSocket=context.read<SocketService>();
+     ctrlSocket.resetResponseSocket();
+      //******************************************//
+        _ctrl.setExistCliente(true);
+                              _ctrl.setTotal();
+                              _ctrl.setTarifa({});
+                               _ctrl.setTipoDocumento('');
+
+  _ctrl.setTypeAction('VEHICULOS');
+
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) =>
+                                     CrearComprobante(
+                                  
+                                       user:_usuario ,
+                                      tipo: 'CREATE',
+                                    )));
+
+              },
+              child: Icon(Icons.drive_eta_outlined,size:size.iScreen(4.5)), // Imagen 2
+              heroTag: 'btn2', // Etiqueta única
+            ),
+          ],
+        ),
           
           ),
     );

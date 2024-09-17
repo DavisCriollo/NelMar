@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:neitorcont/src/controllers/anuladas_controller.dart';
+import 'package:neitorcont/src/controllers/caja_controller.dart';
 import 'package:neitorcont/src/controllers/comprobantes_controller.dart';
 import 'package:neitorcont/src/controllers/facturas_controller.dart';
 import 'package:neitorcont/src/controllers/historia_clinica.controller.dart';
@@ -83,7 +84,7 @@ class MyApp extends StatelessWidget {
          ChangeNotifierProvider(create: (_) => SocketService()),
 
     
-
+        ChangeNotifierProvider(create: (_) => CajaController()),
 
         ChangeNotifierProvider(create: (_) => HomeController()),
         ChangeNotifierProvider(create: (_) => PropietariosController()),

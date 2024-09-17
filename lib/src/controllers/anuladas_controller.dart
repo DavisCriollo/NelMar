@@ -264,40 +264,81 @@ List _facturas = [];
     notifyListeners();
   }
 
+  // void filtrarFacturasDeHoy() {
+  //   DateTime hoy = DateTime.now();
+  //   String fechaHoy = DateFormat('yyyy-MM-dd').format(hoy);
+
+  //   _facturasFiltradas = _facturas.where((factura) {
+  //     String? fechaFactura = factura['venFecReg'];
+  //     if (fechaFactura != null) {
+  //       String fechaFacturaSoloFecha = fechaFactura.split('T').first;
+  //       return fechaFacturaSoloFecha == fechaHoy;
+  //     }
+  //     return false;
+  //   }).toList();
+  //   // setInfoBusquedaAnuladasPaginacion(_facturasFiltradas);
+  //    setListFilter( _facturasFiltradas);
+  //   notifyListeners();
+  // }
+
+  // void filtrarFacturasAnteriores() {
+  //   DateTime hoy = DateTime.now();
+  //   String fechaHoy = DateFormat('yyyy-MM-dd').format(hoy);
+
+  //   _facturasFiltradas = _facturas.where((factura) {
+  //     String? fechaFactura = factura['venFecReg'];
+  //     if (fechaFactura != null) {
+  //       String fechaFacturaSoloFecha = fechaFactura.split('T').first;
+  //       return fechaFacturaSoloFecha != fechaHoy;
+  //     }
+  //     return false;
+  //   }).toList();
+  //     //  setInfoBusquedaAnuladasPaginacion(_facturasFiltradas);
+  //      setListFilter( _facturasFiltradas);
+  //   notifyListeners();
+  // }
+
+//*********************************************************//
   void filtrarFacturasDeHoy() {
-    DateTime hoy = DateTime.now();
-    String fechaHoy = DateFormat('yyyy-MM-dd').format(hoy);
+  DateTime hoy = DateTime.now();  // Fecha actual en hora local
+  String fechaHoy = DateFormat('yyyy-MM-dd').format(hoy);
 
-    _facturasFiltradas = _facturas.where((factura) {
-      String? fechaFactura = factura['venFecReg'];
-      if (fechaFactura != null) {
-        String fechaFacturaSoloFecha = fechaFactura.split('T').first;
-        return fechaFacturaSoloFecha == fechaHoy;
-      }
-      return false;
-    }).toList();
-    // setInfoBusquedaAnuladasPaginacion(_facturasFiltradas);
-     setListFilter( _facturasFiltradas);
-    notifyListeners();
-  }
+  _facturasFiltradas = _facturas.where((factura) {
+    String? fechaFactura = factura['venFecReg'];
+    if (fechaFactura != null) {
+      // Convertir la fecha de la factura a un DateTime y luego a la hora local
+      DateTime fechaFacturaDateTime = DateTime.parse(fechaFactura).toLocal();
+      String fechaFacturaSoloFecha = DateFormat('yyyy-MM-dd').format(fechaFacturaDateTime);
+      return fechaFacturaSoloFecha == fechaHoy;
+    }
+    return false;
+  }).toList();
 
-  void filtrarFacturasAnteriores() {
-    DateTime hoy = DateTime.now();
-    String fechaHoy = DateFormat('yyyy-MM-dd').format(hoy);
+  // Actualizar la lista filtrada
+  setListFilter(_facturasFiltradas);
+  notifyListeners();
+}
+void filtrarFacturasAnteriores() {
+  DateTime hoy = DateTime.now();  // Fecha actual en hora local
+  String fechaHoy = DateFormat('yyyy-MM-dd').format(hoy);
 
-    _facturasFiltradas = _facturas.where((factura) {
-      String? fechaFactura = factura['venFecReg'];
-      if (fechaFactura != null) {
-        String fechaFacturaSoloFecha = fechaFactura.split('T').first;
-        return fechaFacturaSoloFecha != fechaHoy;
-      }
-      return false;
-    }).toList();
-      //  setInfoBusquedaAnuladasPaginacion(_facturasFiltradas);
-       setListFilter( _facturasFiltradas);
-    notifyListeners();
-  }
+  _facturasFiltradas = _facturas.where((factura) {
+    String? fechaFactura = factura['venFecReg'];
+    if (fechaFactura != null) {
+      // Convertir la fecha de la factura a DateTime y luego a la hora local
+      DateTime fechaFacturaDateTime = DateTime.parse(fechaFactura).toLocal();
+      String fechaFacturaSoloFecha = DateFormat('yyyy-MM-dd').format(fechaFacturaDateTime);
+      return fechaFacturaSoloFecha != fechaHoy;  // Filtrar las fechas anteriores o diferentes a hoy
+    }
+    return false;
+  }).toList();
 
+  // Actualizar la lista filtrada
+  setListFilter(_facturasFiltradas);
+  notifyListeners();
+}
+
+//*********************************************************//
 //************INDEX TAB*****************//
 int _tabIndex=0;
 

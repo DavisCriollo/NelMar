@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:neitorcont/src/controllers/anuladas_controller.dart';
+import 'package:neitorcont/src/controllers/caja_controller.dart';
 import 'package:neitorcont/src/controllers/comprobantes_controller.dart';
 import 'package:neitorcont/src/controllers/facturas_controller.dart';
 import 'package:neitorcont/src/controllers/notas_creditos_controller.dart';
 import 'package:neitorcont/src/controllers/prefacturas_controller.dart';
 import 'package:neitorcont/src/controllers/proformas_controller.dart';
+import 'package:neitorcont/src/pages/crear_caja.dart';
 import 'package:neitorcont/src/pages/crear_comprobante_print.dart';
 import 'package:neitorcont/src/pages/listar_anuladas_paginacion.dart';
 import 'package:neitorcont/src/pages/listar_facturas.dart';
@@ -232,27 +234,25 @@ class SubmenuTransacciones extends StatelessWidget {
                                     const ListarAnuladasPaginacion()));
                           },
                         ),
-                        //   ElementosSubmenu(
-                        //   enabled: true,
-                        //   size: size,
-                        //   image: 'assets/imgs/time.png',
-                        //   label: 'COMPROBANTE',
-                        //   color: Colors.purple,
-                        //   // onTap: () => Navigator.pushNamed(context, 'mascotas'),
-                        //   onTap: () {
+                          ElementosSubmenu(
+                          enabled: true,
+                          size: size,
+                          image: 'assets/imgs/cash-register.png',
+                          label: 'CAJA',
+                          color: Colors.purple,
+                          // onTap: () => Navigator.pushNamed(context, 'mascotas'),
+                          onTap: () {
 
-                        //         final _ctrl =context.read<ComprobantesController>();
-
-                        //       _ctrl.setTotal();
-                        //       _ctrl.setTarifa({});
-                        //        _ctrl.setTipoDocumento('');
-                        //     Navigator.of(context).push(MaterialPageRoute(
-                        //         builder: (context) =>
-                        //             const CrearComprobante(
-                        //               tipo: 'CREATE',
-                        //             )));
-                        //   },
-                        // ),
+                                final _ctrl =context.read<CajaController>();
+                                   _ctrl.setTipo('');
+                                   _ctrl.setTipoDocumento('');
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) =>
+                                    const CreaCaja(
+                                      tipo: 'CREATE',
+                                    )));
+                          },
+                        ),
                      
                       ]),
                     )

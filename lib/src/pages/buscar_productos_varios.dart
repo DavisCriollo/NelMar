@@ -165,7 +165,7 @@ class _BuscarProductosVariosState extends State<BuscarProductosVarios> {
                       Consumer<ComprobantesController>(
                         builder: (_, provider, __) {
                          
-                         if (provider.getListaDeProductos.isEmpty) {
+                         if (provider.allItemsFilters.isEmpty) {
                             return const NoData(
                               label: 'No existen datos para mostar',
                             );
@@ -245,9 +245,16 @@ class _BuscarProductosVariosState extends State<BuscarProductosVarios> {
                                   //       // color: Colors.black54,
                                   //       fontWeight: FontWeight.normal),
                                   // ),
-                                  onTap: () {
-                                    // provider.setListaDeProductosFactura(producto);
-                                    _agregaCantidad(context,provider,size,producto);
+                                  onTap: ()async {
+                                  
+                                  if (provider.getTypeAction=='MOTOS') {
+                                      await  provider.enviaProductoCalculo( producto,1);
+                          Navigator.pop(context);
+                                    
+                                  } else {
+                                     _agregaCantidad(context,provider,size,producto);
+                                  }
+                                   
                                   
                                     
                                     // print('EL ITEM ES : ${provider.getListaDeProductos[index]}');
@@ -494,6 +501,7 @@ controller.setPrecio(double.parse(_item['invprecios'][0].toString()));
         child: Container(
           width: size.iScreen(10.0),
           child: TextFormField(
+            initialValue: controller.getCantidad.toString(),
             textAlign: TextAlign.center,
             autofocus: true,
             decoration: InputDecoration(
