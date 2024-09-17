@@ -947,7 +947,7 @@ ctrlPropi.setDocumento('');
                              key: ctrl.placaFormKey,
                             child: TextFormField(
                               textAlign: TextAlign.center,
-                              autofocus: true,
+                              autofocus: false,
                               controller: _textAddPlaca,
                               decoration: const InputDecoration(
                                 // Aquí puedes agregar más personalización si es necesario
@@ -1238,7 +1238,7 @@ ctrlPropi.setDocumento('');
                                   right: size.iScreen(0.5),
                                 ),
                                 child: Icon(
-                                  Icons.add,
+                                  Icons.keyboard_arrow_down_outlined,
                                   color: Colors.white,
                                   size: size.iScreen(2.0),
                                 ),
@@ -1362,7 +1362,7 @@ ctrlPropi.setDocumento('');
                                   right: size.iScreen(0.5),
                                 ),
                                 child: Icon(
-                                  Icons.add,
+                                  Icons.keyboard_arrow_down_outlined,
                                   color: Colors.white,
                                   size: size.iScreen(2.0),
                                 ),

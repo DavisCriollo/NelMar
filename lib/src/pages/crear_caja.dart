@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:neitorcont/src/controllers/caja_controller.dart';
 import 'package:neitorcont/src/models/sesison_model.dart';
+import 'package:neitorcont/src/services/notifications_service.dart';
 import 'package:neitorcont/src/theme/theme_provider.dart';
 import 'package:neitorcont/src/utils/letras_mayusculas_minusculas.dart';
 import 'package:neitorcont/src/utils/responsive.dart';
@@ -123,7 +124,7 @@ class _CreaCajaState extends State<CreaCaja> {
                                   right: size.iScreen(0.5),
                                 ),
                                 child: Icon(
-                                  Icons.add,
+                                  Icons.keyboard_arrow_down_outlined,
                                   color: Colors.white,
                                   size: size.iScreen(2.0),
                                 ),
@@ -226,7 +227,7 @@ class _CreaCajaState extends State<CreaCaja> {
                                   right: size.iScreen(0.5),
                                 ),
                                 child: Icon(
-                                  Icons.add,
+                                  Icons.keyboard_arrow_down_outlined,
                                   color: Colors.white,
                                   size: size.iScreen(2.0),
                                 ),
@@ -438,32 +439,34 @@ class _CreaCajaState extends State<CreaCaja> {
 
  
 
-      // if (controller.getClienteComprobante.isEmpty) {
-      //   NotificatiosnService.showSnackBarDanger('Debe seleccionar Cliente');
-      // } else if (controller.getlistaAddPlacas!.isEmpty) {
+      if (controller.getTipo.isEmpty) {
+        NotificatiosnService.showSnackBarDanger('Debe seleccionar Tipo');
+      } else if (controller.getTipo.isEmpty) {
+        NotificatiosnService.showSnackBarDanger(
+            'Debe seleccionar Tipo documento');
+      }
+      //  else if (controller.getNombreConductor == "") {
       //   NotificatiosnService.showSnackBarDanger(
-      //       'Debe agregar placa de vehículo');
+      //       'Debe ingresar nombre de Conductor');
       // }
-      // //  else if (controller.getNombreConductor == "") {
-      // //   NotificatiosnService.showSnackBarDanger(
-      // //       'Debe ingresar nombre de Conductor');
-      // // }
-      // else if (controller.getFormaDePago == "") {
-      //   NotificatiosnService.showSnackBarDanger(
-      //       'Debe seleccionar forma de pago');
-      // } else if (controller.getRespuestaCalculoItem.isEmpty) {
-      //   NotificatiosnService.showSnackBarDanger(
-      //       'Debe agregar producto');
-      // } else if (controller.getlistaAddCorreos!.isEmpty) {
-      //   NotificatiosnService.showSnackBarDanger(
-      //       'Debe agregar correo');
-      // }
-      // else{
-      //      final ctrl = context.read<ComprobantesController>();
-      //     ctrl.createFactura(context);
+      else if (controller.getAutorizacion.isEmpty) {
+        NotificatiosnService.showSnackBarDanger(
+            'Debe agregar Autorización');
+      } else if (controller.getDetalle.isEmpty) {
+        NotificatiosnService.showSnackBarDanger(
+            'Debe agregar Detalle');
+      }
+      else{
+          
+          controller.createCaja(context);
+           controller.setInfoBusquedaCajasPaginacion([]);
+                           controller.resetValorTotal();
+                             controller.buscaAllCajaPaginacion(
+                                '',false,0);
+                                Navigator.pop(context);
 
 
-      // }
+      }
 
     }
   }

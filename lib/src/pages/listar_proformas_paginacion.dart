@@ -3081,7 +3081,7 @@ Consumer<ProformasController>(
 			],
 			"perCelular": [],
 			"perOtros": [
-				"ZZZ9999"
+			
 			]
 		});
       //*************** RESET LA VARIABLE DE RESPONSE SOCKET***************************//
@@ -3144,7 +3144,7 @@ Consumer<ProformasController>(
 			],
 			"perCelular": [],
 			"perOtros": [
-				"ZZZ9999"
+				
 			]
 		});
       //*************** RESET LA VARIABLE DE RESPONSE SOCKET***************************//

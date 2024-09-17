@@ -8,6 +8,7 @@ import 'package:neitorcont/src/controllers/prefacturas_controller.dart';
 import 'package:neitorcont/src/controllers/proformas_controller.dart';
 import 'package:neitorcont/src/pages/crear_caja.dart';
 import 'package:neitorcont/src/pages/crear_comprobante_print.dart';
+import 'package:neitorcont/src/pages/lista_caja_paginacion.dart';
 import 'package:neitorcont/src/pages/listar_anuladas_paginacion.dart';
 import 'package:neitorcont/src/pages/listar_facturas.dart';
 import 'package:neitorcont/src/pages/listar_facturas_paginacion.dart';
@@ -119,6 +120,36 @@ class SubmenuTransacciones extends StatelessWidget {
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) =>
                                     const ListarPreFacturasPaginacion()));
+                          },
+                        ),
+                         ElementosSubmenu(
+                          enabled: true,
+                          size: size,
+                          image: 'assets/imgs/cash-register.png',
+                          label: 'CAJA',
+                          color: Colors.purple,
+                          // onTap: () => Navigator.pushNamed(context, 'mascotas'),
+                          onTap: () {
+
+                                final _ctrl =context.read<CajaController>();
+                                   _ctrl.setTipo('');
+                                   _ctrl.setTipoDocumento('');
+
+                            // Navigator.of(context).push(MaterialPageRoute(
+                            //     builder: (context) =>
+                            //         const CreaCaja(
+                            //           tipo: 'CREATE',
+                            //         )));
+
+                                 _ctrl.setInfoBusquedaCajasPaginacion([]);
+                           _ctrl.resetValorTotal();
+                             _ctrl.buscaAllCajaPaginacion(
+                                '',false,0);
+                               Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) =>
+                                    const ListarCajaPaginacion()));
+
+
                           },
                         ),
                         ElementosSubmenu(
@@ -234,25 +265,7 @@ class SubmenuTransacciones extends StatelessWidget {
                                     const ListarAnuladasPaginacion()));
                           },
                         ),
-                          ElementosSubmenu(
-                          enabled: true,
-                          size: size,
-                          image: 'assets/imgs/cash-register.png',
-                          label: 'CAJA',
-                          color: Colors.purple,
-                          // onTap: () => Navigator.pushNamed(context, 'mascotas'),
-                          onTap: () {
-
-                                final _ctrl =context.read<CajaController>();
-                                   _ctrl.setTipo('');
-                                   _ctrl.setTipoDocumento('');
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) =>
-                                    const CreaCaja(
-                                      tipo: 'CREATE',
-                                    )));
-                          },
-                        ),
+                         
                      
                       ]),
                     )

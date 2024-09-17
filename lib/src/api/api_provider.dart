@@ -1492,7 +1492,7 @@ class ApiProvider {
       if (dataResp.body.isEmpty) {
         return null;
       }
-      print('RESPONSE:AVISOSALIDA ${dataResp.body}');
+      print('RESPONSE: ${dataResp.body}');
       if (dataResp.statusCode == 200) {
         if (dataResp.body.isNotEmpty) {
           final responseData = jsonDecode(dataResp.body);
@@ -1564,6 +1564,7 @@ class ApiProvider {
       return null;
     }
   }
+
   //=========================GET ALL facturas PAGINACION=====================================//
   Future getAllPreFacturasPaginacion({
      String? search,
@@ -2241,6 +2242,51 @@ class ApiProvider {
 
 
 
+  //=========================GET ALL facturas PAGINACION=====================================//
+  Future getAllCajasPaginacion({
+     String? search,
+    int? page,
+    int? cantidad,
+    String? input,
+    bool? orden,
+    String? estado,
+    String? token,
+  }) async {
+    try {
+
+      final url =
+       Uri.parse('$_url/cajas?cantidad=$cantidad&page=$page&search=$search&input=$input&orden=$orden&estado=$estado');
+         
+          // Uri.parse('$_url/cajas/?page=0&cantidad=10&search=&input=cajaId&orden=false&estado=DIARIA');
+
+      final dataResp = await _http.get(
+        url,
+        headers: {"x-auth-token": '$token'},
+      );
+
+      if (dataResp.body.isEmpty) {
+        return null;
+      }
+      print('RESPONSE:ffff ${dataResp.body}');
+      if (dataResp.statusCode == 200) {
+
+
+        final responseData = jsonDecode(dataResp.body);
+
+        return responseData;
+      }
+      if (dataResp.statusCode == 404) {
+        return null;
+      }
+      if (dataResp.statusCode == 401) {
+     
+        return null;
+      }
+    } catch (e) {
+      //  NotificatiosnService.showSnackBarError("SIN 19 ");
+      return null;
+    }
+  }
 
 
 

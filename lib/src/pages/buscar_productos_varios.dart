@@ -72,9 +72,9 @@ class _BuscarProductosVariosState extends State<BuscarProductosVarios> {
 
               TextFormField(
                 controller: textSearchGuardiaMulta,
-                autofocus: true,
+                autofocus: false,
                 decoration: InputDecoration(
-                  hintText: 'búsqueda Personal',
+                  hintText: 'búscar',
                   suffixIcon: GestureDetector(
                     onTap: () async {},
                     child: const Icon(
