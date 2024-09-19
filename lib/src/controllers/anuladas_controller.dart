@@ -367,8 +367,8 @@ notifyListeners();
 
 
 _allItemsFilters.addAll(_list);
-print('LA LISTA DE LOS ESTUDIANTES _allItemsFilters: ${_allItemsFilters.length} ');
-print('LA LISTA DE LOS ESTUDIANTES _allItemsFilters: $_allItemsFilters ');
+// print('LA LISTA DE LOS ESTUDIANTES _allItemsFilters: ${_allItemsFilters.length} ');
+// print('LA LISTA DE LOS ESTUDIANTES _allItemsFilters: $_allItemsFilters ');
 
 //====================== REALIZA LA SUMATORIA EN CADA CONSULTA  =============================//
 

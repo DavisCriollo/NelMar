@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:neitorcont/src/api/authentication_client.dart';
 import 'package:neitorcont/src/controllers/comprobantes_controller.dart';
 
@@ -15,10 +16,14 @@ import 'package:neitorcont/src/services/notifications_service.dart';
 import 'package:neitorcont/src/services/socket_service.dart';
 import 'package:neitorcont/src/theme/theme_provider.dart';
 import 'package:neitorcont/src/theme/themes_app.dart';
+import 'package:neitorcont/src/utils/fechaLocal.dart';
 import 'package:neitorcont/src/utils/responsive.dart';
 import 'package:neitorcont/src/utils/theme.dart';
 import 'package:neitorcont/src/widgets/no_data.dart';
 import 'package:provider/provider.dart';
+import 'package:sunmi_printer_plus/column_maker.dart';
+import 'package:sunmi_printer_plus/enums.dart';
+import 'package:sunmi_printer_plus/sunmi_printer_plus.dart';
 
 class ListarProformasProformas extends StatefulWidget {
   const ListarProformasProformas({Key? key}) : super(key: key);
@@ -31,6 +36,23 @@ class _ListarProformasProformasState extends State<ListarProformasProformas> {
   final TextEditingController _textSearchController = TextEditingController();
   Session? _usuario;
    final _scrollController = ScrollController();
+
+   //************  PARTE PARA CONFIGURAR LA IMPRESORA*******************//
+
+bool printBinded = false;
+  int paperSize = 0;
+  String serialNumber = "";
+  String printerVersion = "";
+  @override
+  
+
+  /// must binding ur printer at first init in app
+  Future<bool?> _bindingPrinter() async {
+    final bool? result = await SunmiPrinter.bindingPrinter();
+    return result;
+  }
+
+//***********************************************/
 
 
   @override
@@ -52,6 +74,30 @@ class _ListarProformasProformasState extends State<ListarProformasProformas> {
 
     initData();
     super.initState();
+
+       _bindingPrinter().then((bool? isBind) async {
+      SunmiPrinter.paperSize().then((int size) {
+        setState(() {
+          paperSize = size;
+        });
+      });
+
+      SunmiPrinter.printerVersion().then((String version) {
+        setState(() {
+          printerVersion = version;
+        });
+      });
+
+      SunmiPrinter.serialNumber().then((String serial) {
+        setState(() {
+          serialNumber = serial;
+        });
+      });
+
+      setState(() {
+        printBinded = isBind!;
+      });
+    });
   }
 
   @override
@@ -754,7 +800,9 @@ class _ListarProformasProformasState extends State<ListarProformasProformas> {
                                   if (_prefacturas['venEstado'] == 'ANULADA') {
                                     _color = Colors.red;
                                   }
-                          
+//==============================================//
+  String fechaLocal = convertirFechaLocal(_prefacturas['venFecReg']);
+ //==============================================//
                                   return Slidable(
                                     startActionPane: ActionPane(
                                       // A motion is a widget used to control how the pane animates.
@@ -785,6 +833,45 @@ class _ListarProformasProformasState extends State<ListarProformasProformas> {
                                                       ),
                                                       // message: const Text('Your options are '),
                                                       actions: <Widget>[
+                                                         CupertinoActionSheetAction(
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              Container(
+                                                                margin: EdgeInsets.only(
+                                                                    right: size
+                                                                        .iScreen(
+                                                                            2.0)),
+                                                                child: Text(
+                                                                  'Imprimir',
+                                                                  style: GoogleFonts.lexendDeca(
+                                                                      fontSize: size
+                                                                          .iScreen(
+                                                                              1.8),
+                                                                      color: Colors
+                                                                          .black87,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .normal),
+                                                                ),
+                                                              ),
+                                                              const Icon(
+                                                                FontAwesomeIcons
+                                                                    .print,
+                                                                color: Colors.green,
+                                                              )
+                                                            ],
+                                                          ),
+                                                          onPressed: () {
+                                                            Navigator.pop(
+                                                                context);
+                                                                _printTicket(_prefacturas);
+
+                                                           
+                                                          },
+                                                        ),
                                                         CupertinoActionSheetAction(
                                                           child: Row(
                                                             mainAxisAlignment:
@@ -897,10 +984,12 @@ class _ListarProformasProformasState extends State<ListarProformasProformas> {
                                                 ),
                                               ),
                                               Text(
-                                                '${_prefacturas['venEstado']}',
+                                                // '${_prefacturas['venEstado']}',
+                                                 _prefacturas['venOtrosDetalles'].isNotEmpty
+                                                             ?'${_prefacturas['venOtrosDetalles'][0]}':'--- --- --- --- --- ---  ',
                                                 // 'Estado: ',
                                                 style: GoogleFonts.lexendDeca(
-                                                    fontSize: size.iScreen(1.5),
+                                                    fontSize: size.iScreen(1.8),
                                                     color: _color,
                                                     fontWeight: FontWeight.bold),
                                               ),
@@ -936,9 +1025,9 @@ class _ListarProformasProformasState extends State<ListarProformasProformas> {
                                                     // color: Colors.green,
                                                     width: size.wScreen(50.0),
                                                     child: Text(
-                                                      _prefacturas['venFecReg'] !=
+                                                      fechaLocal !=
                                                               ''
-                                                          ? '${_prefacturas['venFecReg'].replaceAll('T', "  ").replaceAll('.000Z', "  ")}'
+                                                          ? fechaLocal
                                                           : '--- --- ---',
                                                       style:
                                                           GoogleFonts.lexendDeca(
@@ -947,6 +1036,21 @@ class _ListarProformasProformasState extends State<ListarProformasProformas> {
                                                               fontWeight:
                                                                   FontWeight
                                                                       .normal),
+                                                    ),
+                                                  ),
+                                                   Container(
+                                                    // color: Colors.green,
+                                                    width: size.wScreen(50.0),
+                                                    child: Text(
+                                                       _prefacturas['venConductor']!=null
+                                                       ?'${_prefacturas['venConductor']}':'--- --- --- --- --- ---  ',
+                                                      style:
+                                                          GoogleFonts.lexendDeca(
+                                                              // fontSize: size.iScreen(1.9),
+                                                              // color: Colors.grey,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
                                                     ),
                                                   ),
                                                 ],
@@ -1895,7 +1999,9 @@ Consumer<ProformasController>(
                                   if (_prefacturas['venEstado'] == 'ANULADA') {
                                     _color = Colors.red;
                                   }
-                          
+                          //==============================================//
+  String fechaLocal = convertirFechaLocal(_prefacturas['venFecReg']);
+ //==============================================//
                                   return Slidable(
                                     startActionPane: ActionPane(
                                       // A motion is a widget used to control how the pane animates.
@@ -2037,11 +2143,13 @@ Consumer<ProformasController>(
                                                   overflow: TextOverflow.ellipsis,
                                                 ),
                                               ),
-                                              Text(
-                                                '${_prefacturas['venEstado']}',
+                                               Text(
+                                                // '${_prefacturas['venEstado']}',
+                                                 _prefacturas['venOtrosDetalles'].isNotEmpty
+                                                             ?'${_prefacturas['venOtrosDetalles'][0]}':'--- --- --- --- --- ---  ',
                                                 // 'Estado: ',
                                                 style: GoogleFonts.lexendDeca(
-                                                    fontSize: size.iScreen(1.5),
+                                                    fontSize: size.iScreen(1.8),
                                                     color: _color,
                                                     fontWeight: FontWeight.bold),
                                               ),
@@ -2077,9 +2185,9 @@ Consumer<ProformasController>(
                                                     // color: Colors.green,
                                                     width: size.wScreen(50.0),
                                                     child: Text(
-                                                      _prefacturas['venFecReg'] !=
+                                                      fechaLocal !=
                                                               ''
-                                                          ? '${_prefacturas['venFecReg'].replaceAll('T', "  ").replaceAll('.000Z', "  ")}'
+                                                          ? fechaLocal
                                                           : '--- --- ---',
                                                       style:
                                                           GoogleFonts.lexendDeca(
@@ -2088,6 +2196,21 @@ Consumer<ProformasController>(
                                                               fontWeight:
                                                                   FontWeight
                                                                       .normal),
+                                                    ),
+                                                  ),
+                                                   Container(
+                                                    // color: Colors.green,
+                                                    width: size.wScreen(50.0),
+                                                    child: Text(
+                                                       _prefacturas['venConductor']!=null
+                                                       ?'${_prefacturas['venConductor']}':'--- --- --- --- --- ---  ',
+                                                      style:
+                                                          GoogleFonts.lexendDeca(
+                                                              // fontSize: size.iScreen(1.9),
+                                                              // color: Colors.grey,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
                                                     ),
                                                   ),
                                                 ],
@@ -3092,7 +3215,7 @@ Consumer<ProformasController>(
                               _ctrl.setTotal();
                               _ctrl.setTarifa({});
                                _ctrl.setTipoDocumento('');
-
+ _ctrl.getAllFormaPago();
     _ctrl.setTypeAction('MOTOS');
 
                             Navigator.of(context).push(MaterialPageRoute(
@@ -3113,7 +3236,7 @@ Consumer<ProformasController>(
               backgroundColor: themeColor.appTheme.accentColor,
               onPressed: () {
                 // Acción del segundo botón
-                print("Botón 2 presionado");
+                // print("Botón 2 presionado");
 
                    final _ctrl =context.read<ComprobantesController>();
 
@@ -3155,7 +3278,7 @@ Consumer<ProformasController>(
                               _ctrl.setTotal();
                               _ctrl.setTarifa({});
                                _ctrl.setTipoDocumento('');
-
+         _ctrl.getAllFormaPago();
   _ctrl.setTypeAction('VEHICULOS');
 
                             Navigator.of(context).push(MaterialPageRoute(
@@ -3183,4 +3306,176 @@ Consumer<ProformasController>(
     _controller.setCantidad(25);
     _controller.buscaAllProformasPaginacion('', true,_controller.getTabIndex);
   }
+
+
+ 
+void _printTicket(Map<String, dynamic>? _info) async {
+  if (_info == null) return;
+
+//  //==============================================//
+//   String utcDate = _info['venFecReg'];
+
+//   // Parsear la fecha en UTC
+//   DateTime dateTimeUtc = DateTime.parse(utcDate);
+
+//   // Convertirla a hora local
+//   DateTime dateTimeLocal = dateTimeUtc.toLocal();
+
+//   // Formatear la fecha y hora local como 'YYYY-MM-DD HH:MM'
+//   String formattedDate = DateFormat('yyyy-MM-dd HH:mm').format(dateTimeLocal);
+
+//   // print(formattedDate);  // Resultado: 2024-09-18 19:27
+  
+//  //==============================================//
+
+
+
+  //==============================================//
+  String fechaLocal = convertirFechaLocal(_info['venFecReg']);
+ //==============================================//
+
+
+  // Inicializa la impresora
+  await SunmiPrinter.initPrinter();
+  await SunmiPrinter.startTransactionPrint(true);
+
+  // Imprime el encabezado
+  await SunmiPrinter.setAlignment(SunmiPrintAlign.CENTER);
+  // await SunmiPrinter.line();
+  await SunmiPrinter.printText('${_info['venEmpComercial']}');
+  await SunmiPrinter.printText('${_info['venEmpRuc']}');
+  await SunmiPrinter.printText('${_info['venEmpDireccion']}');
+  await SunmiPrinter.printText('${_info['venEmpTelefono']}');
+  await SunmiPrinter.printText('${_info['venEmpEmail']}');
+  
+  await SunmiPrinter.setAlignment(SunmiPrintAlign.CENTER);
+  await SunmiPrinter.line();
+  await SunmiPrinter.printText('Cliente: ${_info['venNomCliente']}');
+  await SunmiPrinter.printText('${_info['venRucCliente']}');
+  await SunmiPrinter.setAlignment(SunmiPrintAlign.CENTER);
+  await SunmiPrinter.line();
+  // await SunmiPrinter.printText('FECHA: ${_info['venFechaFactura']}');
+    await SunmiPrinter.printText('FECHA: $fechaLocal');
+
+
+ await SunmiPrinter.line();
+  await SunmiPrinter.printText('Conductor: ${_info['venConductor']}');
+  await SunmiPrinter.printText('Placa: ${_info['venOtrosDetalles'][0]}');
+  await SunmiPrinter.setAlignment(SunmiPrintAlign.CENTER);
+  await SunmiPrinter.line();
+
+
+  // Imprime el encabezado de la tabla
+  await SunmiPrinter.setAlignment(SunmiPrintAlign.LEFT);
+  await SunmiPrinter.line();
+  await SunmiPrinter.printRow(cols: [
+    ColumnMaker(
+      text: 'Descripción',
+      width: 12,
+      align: SunmiPrintAlign.LEFT,
+    ),
+    ColumnMaker(
+      text: 'Cant',
+      width: 6,
+      align: SunmiPrintAlign.CENTER,
+    ),
+    ColumnMaker(
+      text: 'vU',
+      width: 6,
+      align: SunmiPrintAlign.RIGHT,
+    ),
+    ColumnMaker(
+      text: 'TOT',
+      width: 6,
+      align: SunmiPrintAlign.RIGHT,
+    ),
+  ]);
+
+  // Imprime cada ítem en la lista
+  final productos = _info['venProductos'] as List<dynamic>?;
+
+  if (productos != null) {
+    for (var item in productos) {
+      await SunmiPrinter.printRow(cols: [
+        ColumnMaker(
+          text: item['descripcion']?.toString() ?? 'N/A',
+          width: 12,
+          align: SunmiPrintAlign.LEFT,
+        ),
+        ColumnMaker(
+          text: item['cantidad']?.toString() ?? '0',
+          width: 6,
+          align: SunmiPrintAlign.CENTER,
+        ),
+        ColumnMaker(
+          text: item['valorUnitario']?.toString() ?? '0',
+          width: 6,
+          align: SunmiPrintAlign.RIGHT,
+        ),
+        ColumnMaker(
+          text: item['precioSubTotalProducto']?.toString() ?? '0',
+          width: 6,
+          align: SunmiPrintAlign.RIGHT,
+        ),
+      ]);
+    }
+  } else {
+    // Manejo de caso en el que 'venProductos' es nulo o no es una lista
+    await SunmiPrinter.printText('No hay productos para mostrar.');
+  }
+
+ // Imprime el subtotal
+await SunmiPrinter.line();
+await SunmiPrinter.printRow(cols: [
+  ColumnMaker(
+    text: 'SubTotal',
+    width: 20, // Ajuste el ancho si es necesario
+    align: SunmiPrintAlign.LEFT,
+  ),
+  ColumnMaker(
+    text: _info['venSubTotal']?.toString() ?? '0',
+    width: 10, // Aumenta el ancho para números más grandes
+    align: SunmiPrintAlign.RIGHT,
+  ),
+]);
+
+// Imprime el IVA
+await SunmiPrinter.printRow(cols: [
+  ColumnMaker(
+    text: 'Iva',
+    width: 20, // Ajuste el ancho si es necesario
+    align: SunmiPrintAlign.LEFT,
+  ),
+  ColumnMaker(
+    text: _info['venTotalIva']?.toString() ?? '0',
+    width: 10, // Aumenta el ancho para números más grandes
+    align: SunmiPrintAlign.RIGHT,
+  ),
+]);
+
+// Imprime el total
+await SunmiPrinter.printRow(cols: [
+  ColumnMaker(
+    text: 'TOTAL',
+    width: 20, // Ajuste el ancho si es necesario
+    align: SunmiPrintAlign.LEFT,
+  ),
+  ColumnMaker(
+    text: _info['venTotal']?.toString() ?? '0',
+    width: 10, // Aumenta el ancho para números más grandes
+    align: SunmiPrintAlign.RIGHT,
+  ),
+]);
+ await SunmiPrinter.line();
+  await SunmiPrinter.lineWrap(2);
+  await SunmiPrinter.exitTransactionPrint(true);
+}
+
+
+
+
+
+
+
+
 }

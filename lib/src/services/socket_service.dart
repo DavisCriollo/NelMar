@@ -326,15 +326,15 @@ _latestResponse={};
         }
         // Condición para la tabla 'factura'
     else if (data['tabla'] == 'ventas' && data['venUser']==dataUser!.usuario && data['rucempresa']==dataUser.rucempresa) {
-        final _ctrlComprobante=ComprobantesController();
+        // final _ctrlComprobante=ComprobantesController();
         // Implementa la lógica específica para la tabla 'factura'
-        print('Factura guardada exitosamente');
+        // print('Factura guardada exitosamente');
         // _ctrlComprobante.setInfoFacturaResponse(data);
         // _ctrlComprobante.setFacturaOk(true);
-        _showSnackbar('Factura guardada exitosamente');
+        // _showSnackbar('Factura guardada exitosamente');
         //==============LA RSPUESTA ===================//
         _latestResponse=data;
-        print('$data');
+        print(' $data');
         // Llama a cualquier función relacionada, si es necesario
         // final _ctrlFactura = FacturaController();
         // _ctrlFactura.someFunction();

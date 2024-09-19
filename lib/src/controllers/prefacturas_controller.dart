@@ -177,7 +177,7 @@ class PreFacturasController extends ChangeNotifier {
 
   void onSearchTextPreFacturaPaginacion(String data) {
     _nameSearchPreFacturaPaginacion = data;
-     print('PreFacturaOMBRE:${_nameSearchPreFacturaPaginacion}');
+    //  print('PreFacturaOMBRE:${_nameSearchPreFacturaPaginacion}');
      }
 //=============================================================================//
 
@@ -206,7 +206,7 @@ notifyListeners();
   void setInfoBusquedaPreFacturasPaginacion(List data) {
     _listaPreFacturasPaginacion=[];
     _listaPreFacturasPaginacion.addAll(data);
-    print('PreFacturas xxx :${_listaPreFacturasPaginacion.length}');
+    // print('PreFacturas xxx :${_listaPreFacturasPaginacion.length}');
 
    if (_tabIndex==0) {
   _valorTotalFacturasHoy = 0.0;
@@ -507,8 +507,8 @@ notifyListeners();
 
 
 _allItemsFilters.addAll(_list);
-print('LA LISTA DE LOS ESTUDIANTES _allItemsFilters: ${_allItemsFilters.length} ');
-print('LA LISTA DE LOS ESTUDIANTES _allItemsFilters: $_allItemsFilters ');
+// print('LA LISTA DE LOS ESTUDIANTES _allItemsFilters: ${_allItemsFilters.length} ');
+// print('LA LISTA DE LOS ESTUDIANTES _allItemsFilters: $_allItemsFilters ');
 
 //====================== REALIZA LA SUMATORIA EN CADA CONSULTA  =============================//
 

@@ -12,6 +12,7 @@ import 'package:neitorcont/src/pages/views_pdf.dart';
 import 'package:neitorcont/src/services/notifications_service.dart';
 import 'package:neitorcont/src/services/socket_service.dart';
 import 'package:neitorcont/src/theme/themes_app.dart';
+import 'package:neitorcont/src/utils/fechaLocal.dart';
 import 'package:neitorcont/src/utils/responsive.dart';
 import 'package:neitorcont/src/utils/theme.dart';
 import 'package:neitorcont/src/widgets/no_data.dart';
@@ -428,7 +429,9 @@ class _ListarAnuladasPaginacionState extends State<ListarAnuladasPaginacion> {
                             if (anulada['venEstado'] == 'ANULADA') {
                               _color = Colors.red;
                             }
-
+                          //==============================================//
+  String fechaLocal = convertirFechaLocal(anulada['venFecReg']);
+ //==============================================//
                             return Slidable(
                               startActionPane: ActionPane(
                                 motion: const ScrollMotion(),
@@ -560,8 +563,8 @@ class _ListarAnuladasPaginacionState extends State<ListarAnuladasPaginacion> {
                                             Container(
                                               width: MediaQuery.of(context).size.width * 0.5,
                                               child: Text(
-                                                anulada['venFecReg'] != ''
-                                                    ? '${anulada['venFecReg'].replaceAll('T', "  ").replaceAll('.000Z', "  ")}'
+                                                fechaLocal != ''
+                                                    ? fechaLocal
                                                     : '--- --- ---',
                                                 style: GoogleFonts.lexendDeca(
                                                     color: Colors.grey,
@@ -1484,7 +1487,9 @@ class _ListarAnuladasPaginacionState extends State<ListarAnuladasPaginacion> {
                             if (anulada['venEstado'] == 'ANULADA') {
                               _color = Colors.red;
                             }
-
+                          //==============================================//
+  String fechaLocal = convertirFechaLocal(anulada['venFecReg']);
+ //==============================================//
                             return Slidable(
                               startActionPane: ActionPane(
                                 motion: const ScrollMotion(),
@@ -1616,8 +1621,8 @@ class _ListarAnuladasPaginacionState extends State<ListarAnuladasPaginacion> {
                                             Container(
                                               width: MediaQuery.of(context).size.width * 0.5,
                                               child: Text(
-                                                anulada['venFecReg'] != ''
-                                                    ? '${anulada['venFecReg'].replaceAll('T', "  ").replaceAll('.000Z', "  ")}'
+                                                fechaLocal != ''
+                                                    ? fechaLocal
                                                     : '--- --- ---',
                                                 style: GoogleFonts.lexendDeca(
                                                     color: Colors.grey,

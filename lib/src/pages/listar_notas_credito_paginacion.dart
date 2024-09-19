@@ -14,6 +14,7 @@ import 'package:neitorcont/src/pages/views_pdf.dart';
 import 'package:neitorcont/src/services/notifications_service.dart';
 import 'package:neitorcont/src/services/socket_service.dart';
 import 'package:neitorcont/src/theme/themes_app.dart';
+import 'package:neitorcont/src/utils/fechaLocal.dart';
 import 'package:neitorcont/src/utils/responsive.dart';
 import 'package:neitorcont/src/utils/theme.dart';
 import 'package:neitorcont/src/widgets/no_data.dart';
@@ -409,6 +410,9 @@ class _ListarNotasCreditoPaginacionState extends State<ListarNotasCreditoPaginac
                             _color = Colors.red;
                           }
 
+                          //==============================================//
+  String fechaLocal = convertirFechaLocal(_notasCredito['venFecReg']);
+ //==============================================//
                           return Slidable(
                             startActionPane: ActionPane(
                               motion: const ScrollMotion(),
@@ -543,8 +547,8 @@ class _ListarNotasCreditoPaginacionState extends State<ListarNotasCreditoPaginac
                                           Container(
                                             width: size.wScreen(50.0),
                                             child: Text(
-                                              _notasCredito['venFecReg'] != ''
-                                                  ? '${_notasCredito['venFecReg'].replaceAll('T', "  ").replaceAll('.000Z', "  ")}'
+                                              fechaLocal != ''
+                                                  ? fechaLocal
                                                   : '--- --- ---',
                                               style: GoogleFonts.lexendDeca(
                                                 color: Colors.grey,
@@ -1188,7 +1192,9 @@ class _ListarNotasCreditoPaginacionState extends State<ListarNotasCreditoPaginac
                           } else if (_notasCredito['venEstado'] == 'ANULADA') {
                             _color = Colors.red;
                           }
-
+                          //==============================================//
+  String fechaLocal = convertirFechaLocal(_notasCredito['venFecReg']);
+ //==============================================//
                           return Slidable(
                             startActionPane: ActionPane(
                               motion: const ScrollMotion(),
@@ -1323,8 +1329,8 @@ class _ListarNotasCreditoPaginacionState extends State<ListarNotasCreditoPaginac
                                           Container(
                                             width: size.wScreen(50.0),
                                             child: Text(
-                                              _notasCredito['venFecReg'] != ''
-                                                  ? '${_notasCredito['venFecReg'].replaceAll('T', "  ").replaceAll('.000Z', "  ")}'
+                                              fechaLocal != ''
+                                                  ? fechaLocal
                                                   : '--- --- ---',
                                               style: GoogleFonts.lexendDeca(
                                                 color: Colors.grey,

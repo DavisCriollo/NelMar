@@ -32,7 +32,7 @@ final List _tipos=["EFECTIVO", "CHEQUE", "TRANSFERENCIA", "DEPOSITO"];
   void setTipo(String _tip) {
    _tipo =''; 
    _tipo = _tip;
-     print('==_tipo===> $_tipo');
+    //  print('==_tipo===> $_tipo');
     notifyListeners();
   }
 
@@ -48,7 +48,7 @@ final List _tiposDocumentos=
   void setTipoDocumento(String _tips) {
    _tipoDocumento =''; 
    _tipoDocumento = _tips;
-     print('==_tipoDocumento===> $_tipoDocumento');
+    //  print('==_tipoDocumento===> $_tipoDocumento');
     notifyListeners();
   }
 
@@ -187,7 +187,7 @@ notifyListeners();
   void setInfoBusquedaCajasPaginacion(List data) {
     _listaCajaPaginacion=[];
     _listaCajaPaginacion.addAll(data);
-    print('Cajas xxx :${_listaCajaPaginacion.length}');
+    // print('Cajas xxx :${_listaCajaPaginacion.length}');
 
    if (_tabIndex==0) {
   _valorTotalCajasHoy = 0.0;
@@ -454,8 +454,8 @@ notifyListeners();
 
 
 _allItemsFilters.addAll(_list);
-print('LA LISTA DE LOS ESTUDIANTES _allItemsFilters: ${_allItemsFilters.length} ');
-print('LA LISTA DE LOS ESTUDIANTES _allItemsFilters: $_allItemsFilters ');
+// print('LA LISTA DE LOS ESTUDIANTES _allItemsFilters: ${_allItemsFilters.length} ');
+// print('LA LISTA DE LOS ESTUDIANTES _allItemsFilters: $_allItemsFilters ');
 
 //====================== REALIZA LA SUMATORIA EN CADA CONSULTA  =============================//
 
