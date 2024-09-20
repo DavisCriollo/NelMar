@@ -1359,8 +1359,10 @@ notifyListeners();
 }
 
   //================================INPUT   CANTIDAD=============================================//
-  double _cantidad =1.0;
+  double _cantidad =1;
   double get getCantidad => _cantidad;
+
+  
 
   void setCantidad(double value) {
     _cantidad = value;
@@ -1401,7 +1403,7 @@ print('LA precio ES: $_precio');
   // Método privado para calcular el total
   void calculateTotal() {
     if (_cantidad==0.0) {
-      _cantidad=1.0;
+      _cantidad=1;
     }
     _total =_tipoTarifa['valor']==null?0: double.parse(_tipoTarifa['valor']) * _cantidad;
     notifyListeners(); // Notifica a los widgets escuchando este provider

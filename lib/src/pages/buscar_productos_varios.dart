@@ -500,46 +500,88 @@ controller.setPrecio(double.parse(_item['invprecios'][0].toString()));
       Expanded(
         child: Container(
           width: size.iScreen(10.0),
-          child: TextFormField(
-            initialValue: controller.getCantidad.toString(),
-            textAlign: TextAlign.center,
-            autofocus: true,
-            decoration: InputDecoration(
-              label: Text('Cantidad'),
-              labelStyle: TextStyle(fontSize: size.iScreen(1.9)),
-              // Aquí puedes agregar más personalización si es necesario
-            ),
-            style: TextStyle(
-              fontSize: size.iScreen(3.5),
-              color: Colors.black,
-            ),
-            keyboardType: const TextInputType.numberWithOptions(decimal: true),
-            inputFormatters: <TextInputFormatter>[
-              FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')),
-            ],
-            onChanged: (text) {
-              double value = 0.0;
-              if (text.isNotEmpty) {
-                try {
-                  value = double.parse(text);
-                } catch (e) {
-                  // Manejo del error si el parse falla
-                  value = 0.0;
-                }
-              }
-              controller.setCantidad(value);
-            },
-            validator: (text) {
-              if (text == null || text.isEmpty) {
-                return 'Por favor, ingrese cantidad';
-              }
-              final value = double.tryParse(text);
-              if (value == null) {
-                return 'Ingrese un número válido';
-              }
-              return null; // Devuelve null si la validación es exitosa
-            },
-          ),
+          // child: TextFormField(
+          //   initialValue: controller.getCantidad.toString(),
+          //   textAlign: TextAlign.center,
+          //   autofocus: true,
+          //   decoration: InputDecoration(
+          //     label: Text('Cantidad'),
+          //     labelStyle: TextStyle(fontSize: size.iScreen(1.9)),
+          //     // Aquí puedes agregar más personalización si es necesario
+          //   ),
+          //   style: TextStyle(
+          //     fontSize: size.iScreen(3.5),
+          //     color: Colors.black,
+          //   ),
+          //   keyboardType: const TextInputType.numberWithOptions(decimal: true),
+          //   inputFormatters: <TextInputFormatter>[
+          //     FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')),
+          //   ],
+          //   onChanged: (text) {
+          //     double value = 0.0;
+          //     if (text.isNotEmpty) {
+          //       try {
+          //         value = double.parse(text);
+          //       } catch (e) {
+          //         // Manejo del error si el parse falla
+          //         value = 0.0;
+          //       }
+          //     }
+          //     controller.setCantidad(value);
+          //   },
+          //   validator: (text) {
+          //     if (text == null || text.isEmpty) {
+          //       return 'Por favor, ingrese cantidad';
+          //     }
+          //     final value = double.tryParse(text);
+          //     if (value == null) {
+          //       return 'Ingrese un número válido';
+          //     }
+          //     return null; // Devuelve null si la validación es exitosa
+          //   },
+          // ),
+       child:
+          TextFormField(
+  initialValue: controller.getCantidad % 1 == 0 
+      ? controller.getCantidad.toInt().toString()  // Si es entero, lo muestra sin decimales
+      : controller.getCantidad.toString(),         // Si tiene decimales, lo muestra con ellos
+  textAlign: TextAlign.center,
+  autofocus: true,
+  decoration: InputDecoration(
+    label: Text('Cantidad'),
+    labelStyle: TextStyle(fontSize: size.iScreen(1.9)),
+  ),
+  style: TextStyle(
+    fontSize: size.iScreen(3.5),
+    color: Colors.black,
+  ),
+  keyboardType: const TextInputType.numberWithOptions(decimal: true),
+  inputFormatters: <TextInputFormatter>[
+    FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')),
+  ],
+  onChanged: (text) {
+    double value = 0.0;
+    if (text.isNotEmpty) {
+      try {
+        value = double.parse(text);
+      } catch (e) {
+        value = 0.0;
+      }
+    }
+    controller.setCantidad(value);
+  },
+  validator: (text) {
+    if (text == null || text.isEmpty) {
+      return 'Por favor, ingrese cantidad';
+    }
+    final value = double.tryParse(text);
+    if (value == null) {
+      return 'Ingrese un número válido';
+    }
+    return null;
+  },
+),
+
         ),
       ),
     ],

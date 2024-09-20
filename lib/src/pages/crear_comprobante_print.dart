@@ -3558,9 +3558,8 @@ Navigator.pop(context);
                   ),
                   //*****************SI ES MOTO O CARRRO************************/
 
-                   ctrl.getTypeAction=='VEHICULOS'
-
-                  ?Column(
+                 
+                  Column(
                     children: [
 
                                    Container(
@@ -3568,8 +3567,68 @@ Navigator.pop(context);
                     padding: EdgeInsets.only(bottom: size.iScreen(1.0)),
                     
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                     
                       children: [
+
+
+//*************** PLACA ****************//
+Consumer<ComprobantesController>(builder: (_, value, __) {  
+  return   Row(
+     mainAxisAlignment: MainAxisAlignment.spaceAround,
+    children: [
+        value.getTypeAction=='MOTOS'?   SizedBox(
+                        // width: size.wScreen(100.0),
+            
+                        // color: Colors.blue,
+                        child: Text('Placa: ',
+                            style: GoogleFonts.lexendDeca(
+                                fontSize: size.iScreen(2.0),
+                                fontWeight: FontWeight.normal,
+                                color: Colors.grey)),
+                      ):Container(),
+      Container(
+        // color: Colors.red,
+                              width: value.getTypeAction=='VEHICULOS'?size.iScreen(15.0):size.iScreen(20.0),
+                              child: TextFormField(
+                                textAlign: TextAlign.center,
+                                autofocus: false,
+                                controller: _textAddPlaca,
+                                decoration: InputDecoration(
+                                          label:  value.getTypeAction=='MOTOS'? Text( ''):Text( 'Placa'),
+                                          labelStyle:TextStyle(color: Colors.grey,fontSize: size.iScreen(1.9)),
+                                          // hintText: 'Ingrese Documento', // Texto de sugerencia dentro del campo
+                                          // border: OutlineInputBorder(), // Opcional: Añade un borde al campo
+                                          helperStyle:
+                                              TextStyle(color: Colors.grey,fontSize: size.iScreen(1.5)),
+                                        ),
+                                style: TextStyle(
+                                  fontSize: size.iScreen(2.8),
+                                  color: Colors.black,
+                                ),
+                                inputFormatters: <TextInputFormatter>[
+                                  UpperCaseText(),
+                                ],
+                                onChanged: (text) {
+                                  ctrl.seItemAddPlaca(text);
+                                },
+                                validator: (text) {
+                                  if (text!.trim().isNotEmpty) {
+                                    return null;
+                                  } else {
+                                    return 'Ingrese Placa';
+                                  }
+                                },
+                              ),
+                            ),
+    ],
+  );
+
+},),
+ 
+
+//********************************//
+
+
                           Consumer<ComprobantesController>(builder: (_, value, __) { 
                             return  
                             value.getExistCliente==false
@@ -3633,43 +3692,49 @@ ctrlPropi.setDocumento('');
                         ):Container();
                             
                            },),
-                           SizedBox(width: size.iScreen(1.0),),
 
-                           
-                        Consumer<ComprobantesController>(
+                            
+                          
+                              
+                                Consumer<ComprobantesController>(
                           builder: (_, tipo, __) {
-                            return Container(
-                              width: size.iScreen(28),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  TextField(
-                                    decoration: InputDecoration(
-                                      label: Text( 'Ingrese Documento'),
-                                      labelStyle:TextStyle(color: Colors.grey,fontSize: size.iScreen(1.9)),
-                                      // hintText: 'Ingrese Documento', // Texto de sugerencia dentro del campo
-                                      // border: OutlineInputBorder(), // Opcional: Añade un borde al campo
-                                      helperStyle:
-                                          TextStyle(color: Colors.grey,fontSize: size.iScreen(1.5)),
-                                    ),
-                                    inputFormatters: [
-                                      UpperCaseText(), // Limita a 13 dígitos
+                            return 
+                              ctrl.getTypeAction=='VEHICULOS'
+
+                  ?
+                            Row(
+                              children: [
+                                SizedBox(width: size.iScreen(1.0),),
+                                Container(
+                                  width: size.iScreen(21),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      TextField(
+                                        decoration: InputDecoration(
+                                          label: Text( 'Documento'),
+                                          labelStyle:TextStyle(color: Colors.grey,fontSize: size.iScreen(1.9)),
+                                          // hintText: 'Ingrese Documento', // Texto de sugerencia dentro del campo
+                                          // border: OutlineInputBorder(), // Opcional: Añade un borde al campo
+                                          helperStyle:
+                                              TextStyle(color: Colors.grey,fontSize: size.iScreen(1.5)),
+                                        ),
+                                        inputFormatters: [
+                                          UpperCaseText(), // Limita a 13 dígitos
+                                        ],
+                                        style: TextStyle(
+                                          fontSize: size.iScreen( 2.8), // Ajusta el tamaño de la letra
+                                          // fontWeight: FontWeight.bold, // Opcional: Aplica un peso de fuente más grueso
+                                        ),
+                                        textAlign: TextAlign.center,
+                                        onChanged: (text) {
+                                          ctrl.setDocumento(text);
+                                        },
+                                      ),
                                     ],
-                                    style: TextStyle(
-                                      fontSize: size.iScreen( 3.0), // Ajusta el tamaño de la letra
-                                      // fontWeight: FontWeight.bold, // Opcional: Aplica un peso de fuente más grueso
-                                    ),
-                                    textAlign: TextAlign.center,
-                                    onChanged: (text) {
-                                      ctrl.setDocumento(text);
-                                    },
                                   ),
-                                ],
-                              ),
-                            );
-                          },
-                        ),
-                         Consumer<ComprobantesController>(builder: (_, value, __) { 
+                                ),
+                                Consumer<ComprobantesController>(builder: (_, value, __) { 
                             return  ClipRRect(
                           borderRadius: BorderRadius.circular(8),
                           child: GestureDetector(
@@ -3759,7 +3824,13 @@ ctrlPropi.setDocumento('');
                       
                            },)
             
-                      ],
+                              ],
+                            ):Container();
+                          },
+                        ),
+                         
+                             ],
+                         
                     ),
                   ),
                   //***********************************************/
@@ -4000,128 +4071,128 @@ ctrlPropi.setDocumento('');
 
 
                     ],
-                  ):Container(),
-
-
-
-                  Row(
-                    children: [
-                      SizedBox(
-                        // width: size.wScreen(100.0),
-            
-                        // color: Colors.blue,
-                        child: Text('Placa: ',
-                            style: GoogleFonts.lexendDeca(
-                                fontSize: size.iScreen(2.0),
-                                fontWeight: FontWeight.normal,
-                                color: Colors.grey)),
-                      ),
-                   Row(
-                     children: [
-                       SizedBox(
-                          width: size.iScreen(20.0),
-                          child: TextFormField(
-                            textAlign: TextAlign.center,
-                            autofocus: false,
-                            controller: _textAddPlaca,
-                            decoration: const InputDecoration(
-                              // Aquí puedes agregar más personalización si es necesario
-                            ),
-                            style: TextStyle(
-                              fontSize: size.iScreen(3.5),
-                              color: Colors.black,
-                            ),
-                            inputFormatters: <TextInputFormatter>[
-                              UpperCaseText(),
-                            ],
-                            onChanged: (text) {
-                              ctrl.seItemAddPlaca(text);
-                            },
-                            validator: (text) {
-                              if (text!.trim().isNotEmpty) {
-                                return null;
-                              } else {
-                                return 'Ingrese Placa';
-                              }
-                            },
-                          ),
-                        ),
-                    //     TextButton(
-                    //   onPressed: () {
-                    //     final isValidS = ctrl.validateFormPlaca();
-                    //     if (!isValidS) return;
-                    //     if (isValidS) {
-                    //       _textAddPlaca.text = '';
-                    //       ctrl.agregaListaPlacas();
-                    //       // Navigator.pop(context);
-                    //     }
-                    //   },
-                    //   child: Consumer<ThemeProvider>(
-                    //     builder: (_, valueTheme, __) {
-                    //       return Container(
-                    //         width: size.iScreen(5.0),
-                    //         height:  size.iScreen(4.0),
-                    //         decoration: BoxDecoration(
-                    //           color: valueTheme.appTheme.primaryColor,
-                    //           borderRadius: BorderRadius.circular(5.0),
-                    //         ),
-                    //         padding: EdgeInsets.symmetric(
-                    //           vertical: size.iScreen(0.5),
-                    //           horizontal: size.iScreen(0.5),
-                    //         ),
-                    //         child: Icon(
-                    //               Icons.add,
-                    //               color: Colors.white,
-                    //               size: size.iScreen(2.0),
-                    //             ),
-                    //       );
-                    //     },
-                    //   ),
-                    // ),
-                     ],
-                   ),
-                     //****************************************//
-                      // ClipRRect(
-                      //   borderRadius: BorderRadius.circular(8),
-                      //   child: GestureDetector(
-                      //     onTap: () {
-                      //       // context
-                      //       //     .read<MascotasController>()
-                      //       //     .buscaAllMascotas('');
-            
-                      //       // // _buscarMascota(context, size);
-                      //       _agregaPlaca(context,ctrl,size);
-            
-                      //       // //*******************************************/
-                      //     },
-                      //     child: Consumer<ThemeProvider>(
-                      //       builder: (_, valueTheme, __) {
-                      //         return Container(
-                      //           alignment: Alignment.center,
-                      //           color: valueTheme.appTheme.primaryColor,
-                      //           width: size.iScreen(4.5),
-                      //           padding: EdgeInsets.only(
-                      //             top: size.iScreen(0.5),
-                      //             bottom: size.iScreen(0.5),
-                      //             left: size.iScreen(0.5),
-                      //             right: size.iScreen(0.5),
-                      //           ),
-                      //           child: Icon(
-                      //             Icons.add,
-                      //             color: Colors.white,
-                      //             size: size.iScreen(2.0),
-                      //           ),
-                      //         );
-                      //       },
-                      //     ),
-                      //   ),
-                      // ),
-                  
-                  
-                  
-                  
-                    ],
                   ),
+
+
+
+                  // Row(
+                  //   children: [
+                  //     SizedBox(
+                  //       // width: size.wScreen(100.0),
+            
+                  //       // color: Colors.blue,
+                  //       child: Text('Placa: ',
+                  //           style: GoogleFonts.lexendDeca(
+                  //               fontSize: size.iScreen(2.0),
+                  //               fontWeight: FontWeight.normal,
+                  //               color: Colors.grey)),
+                  //     ),
+                  //  Row(
+                  //    children: [
+                  //      SizedBox(
+                  //         width: size.iScreen(20.0),
+                  //         child: TextFormField(
+                  //           textAlign: TextAlign.center,
+                  //           autofocus: false,
+                  //           controller: _textAddPlaca,
+                  //           decoration: const InputDecoration(
+                  //             // Aquí puedes agregar más personalización si es necesario
+                  //           ),
+                  //           style: TextStyle(
+                  //             fontSize: size.iScreen(3.5),
+                  //             color: Colors.black,
+                  //           ),
+                  //           inputFormatters: <TextInputFormatter>[
+                  //             UpperCaseText(),
+                  //           ],
+                  //           onChanged: (text) {
+                  //             ctrl.seItemAddPlaca(text);
+                  //           },
+                  //           validator: (text) {
+                  //             if (text!.trim().isNotEmpty) {
+                  //               return null;
+                  //             } else {
+                  //               return 'Ingrese Placa';
+                  //             }
+                  //           },
+                  //         ),
+                  //       ),
+                  //   //     TextButton(
+                  //   //   onPressed: () {
+                  //   //     final isValidS = ctrl.validateFormPlaca();
+                  //   //     if (!isValidS) return;
+                  //   //     if (isValidS) {
+                  //   //       _textAddPlaca.text = '';
+                  //   //       ctrl.agregaListaPlacas();
+                  //   //       // Navigator.pop(context);
+                  //   //     }
+                  //   //   },
+                  //   //   child: Consumer<ThemeProvider>(
+                  //   //     builder: (_, valueTheme, __) {
+                  //   //       return Container(
+                  //   //         width: size.iScreen(5.0),
+                  //   //         height:  size.iScreen(4.0),
+                  //   //         decoration: BoxDecoration(
+                  //   //           color: valueTheme.appTheme.primaryColor,
+                  //   //           borderRadius: BorderRadius.circular(5.0),
+                  //   //         ),
+                  //   //         padding: EdgeInsets.symmetric(
+                  //   //           vertical: size.iScreen(0.5),
+                  //   //           horizontal: size.iScreen(0.5),
+                  //   //         ),
+                  //   //         child: Icon(
+                  //   //               Icons.add,
+                  //   //               color: Colors.white,
+                  //   //               size: size.iScreen(2.0),
+                  //   //             ),
+                  //   //       );
+                  //   //     },
+                  //   //   ),
+                  //   // ),
+                  //    ],
+                  //  ),
+                  //    //****************************************//
+                  //     // ClipRRect(
+                  //     //   borderRadius: BorderRadius.circular(8),
+                  //     //   child: GestureDetector(
+                  //     //     onTap: () {
+                  //     //       // context
+                  //     //       //     .read<MascotasController>()
+                  //     //       //     .buscaAllMascotas('');
+            
+                  //     //       // // _buscarMascota(context, size);
+                  //     //       _agregaPlaca(context,ctrl,size);
+            
+                  //     //       // //*******************************************/
+                  //     //     },
+                  //     //     child: Consumer<ThemeProvider>(
+                  //     //       builder: (_, valueTheme, __) {
+                  //     //         return Container(
+                  //     //           alignment: Alignment.center,
+                  //     //           color: valueTheme.appTheme.primaryColor,
+                  //     //           width: size.iScreen(4.5),
+                  //     //           padding: EdgeInsets.only(
+                  //     //             top: size.iScreen(0.5),
+                  //     //             bottom: size.iScreen(0.5),
+                  //     //             left: size.iScreen(0.5),
+                  //     //             right: size.iScreen(0.5),
+                  //     //           ),
+                  //     //           child: Icon(
+                  //     //             Icons.add,
+                  //     //             color: Colors.white,
+                  //     //             size: size.iScreen(2.0),
+                  //     //           ),
+                  //     //         );
+                  //     //       },
+                  //     //     ),
+                  //     //   ),
+                  //     // ),
+                  
+                  
+                  
+                  
+                  //   ],
+                  // ),
   //*****************************************/
                   //  SizedBox(
                   //   height: size.iScreen(1.0),
