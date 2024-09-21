@@ -248,10 +248,14 @@ class _BuscarProductosVariosState extends State<BuscarProductosVarios> {
                                   onTap: ()async {
                                   
                                   if (provider.getTypeAction=='MOTOS') {
+                                     
+                                     provider.setPrecio(double.parse(producto['invprecios'][0].toString()));
                                       await  provider.enviaProductoCalculo( producto,1);
+                                    
                           Navigator.pop(context);
                                     
                                   } else {
+                                 
                                      _agregaCantidad(context,provider,size,producto);
                                   }
                                    
@@ -541,7 +545,48 @@ controller.setPrecio(double.parse(_item['invprecios'][0].toString()));
           //   },
           // ),
        child:
-          TextFormField(
+//           TextFormField(
+//   initialValue: controller.getCantidad % 1 == 0 
+//       ? controller.getCantidad.toInt().toString()  // Si es entero, lo muestra sin decimales
+//       : controller.getCantidad.toString(),         // Si tiene decimales, lo muestra con ellos
+//   textAlign: TextAlign.center,
+//   autofocus: true,
+//   decoration: InputDecoration(
+//     label: Text('Cantidad'),
+//     labelStyle: TextStyle(fontSize: size.iScreen(1.9)),
+//   ),
+//   style: TextStyle(
+//     fontSize: size.iScreen(3.5),
+//     color: Colors.black,
+//   ),
+//   keyboardType: const TextInputType.numberWithOptions(decimal: true),
+//   inputFormatters: <TextInputFormatter>[
+//     FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')),
+//   ],
+//   onChanged: (text) {
+//     double value = 0.0;
+//     if (text.isNotEmpty) {
+//       try {
+//         value = double.parse(text);
+//       } catch (e) {
+//         value = 0.0;
+//       }
+//     }
+//     controller.setCantidad(value);
+//   },
+  
+//   validator: (text) {
+//     if (text == null || text.isEmpty) {
+//       return 'Por favor, ingrese cantidad';
+//     }
+//     final value = double.tryParse(text);
+//     if (value == null) {
+//       return 'Ingrese un número válido';
+//     }
+//     return null;
+//   },
+// ),
+TextFormField(
   initialValue: controller.getCantidad % 1 == 0 
       ? controller.getCantidad.toInt().toString()  // Si es entero, lo muestra sin decimales
       : controller.getCantidad.toString(),         // Si tiene decimales, lo muestra con ellos
@@ -570,6 +615,19 @@ controller.setPrecio(double.parse(_item['invprecios'][0].toString()));
     }
     controller.setCantidad(value);
   },
+  onFieldSubmitted: (text) async {
+    // Aquí se replica la lógica del botón
+    final isValidS = controller.validateFormCantidad();
+    if (!isValidS) return;
+    
+    if (isValidS)  {
+      await controller.enviaProductoCalculo(_item, 1);
+      
+      // Cierra ambas modales, igual que en el botón
+      Navigator.pop(context);
+      Navigator.pop(context);
+    }
+  },
   validator: (text) {
     if (text == null || text.isEmpty) {
       return 'Por favor, ingrese cantidad';
@@ -581,6 +639,7 @@ controller.setPrecio(double.parse(_item['invprecios'][0].toString()));
     return null;
   },
 ),
+
 
         ),
       ),

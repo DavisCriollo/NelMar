@@ -1638,7 +1638,7 @@ void setRespuestaCalculoItem(Map<String,dynamic> _item){
   _respuestaCalculoItem.addAll(_item); 
  
  
-  // print('RESPUESTA CALCULO ITEM :$_respuestaCalculoItem');
+  print('RESPUESTA CALCULO ITEM :$_respuestaCalculoItem');
   notifyListeners();
 }
 
@@ -1659,7 +1659,7 @@ final _data ={
     "incluyeIva": _action==1?_item['invIncluyeIva']:'' // tomar del endpoint del producto seleccionado
   }
 };
-
+  
     final response = await _api.sendProductoCalculos(
       data: _data,
       token: '${dataUser.token}',
@@ -1948,7 +1948,47 @@ _typeAction =_type;
 }
 
 
+//****************************//
 
+//  Future resetCalculo() async {
+//     final dataUser = await Auth.instance.getSession();
+
+// final _data ={
+//   "porcentajeRecargo": 0, // default
+//   "tasaIVA": '${dataUser!.iva}',//15, // login => iva
+//   "listaProductos":[], // tomar del json del factura la propiedad 'venProductos'
+//   "nuevoItem":{
+// 	"codigo": "777",
+//     "descripcion": "NOMBRE DEL PRODUCTO",
+//     "cantidad": 0,
+//     "valUnitarioInterno": 0,
+//     "descPorcentaje": 0,
+//     "llevaIva": "SI",
+//     "incluyeIva": "SI"
+// }
+// };
+
+//     final response = await _api.sendProductoCalculos(
+//       data: _data,
+//       token: '${dataUser.token}',
+//     );
+
+//     if (response != null) {
+
+//             setRespuestaCalculoItem(response);
+//     }
+//  if (response == null) {
+//        return null;
+//     }
+
+
+//  }
+
+
+
+
+
+//****************************//
 
 
 

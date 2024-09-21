@@ -3216,6 +3216,8 @@ Consumer<ProformasController>(
                               _ctrl.setTarifa({});
                                _ctrl.setTipoDocumento('');
  _ctrl.getAllFormaPago();
+  _ctrl.setPrecio(0);
+                             _ctrl.setCantidad(1);
     _ctrl.setTypeAction('MOTOS');
 
                             Navigator.of(context).push(MaterialPageRoute(
@@ -3279,6 +3281,8 @@ Consumer<ProformasController>(
                               _ctrl.setTarifa({});
                                _ctrl.setTipoDocumento('');
          _ctrl.getAllFormaPago();
+          _ctrl.setPrecio(0);
+                             _ctrl.setCantidad(1);
   _ctrl.setTypeAction('VEHICULOS');
 
                             Navigator.of(context).push(MaterialPageRoute(

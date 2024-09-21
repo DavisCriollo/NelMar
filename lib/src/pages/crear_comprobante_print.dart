@@ -4483,6 +4483,7 @@ ctrlPropi.setDocumento('');
                         borderRadius: BorderRadius.circular(8),
                         child: GestureDetector(
                           onTap: () {
+                                 ctrl.setCantidad(1);
                             ctrl.buscaAllProductos( ctrl.getTypeAction.toString());
             
                             // // _buscarMascota(context, size);
