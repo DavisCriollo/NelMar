@@ -9,6 +9,7 @@ import 'package:neitorcont/src/controllers/reservas_controller.dart';
 import 'package:neitorcont/src/models/sesison_model.dart';
 import 'package:neitorcont/src/pages/crear_comprobante_print.dart';
 import 'package:neitorcont/src/pages/listar_reservas_paginacion.dart';
+import 'package:neitorcont/src/pages/submenu_transacciones.dart';
 
 import 'package:neitorcont/src/services/socket_service.dart';
 import 'package:neitorcont/src/theme/theme_provider.dart';
@@ -300,8 +301,12 @@ class _HomePageState extends State<HomePage> {
                                       size: size,
                                       image: 'assets/imgs/icon-factura.png',
                                       label: 'TRANSACCIONES',
-                                      onTap: () => Navigator.pushNamed(
-                                          context, 'SubmenuTransacciones'),
+                                      onTap: () => 
+                                        Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) =>
+                                     SubmenuTransacciones(user: widget.user,)))
+                                      // Navigator.pushNamed(
+                                      //     context, 'SubmenuTransacciones',arguments:usuario),
                                       // onTap: () {},
                                     ),
                             //          ElementosHome(

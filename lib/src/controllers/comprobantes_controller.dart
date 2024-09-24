@@ -1484,7 +1484,7 @@ if (_clienteComprobante.isNotEmpty) {
 
   void setDocumento(String? value) {
   _documento = value;
-    // print('==_documento ===> $_documento');
+    print('==_documento ===> $_documento');
     notifyListeners();
   }
 

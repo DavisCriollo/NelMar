@@ -817,7 +817,7 @@ class _ListaMascotasPropietarioState extends State<ListaMascotasPropietario> {
                                           .push(MaterialPageRoute(
                                               builder: (context) =>
                                                   const CrearPropietario(
-                                                      action: 'SEARCH')))
+                                                      action: 'SEARCH',tipo: 'mascotas',)))
                                           .then((value) => setState(() {
                                                 providerPersonas
                                                     .buscaAllPropietarios('');

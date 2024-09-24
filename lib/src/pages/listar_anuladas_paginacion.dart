@@ -19,7 +19,8 @@ import 'package:neitorcont/src/widgets/no_data.dart';
 import 'package:provider/provider.dart';
 
 class ListarAnuladasPaginacion extends StatefulWidget {
-  const ListarAnuladasPaginacion({Key? key}) : super(key: key);
+     final Session? user;
+  const ListarAnuladasPaginacion({Key? key, this.user}) : super(key: key);
 
   @override
   State<ListarAnuladasPaginacion> createState() => _ListarAnuladasPaginacionState();

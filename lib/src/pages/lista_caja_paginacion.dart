@@ -26,7 +26,8 @@ import 'package:neitorcont/src/widgets/no_data.dart';
 import 'package:provider/provider.dart';
 
 class ListarCajaPaginacion extends StatefulWidget {
-  const ListarCajaPaginacion({Key? key}) : super(key: key);
+     final Session? user;
+  const ListarCajaPaginacion({Key? key, this.user}) : super(key: key);
 
   @override
   State<ListarCajaPaginacion> createState() =>

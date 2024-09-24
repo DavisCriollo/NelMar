@@ -30,8 +30,9 @@ import 'package:provider/provider.dart';
 
 class CrearPropietario extends StatefulWidget {
   final String? action;
+  final String? tipo;
   final Session? user;
-  const CrearPropietario({Key? key, this.action,  this.user}) : super(key: key);
+  const CrearPropietario({Key? key, this.action,  this.user, this.tipo}) : super(key: key);
 
   @override
   State<CrearPropietario> createState() => _CrearPropietarioState();
@@ -146,7 +147,7 @@ _textCedula.text='';
     //         : '')!;
     // _textObservacion.text = controller.getDireccion!;
 
-    // print('ACTION: ${widget.action}');
+    print('TIPO: ${widget.tipo}');
 
     controller.getGeneros;
     final Responsive size = Responsive.of(context);
@@ -260,7 +261,7 @@ _textCedula.text='';
                                                       : true,
                                               // controller: _textCedula,
                                               initialValue:
-                                                  widget.action == 'CREATE'
+                                                  widget.action == 'CREATE' &&  widget.tipo != 'comprobantes'
                                                       ? ''
                                                       : controller.getDocumento,
                                               decoration: InputDecoration(
@@ -335,7 +336,7 @@ _textCedula.text='';
                     
                }else{
                  _textCedula.text='';
-                // NotificatiosnService.showSnackBarDanger( 'No se encuentra información o Documento incorrecto, ingrese datos manualmente');
+                NotificatiosnService.showSnackBarDanger( 'No se encuentra información o Documento incorrecto, ingrese datos manualmente');
                 
                }
                                               
@@ -2215,7 +2216,7 @@ _textCedula.text='';
        
       }
        else if (controller.getIsCedula == false) {
-        NotificatiosnService.showSnackBarDanger('Debe validar Celulare');
+        NotificatiosnService.showSnackBarDanger('Debe validar Cédula');
       } else if (controller.getlistaAddCorreos!.isEmpty) {
         NotificatiosnService.showSnackBarDanger('Debe agregar Correo');
       } else if (controller.getPais == null) {

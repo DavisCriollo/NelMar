@@ -182,7 +182,7 @@ class PropietariosController extends ChangeNotifier {
 
   void setDocumento(String? value) async {
     _documentos = value;
-    // print('==_documentos===> $_documentos');
+    print('==_documentos prop===> $_documentos');
     if (_documentos!.length == 10) {
       final _respCedula = await validaCedula(_documentos!);
       // print('CANTIDAD CARACTERES :${_documentos!.length}');

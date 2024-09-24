@@ -2894,9 +2894,12 @@
 // }
 
 
+import 'dart:typed_data';
+
 import 'package:awesome_icons/awesome_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -2921,9 +2924,11 @@ import 'package:provider/provider.dart';
 import 'package:sunmi_printer_plus/column_maker.dart';
 import 'package:sunmi_printer_plus/enums.dart';
 import 'package:sunmi_printer_plus/sunmi_printer_plus.dart';
+import 'package:image/image.dart' as img;
 
 class ListarPreFacturasPaginacion extends StatefulWidget {
-  const ListarPreFacturasPaginacion({Key? key}) : super(key: key);
+     final Session? user;
+  const ListarPreFacturasPaginacion({Key? key, this.user}) : super(key: key);
 
   @override
   State<ListarPreFacturasPaginacion> createState() =>
@@ -3494,7 +3499,7 @@ Container(
                                                           onPressed: () {
                                                             Navigator.pop(
                                                                 context);
-                                                                _printTicket(_prefacturas);
+                                                                _printTicket(_prefacturas,widget.user!.logo);
 
                                                            
                                                           },
@@ -3541,7 +3546,7 @@ Container(
                                                                       ViewsPDFs(
                                                                           infoPdf:
                                                                               // 'https://sysvet.neitor.com/reportes/carnet.php?id=${factura['venId']}&empresa=${_usuario!.rucempresa}',
-                                                                              'https://syscontable.neitor.com/reportes/factura.php?codigo=${_prefacturas['venId']}&empresa=${_usuario!.rucempresa}',
+                                                                              'https://syscontable.neitor.com/reportes/factura.php?codigo=${_prefacturas['venId']}&empresa=${widget.user!.rucempresa}',
                                                                           labelPdf:
                                                                               'infoFactura.pdf')),
                                                             );
@@ -4514,7 +4519,7 @@ Container(
                                                                       ViewsPDFs(
                                                                           infoPdf:
                                                                               // 'https://sysvet.neitor.com/reportes/carnet.php?id=${factura['venId']}&empresa=${_usuario!.rucempresa}',
-                                                                              'https://syscontable.neitor.com/reportes/factura.php?codigo=${_prefacturas['venId']}&empresa=${_usuario!.rucempresa}',
+                                                                              'https://syscontable.neitor.com/reportes/factura.php?codigo=${_prefacturas['venId']}&empresa=${widget.user!.rucempresa}',
                                                                           labelPdf:
                                                                               'infoFactura.pdf')),
                                                             );
@@ -5926,60 +5931,236 @@ Container(
   }
 
  
-void _printTicket(Map<String, dynamic>? _info) async {
+// void _printTicket(Map<String, dynamic>? _info) async {
+//   if (_info == null) return;
+
+// //  //==============================================//
+// //   String utcDate = _info['venFecReg'];
+
+// //   // Parsear la fecha en UTC
+// //   DateTime dateTimeUtc = DateTime.parse(utcDate);
+
+// //   // Convertirla a hora local
+// //   DateTime dateTimeLocal = dateTimeUtc.toLocal();
+
+// //   // Formatear la fecha y hora local como 'YYYY-MM-DD HH:MM'
+// //   String formattedDate = DateFormat('yyyy-MM-dd HH:mm').format(dateTimeLocal);
+
+// //   // print(formattedDate);  // Resultado: 2024-09-18 19:27
+  
+// //  //==============================================//
+
+
+//   //==============================================//
+//   String fechaLocal = convertirFechaLocal(_info['venFecReg']);
+//  //==============================================//
+
+
+//   // Inicializa la impresora
+//   await SunmiPrinter.initPrinter();
+//   await SunmiPrinter.startTransactionPrint(true);
+
+//   // Imprime el encabezado
+//   await SunmiPrinter.setAlignment(SunmiPrintAlign.CENTER);
+//   // await SunmiPrinter.line();
+//   await SunmiPrinter.printText('${_info['venEmpComercial']}');
+//   await SunmiPrinter.printText('${_info['venEmpRuc']}');
+//   await SunmiPrinter.printText('${_info['venEmpDireccion']}');
+//   await SunmiPrinter.printText('${_info['venEmpTelefono']}');
+//   await SunmiPrinter.printText('${_info['venEmpEmail']}');
+  
+//   await SunmiPrinter.setAlignment(SunmiPrintAlign.CENTER);
+//   await SunmiPrinter.line();
+//   await SunmiPrinter.printText('Cliente: ${_info['venNomCliente']}');
+//   await SunmiPrinter.printText('${_info['venRucCliente']}');
+//   await SunmiPrinter.setAlignment(SunmiPrintAlign.CENTER);
+//   await SunmiPrinter.line();
+//   // await SunmiPrinter.printText('FECHA: ${_info['venFechaFactura']}');
+// await SunmiPrinter.printText('FECHA: $fechaLocal');
+
+//  await SunmiPrinter.line();
+//   await SunmiPrinter.printText('Conductor: ${_info['venConductor']}');
+//   await SunmiPrinter.printText('Placa: ${_info['venOtrosDetalles'][0]}');
+//   await SunmiPrinter.setAlignment(SunmiPrintAlign.CENTER);
+//   await SunmiPrinter.line();
+
+
+//   // Imprime el encabezado de la tabla
+//   await SunmiPrinter.setAlignment(SunmiPrintAlign.LEFT);
+//   await SunmiPrinter.line();
+//   await SunmiPrinter.printRow(cols: [
+//     ColumnMaker(
+//       text: 'Descripción',
+//       width: 12,
+//       align: SunmiPrintAlign.LEFT,
+//     ),
+//     ColumnMaker(
+//       text: 'Cant',
+//       width: 6,
+//       align: SunmiPrintAlign.CENTER,
+//     ),
+//     ColumnMaker(
+//       text: 'vU',
+//       width: 6,
+//       align: SunmiPrintAlign.RIGHT,
+//     ),
+//     ColumnMaker(
+//       text: 'TOT',
+//       width: 6,
+//       align: SunmiPrintAlign.RIGHT,
+//     ),
+//   ]);
+
+//   // Imprime cada ítem en la lista
+//   final productos = _info['venProductos'] as List<dynamic>?;
+
+//   if (productos != null) {
+//     for (var item in productos) {
+//       await SunmiPrinter.printRow(cols: [
+//         ColumnMaker(
+//           text: item['descripcion']?.toString() ?? 'N/A',
+//           width: 12,
+//           align: SunmiPrintAlign.LEFT,
+//         ),
+//         ColumnMaker(
+//           text: item['cantidad']?.toString() ?? '0',
+//           width: 6,
+//           align: SunmiPrintAlign.CENTER,
+//         ),
+//         ColumnMaker(
+//           text: item['valorUnitario']?.toString() ?? '0',
+//           width: 6,
+//           align: SunmiPrintAlign.RIGHT,
+//         ),
+//         ColumnMaker(
+//           text: item['precioSubTotalProducto']?.toString() ?? '0',
+//           width: 6,
+//           align: SunmiPrintAlign.RIGHT,
+//         ),
+//       ]);
+//     }
+//   } else {
+//     // Manejo de caso en el que 'venProductos' es nulo o no es una lista
+//     await SunmiPrinter.printText('No hay productos para mostrar.');
+//   }
+
+//  // Imprime el subtotal
+// await SunmiPrinter.line();
+// await SunmiPrinter.printRow(cols: [
+//   ColumnMaker(
+//     text: 'SubTotal',
+//     width: 20, // Ajuste el ancho si es necesario
+//     align: SunmiPrintAlign.LEFT,
+//   ),
+//   ColumnMaker(
+//     text: _info['venSubTotal']?.toString() ?? '0',
+//     width: 10, // Aumenta el ancho para números más grandes
+//     align: SunmiPrintAlign.RIGHT,
+//   ),
+// ]);
+
+// // Imprime el IVA
+// await SunmiPrinter.printRow(cols: [
+//   ColumnMaker(
+//     text: 'Iva',
+//     width: 20, // Ajuste el ancho si es necesario
+//     align: SunmiPrintAlign.LEFT,
+//   ),
+//   ColumnMaker(
+//     text: _info['venTotalIva']?.toString() ?? '0',
+//     width: 10, // Aumenta el ancho para números más grandes
+//     align: SunmiPrintAlign.RIGHT,
+//   ),
+// ]);
+
+// // Imprime el total
+// await SunmiPrinter.printRow(cols: [
+//   ColumnMaker(
+//     text: 'TOTAL',
+//     width: 20, // Ajuste el ancho si es necesario
+//     align: SunmiPrintAlign.LEFT,
+//   ),
+//   ColumnMaker(
+//     text: _info['venTotal']?.toString() ?? '0',
+//     width: 10, // Aumenta el ancho para números más grandes
+//     align: SunmiPrintAlign.RIGHT,
+//   ),
+// ]);
+//  await SunmiPrinter.line();
+//   await SunmiPrinter.lineWrap(2);
+//   await SunmiPrinter.exitTransactionPrint(true);
+// }
+
+void _printTicket(Map<String, dynamic>? _info,String? user) async {
   if (_info == null) return;
 
-//  //==============================================//
-//   String utcDate = _info['venFecReg'];
-
-//   // Parsear la fecha en UTC
-//   DateTime dateTimeUtc = DateTime.parse(utcDate);
-
-//   // Convertirla a hora local
-//   DateTime dateTimeLocal = dateTimeUtc.toLocal();
-
-//   // Formatear la fecha y hora local como 'YYYY-MM-DD HH:MM'
-//   String formattedDate = DateFormat('yyyy-MM-dd HH:mm').format(dateTimeLocal);
-
-//   // print(formattedDate);  // Resultado: 2024-09-18 19:27
-  
-//  //==============================================//
-
-
   //==============================================//
-  String fechaLocal = convertirFechaLocal(_info['venFecReg']);
+  String utcDate = _info['venFecReg'];
+
+  // Parsear la fecha en UTC
+  DateTime dateTimeUtc = DateTime.parse(utcDate);
+
+  // Convertirla a hora local
+  DateTime dateTimeLocal = dateTimeUtc.toLocal();
+
+  // Formatear la fecha y hora local como 'YYYY-MM-DD HH:MM'
+  String formattedDate = DateFormat('yyyy-MM-dd HH:mm').format(dateTimeLocal);
+
+  // print(formattedDate);  // Resultado: 2024-09-18 19:27
+
  //==============================================//
+ 
 
 
-  // Inicializa la impresora
-  await SunmiPrinter.initPrinter();
-  await SunmiPrinter.startTransactionPrint(true);
+// Función principal de impresión
 
-  // Imprime el encabezado
-  await SunmiPrinter.setAlignment(SunmiPrintAlign.CENTER);
-  // await SunmiPrinter.line();
-  await SunmiPrinter.printText('${_info['venEmpComercial']}');
-  await SunmiPrinter.printText('${_info['venEmpRuc']}');
-  await SunmiPrinter.printText('${_info['venEmpDireccion']}');
-  await SunmiPrinter.printText('${_info['venEmpTelefono']}');
-  await SunmiPrinter.printText('${_info['venEmpEmail']}');
-  
-  await SunmiPrinter.setAlignment(SunmiPrintAlign.CENTER);
+  // Imprime el logo (si existe)
+  if (user!.isNotEmpty) {
+    String url = user;
+    
+    // Convertir la imagen a formato Uint8List
+    Uint8List byte = (await NetworkAssetBundle(Uri.parse(url)).load(url))
+        .buffer
+        .asUint8List();
+
+    // Decodificar la imagen
+    img.Image? originalImage = img.decodeImage(byte);
+
+    if (originalImage != null) {
+      // Redimensionar la imagen (ajusta width y height según tus necesidades)
+      img.Image resizedImage = img.copyResize(originalImage, width: 150, height: 150);
+
+      // Convertir la imagen redimensionada de vuelta a Uint8List
+      Uint8List resizedByte = Uint8List.fromList(img.encodePng(resizedImage));
+
+      // Alinear la imagen y comenzar la transacción de impresión
+      await SunmiPrinter.setAlignment(SunmiPrintAlign.CENTER);
+      await SunmiPrinter.printImage(resizedByte);
+
+      // Agregar un salto de línea para asegurar que el texto se imprima debajo
+      await SunmiPrinter.lineWrap(2); // Esto asegura que haya espacio debajo del logo
+    }
+  } else {
+    // Si no hay logo, imprimir el texto "NO LOGO"
+    await SunmiPrinter.printText('NO LOGO');
+    await SunmiPrinter.lineWrap(1); // Saltar una línea para separación
+  }
+
+  // Imprime el resto de la información del encabezado
+  await SunmiPrinter.setAlignment(SunmiPrintAlign.LEFT);
+  await SunmiPrinter.printText('Ruc: ${_info['venEmpRuc']}');
+  await SunmiPrinter.printText('Dir: ${_info['venEmpDireccion']}');
+  await SunmiPrinter.printText('Tel: ${_info['venEmpTelefono']}');
+  await SunmiPrinter.printText('Email: ${_info['venEmpEmail']}');
+
   await SunmiPrinter.line();
   await SunmiPrinter.printText('Cliente: ${_info['venNomCliente']}');
-  await SunmiPrinter.printText('${_info['venRucCliente']}');
-  await SunmiPrinter.setAlignment(SunmiPrintAlign.CENTER);
-  await SunmiPrinter.line();
-  // await SunmiPrinter.printText('FECHA: ${_info['venFechaFactura']}');
-await SunmiPrinter.printText('FECHA: $fechaLocal');
-
+  await SunmiPrinter.printText('Ruc: ${_info['venRucCliente']}');
+ await SunmiPrinter.line();
+  await SunmiPrinter.printText('Fecha: ${_info['venFechaFactura']}'); // O utiliza formattedDate si corresponde
  await SunmiPrinter.line();
   await SunmiPrinter.printText('Conductor: ${_info['venConductor']}');
   await SunmiPrinter.printText('Placa: ${_info['venOtrosDetalles'][0]}');
-  await SunmiPrinter.setAlignment(SunmiPrintAlign.CENTER);
-  await SunmiPrinter.line();
-
-
   // Imprime el encabezado de la tabla
   await SunmiPrinter.setAlignment(SunmiPrintAlign.LEFT);
   await SunmiPrinter.line();
@@ -6010,12 +6191,46 @@ await SunmiPrinter.printText('FECHA: $fechaLocal');
   final productos = _info['venProductos'] as List<dynamic>?;
 
   if (productos != null) {
-    for (var item in productos) {
+    // for (var item in productos) {
+    //   // Cambiar el tamaño de la fuente solo para la columna de descripción
+    //   // await SunmiPrinter.setFontSize(SunmiFontSize.SM); // Ajustar a un tamaño más pequeño
+      
+    //   await SunmiPrinter.printRow(cols: [
+    //     ColumnMaker(
+    //       text: item['descripcion']?.toString() ?? 'N/A',
+    //       width: 12,
+    //       align: SunmiPrintAlign.LEFT,
+    //     ),
+    //   ]);
+
+    
+
+    //   // Imprimir las otras columnas con el tamaño de fuente normal
+    //   await SunmiPrinter.printRow(cols: [
+    //     ColumnMaker(
+    //       text: item['cantidad']?.toString() ?? '0',
+    //       width: 6,
+    //       align: SunmiPrintAlign.CENTER,
+    //     ),
+    //     ColumnMaker(
+    //       text: item['valorUnitario']?.toString() ?? '0',
+    //       width: 6,
+    //       align: SunmiPrintAlign.RIGHT,
+    //     ),
+    //     ColumnMaker(
+    //       text: item['precioSubTotalProducto']?.toString() ?? '0',
+    //       width: 6,
+    //       align: SunmiPrintAlign.RIGHT,
+    //     ),
+    //   ]);
+    // }
+  for  (var item in productos) {
       await SunmiPrinter.printRow(cols: [
         ColumnMaker(
           text: item['descripcion']?.toString() ?? 'N/A',
           width: 12,
           align: SunmiPrintAlign.LEFT,
+          
         ),
         ColumnMaker(
           text: item['cantidad']?.toString() ?? '0',
@@ -6038,53 +6253,56 @@ await SunmiPrinter.printText('FECHA: $fechaLocal');
     // Manejo de caso en el que 'venProductos' es nulo o no es una lista
     await SunmiPrinter.printText('No hay productos para mostrar.');
   }
+  // Restaurar el tamaño de la fuente por defecto para las otras columnas
+      // await SunmiPrinter.resetFontSize();
+  // Imprime el subtotal
+  await SunmiPrinter.line();
+  await SunmiPrinter.printRow(cols: [
+    ColumnMaker(
+      text: 'SubTotal',
+      width: 20, // Ajuste el ancho si es necesario
+      align: SunmiPrintAlign.LEFT,
+    ),
+    ColumnMaker(
+      text: _info['venSubTotal']?.toString() ?? '0',
+      width: 10, // Aumenta el ancho para números más grandes
+      align: SunmiPrintAlign.RIGHT,
+    ),
+  ]);
 
- // Imprime el subtotal
-await SunmiPrinter.line();
-await SunmiPrinter.printRow(cols: [
-  ColumnMaker(
-    text: 'SubTotal',
-    width: 20, // Ajuste el ancho si es necesario
-    align: SunmiPrintAlign.LEFT,
-  ),
-  ColumnMaker(
-    text: _info['venSubTotal']?.toString() ?? '0',
-    width: 10, // Aumenta el ancho para números más grandes
-    align: SunmiPrintAlign.RIGHT,
-  ),
-]);
+  // Imprime el IVA
+  await SunmiPrinter.printRow(cols: [
+    ColumnMaker(
+      text: 'Iva',
+      width: 20, // Ajuste el ancho si es necesario
+      align: SunmiPrintAlign.LEFT,
+    ),
+    ColumnMaker(
+      text: _info['venTotalIva']?.toString() ?? '0',
+      width: 10, // Aumenta el ancho para números más grandes
+      align: SunmiPrintAlign.RIGHT,
+    ),
+  ]);
 
-// Imprime el IVA
-await SunmiPrinter.printRow(cols: [
-  ColumnMaker(
-    text: 'Iva',
-    width: 20, // Ajuste el ancho si es necesario
-    align: SunmiPrintAlign.LEFT,
-  ),
-  ColumnMaker(
-    text: _info['venTotalIva']?.toString() ?? '0',
-    width: 10, // Aumenta el ancho para números más grandes
-    align: SunmiPrintAlign.RIGHT,
-  ),
-]);
+  // Imprime el total
+  await SunmiPrinter.printRow(cols: [
+    ColumnMaker(
+      text: 'TOTAL',
+      width: 20, // Ajuste el ancho si es necesario
+      align: SunmiPrintAlign.LEFT,
+    ),
+    ColumnMaker(
+      text: _info['venTotal']?.toString() ?? '0',
+      width: 10, // Aumenta el ancho para números más grandes
+      align: SunmiPrintAlign.RIGHT,
+    ),
+  ]);
 
-// Imprime el total
-await SunmiPrinter.printRow(cols: [
-  ColumnMaker(
-    text: 'TOTAL',
-    width: 20, // Ajuste el ancho si es necesario
-    align: SunmiPrintAlign.LEFT,
-  ),
-  ColumnMaker(
-    text: _info['venTotal']?.toString() ?? '0',
-    width: 10, // Aumenta el ancho para números más grandes
-    align: SunmiPrintAlign.RIGHT,
-  ),
-]);
- await SunmiPrinter.line();
+  await SunmiPrinter.line();
   await SunmiPrinter.lineWrap(2);
   await SunmiPrinter.exitTransactionPrint(true);
 }
+
 
 
 

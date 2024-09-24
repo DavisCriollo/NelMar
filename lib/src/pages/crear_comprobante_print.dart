@@ -3070,12 +3070,15 @@
 
 
 
+import 'dart:typed_data';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:neitorcont/src/api/api_provider.dart';
+import 'package:neitorcont/src/api/authentication_client.dart';
 import 'package:neitorcont/src/controllers/comprobantes_controller.dart';
 import 'package:neitorcont/src/controllers/facturas_controller.dart';
 import 'package:neitorcont/src/controllers/home_controller.dart';
@@ -3099,6 +3102,7 @@ import 'package:provider/provider.dart';
 import 'package:sunmi_printer_plus/column_maker.dart';
 import 'package:sunmi_printer_plus/enums.dart';
 import 'package:sunmi_printer_plus/sunmi_printer_plus.dart';
+import 'package:image/image.dart' as img;
 
 class CrearComprobante extends StatefulWidget {
 
@@ -3184,7 +3188,41 @@ bool printBinded = false;
     final Responsive size = Responsive.of(context);
     final ctrl = context.read<ComprobantesController>();
     final ctrlTheme = context.read<ThemeProvider>();
-    return GestureDetector(
+
+         WidgetsBinding.instance!.addPostFrameCallback((_) {
+            final ctrlSock = context.read<SocketService>();
+              if ( ctrlSock.latestResponse!.isNotEmpty &&  ctrlSock.latestResponse!['tabla']=='proveedor') {
+        final _ctrls=context.read<ComprobantesController>();
+         _ctrls.setClienteComprbante({
+			"perId": ctrlSock.latestResponse!['perId'],
+			"perNombre": ctrlSock.latestResponse!['perNombre'],
+			"perDocNumero": ctrlSock.latestResponse!['perDocNumero'],
+			"perDocTipo": ctrlSock.latestResponse!['perDocTipo'],
+			"perTelefono":ctrlSock.latestResponse!['perTelefono'],
+			"perDireccion": ctrlSock.latestResponse!['perDireccion'],
+			"perEmail": ctrlSock.latestResponse!['perEmail'],
+			"perCelular": ctrlSock.latestResponse!['perCelular'],
+			"perOtros": ctrlSock.latestResponse!['perOtros'],
+		});
+              
+
+print('ESTA ES LA DATA DEL SOCKET PROPIETARIO: ${ctrlSock.latestResponse}');
+
+
+
+            } else {
+
+            }
+   
+  });
+
+
+
+
+    return 
+    
+    
+    GestureDetector(
       onTap: () {
         FocusScope.of(context).requestFocus(FocusNode());
       },
@@ -3197,7 +3235,7 @@ bool printBinded = false;
           actions: [
           Consumer<SocketService>(
             builder: (_,value, __) {
-             return value.latestResponse!.isEmpty 
+             return value.latestResponse!.isEmpty ||  value.latestResponse!['tabla']=='proveedor'
             ?Container(
               margin: EdgeInsets.only(right: size.iScreen(1.5)),
               child: IconButton(
@@ -3312,8 +3350,9 @@ bool printBinded = false;
                   //**********************SE MUESTRA LA OPCION DE IMPRIMIR *************************//
                         Consumer<SocketService>(
         builder: (_,value, __) {
-         return 
-         value.latestResponse!.isNotEmpty
+
+     return 
+         value.latestResponse!.isNotEmpty &&  value.latestResponse!['tabla']!='proveedor'
         ? 
         Container(
             width: size.wScreen(100.0),
@@ -3352,9 +3391,11 @@ bool printBinded = false;
              // Color negro
                 
               ),
-              onPressed: (){
+              onPressed: () {
 
-                    _printTicket(value.latestResponse);
+                      
+
+                    _printTicket(value.latestResponse,widget.user!.logo);
 
                     //========================================//
                         final _ctrl =context.read<ComprobantesController>();
@@ -3640,7 +3681,8 @@ Consumer<ComprobantesController>(builder: (_, value, __) {
                                      final ctrlPropi=  context.read<PropietariosController>();
                      ctrlPropi.resetFormPropietario();
 
-ctrlPropi.setDocumento('');
+
+ctrlPropi.setDocumento(value.getDocumento);
  ctrlPropi.setGeneros('');
   ctrlPropi.setNombres('');
                  ctrlPropi.setDireccion('');
@@ -3662,7 +3704,7 @@ ctrlPropi.setDocumento('');
                   Navigator.of(context)
                       .push(MaterialPageRoute(
                           builder: (context) =>
-                               CrearPropietario(action: 'CREATE',
+                               CrearPropietario(action: 'CREATE',tipo:'comprobantes',
                               user: widget.user,)));
                                   },
                             child:
@@ -3704,9 +3746,9 @@ ctrlPropi.setDocumento('');
                   ?
                             Row(
                               children: [
-                                SizedBox(width: size.iScreen(1.0),),
+                                SizedBox(width: size.iScreen(0.5),),
                                 Container(
-                                  width: size.iScreen(21),
+                                  width: size.iScreen(20),
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
@@ -3753,7 +3795,7 @@ ctrlPropi.setDocumento('');
                                        final _ctrl =context.read<ComprobantesController>();
                        _ctrl.resetListasProdutos();
                      _ctrl.resetPlacas();
-                            _ctrl.setDocumento('');
+                            // _ctrl.setDocumento('');
                             _ctrl.setFormaDePago('EFECTIVO');
                             _ctrl.setFacturaOk(false);
                            
@@ -5723,137 +5765,9 @@ Future<bool?> _agregaPlaca(BuildContext context,
 
 
 
-//  void _printTicket(Map<String, dynamic>? _info) async {
 
 
-//    // Inicializa la impresora
-//           await SunmiPrinter.initPrinter();
-//           await SunmiPrinter.startTransactionPrint(true);
-          
-//           // Alinea al centro y imprime el nombre de la empresa
-//           await SunmiPrinter.setAlignment(SunmiPrintAlign.CENTER);
-//           await SunmiPrinter.line();
-//           await SunmiPrinter.printText('${_info!['venEmpComercial']}');
-//            await SunmiPrinter.printText('${_info['venEmpRuc']}');
-//           await SunmiPrinter.printText('${_info['venEmpDireccion']}');
-//           await SunmiPrinter.printText('${_info['venEmpTelefono']}');
-//            await SunmiPrinter.printText('${_info['venEmpEmail']}');
-//           // Imprime el número de CLIENTE
-//             await SunmiPrinter.setAlignment(SunmiPrintAlign.CENTER);
-//           await SunmiPrinter.line();
-//            await SunmiPrinter.printText('Cliente: ${_info['venNomCliente']}');
-//           await SunmiPrinter.printText('${_info['venRucCliente']}');
-//            await SunmiPrinter.setAlignment(SunmiPrintAlign.CENTER);
-//           await SunmiPrinter.line();
-//            await SunmiPrinter.printText('FECHA: ${_info['venFechaFactura']}');
-//              await SunmiPrinter.setAlignment(SunmiPrintAlign.CENTER);
-//           await SunmiPrinter.line();
-//   // Imprime el número de factura
-//           // Encabezado de la tabla
-//           await SunmiPrinter.printRow(cols: [
-//             ColumnMaker(
-//               text: 'Descripción',
-//               width: 12,
-//               align: SunmiPrintAlign.LEFT,
-//             ),
-//             ColumnMaker(
-//               text: 'Cant',
-//               width: 6,
-//               align: SunmiPrintAlign.CENTER,
-//             ),
-//             ColumnMaker(
-//               text: 'vU',
-//               width: 6,
-//               align: SunmiPrintAlign.RIGHT,
-//             ),
-//             ColumnMaker(
-//               text: 'TOT',
-//               width: 6,
-//               align: SunmiPrintAlign.RIGHT,
-//             ),
-//           ]);
-
-//           // Imprime cada ítem en la lista
-//           for (var item in _info['venProductos']) {
-//             await SunmiPrinter.printRow(cols: [
-//               ColumnMaker(
-//                 text: item['descripcion'],
-//                 width: 12,
-//                 align: SunmiPrintAlign.LEFT,
-//               ),
-//               ColumnMaker(
-//                 text: item['cantidad'],
-//                 width: 6,
-//                 align: SunmiPrintAlign.CENTER,
-//               ),
-//               ColumnMaker(
-//                 text: item['valorUnitario'],
-//                 width: 6,
-//                 align: SunmiPrintAlign.RIGHT,
-//               ),
-//               ColumnMaker(
-//                 text: item['precioSubTotalProducto'],
-//                 width: 6,
-//                 align: SunmiPrintAlign.RIGHT,
-//               ),
-//             ]);
-//           }
-
-//           await SunmiPrinter.line();
-//           // Agrega  fila
-
-//             await SunmiPrinter.printRow(cols: [
-//               ColumnMaker(
-//                 text: 'SubTotal', // Texto para la nueva fila
-//                 width: 25,
-//                 align: SunmiPrintAlign.LEFT,
-//               ),
-//               ColumnMaker(
-//                 text:  _info['precioSubTotalProducto'], // Valor para la nueva fila
-//                 width: 5,
-//                 align: SunmiPrintAlign.RIGHT,
-//               ),
-//             ]);
-
-//           // Imprime el total
-//           await SunmiPrinter.printRow(cols: [
-//             ColumnMaker(
-//               text: 'Iva',
-//               width: 25,
-//               align: SunmiPrintAlign.LEFT,
-//             ),
-//             ColumnMaker(
-//               text: _info['venTotalIva'],
-//               width: 5,
-//               align: SunmiPrintAlign.RIGHT,
-//             ),
-//           ]);
-
-//                // Imprime el total
-//           await SunmiPrinter.printRow(cols: [
-//             ColumnMaker(
-//               text: 'TOTAL',
-//               width: 25,
-//               align: SunmiPrintAlign.LEFT,
-//             ),
-//             ColumnMaker(
-//               text: _info['venTotal'],
-//               width: 5,
-//               align: SunmiPrintAlign.RIGHT,
-//             ),
-//           ]);
-
-//           await SunmiPrinter.lineWrap(2);
-//           await SunmiPrinter.exitTransactionPrint(true);
-
-
-
-
-
-//   }
-
-
-void _printTicket(Map<String, dynamic>? _info) async {
+void _printTicket(Map<String, dynamic>? _info,String? user) async {
   if (_info == null) return;
 
   //==============================================//
@@ -5872,37 +5786,57 @@ void _printTicket(Map<String, dynamic>? _info) async {
 
  //==============================================//
  
- 
-  // Inicializa la impresora
-  await SunmiPrinter.initPrinter();
-  await SunmiPrinter.startTransactionPrint(true);
 
-  // Imprime el encabezado
-  await SunmiPrinter.setAlignment(SunmiPrintAlign.CENTER);
-  // await SunmiPrinter.line();
-  await SunmiPrinter.printText('${_info['venEmpComercial']}');
-  await SunmiPrinter.printText('${_info['venEmpRuc']}');
-  await SunmiPrinter.printText('${_info['venEmpDireccion']}');
-  await SunmiPrinter.printText('${_info['venEmpTelefono']}');
-  await SunmiPrinter.printText('${_info['venEmpEmail']}');
-  
-  await SunmiPrinter.setAlignment(SunmiPrintAlign.CENTER);
+
+// Función principal de impresión
+
+  // Imprime el logo (si existe)
+  if (user!.isNotEmpty) {
+    String url = user;
+    
+    // Convertir la imagen a formato Uint8List
+    Uint8List byte = (await NetworkAssetBundle(Uri.parse(url)).load(url))
+        .buffer
+        .asUint8List();
+
+    // Decodificar la imagen
+    img.Image? originalImage = img.decodeImage(byte);
+
+    if (originalImage != null) {
+      // Redimensionar la imagen (ajusta width y height según tus necesidades)
+      img.Image resizedImage = img.copyResize(originalImage, width: 150, height: 150);
+
+      // Convertir la imagen redimensionada de vuelta a Uint8List
+      Uint8List resizedByte = Uint8List.fromList(img.encodePng(resizedImage));
+
+      // Alinear la imagen y comenzar la transacción de impresión
+      await SunmiPrinter.setAlignment(SunmiPrintAlign.CENTER);
+      await SunmiPrinter.printImage(resizedByte);
+
+      // Agregar un salto de línea para asegurar que el texto se imprima debajo
+      await SunmiPrinter.lineWrap(2); // Esto asegura que haya espacio debajo del logo
+    }
+  } else {
+    // Si no hay logo, imprimir el texto "NO LOGO"
+    await SunmiPrinter.printText('NO LOGO');
+    await SunmiPrinter.lineWrap(1); // Saltar una línea para separación
+  }
+
+  // Imprime el resto de la información del encabezado
+  await SunmiPrinter.setAlignment(SunmiPrintAlign.LEFT);
+  await SunmiPrinter.printText('Ruc: ${_info['venEmpRuc']}');
+  await SunmiPrinter.printText('Dir: ${_info['venEmpDireccion']}');
+  await SunmiPrinter.printText('Tel: ${_info['venEmpTelefono']}');
+  await SunmiPrinter.printText('Email: ${_info['venEmpEmail']}');
+
   await SunmiPrinter.line();
   await SunmiPrinter.printText('Cliente: ${_info['venNomCliente']}');
-  await SunmiPrinter.printText('${_info['venRucCliente']}');
-  await SunmiPrinter.setAlignment(SunmiPrintAlign.CENTER);
-  await SunmiPrinter.line();
-  // await SunmiPrinter.printText('FECHA: ${_info['venFechaFactura']}');
-   await SunmiPrinter.printText('FECHA: $formattedDate');
-
-  await SunmiPrinter.line();
+  await SunmiPrinter.printText('Ruc: ${_info['venRucCliente']}');
+ await SunmiPrinter.line();
+  await SunmiPrinter.printText('Fecha: ${_info['venFechaFactura']}'); // O utiliza formattedDate si corresponde
+ await SunmiPrinter.line();
   await SunmiPrinter.printText('Conductor: ${_info['venConductor']}');
   await SunmiPrinter.printText('Placa: ${_info['venOtrosDetalles'][0]}');
-  await SunmiPrinter.setAlignment(SunmiPrintAlign.CENTER);
-  await SunmiPrinter.line();
-
-
-
   // Imprime el encabezado de la tabla
   await SunmiPrinter.setAlignment(SunmiPrintAlign.LEFT);
   await SunmiPrinter.line();
@@ -5933,12 +5867,46 @@ void _printTicket(Map<String, dynamic>? _info) async {
   final productos = _info['venProductos'] as List<dynamic>?;
 
   if (productos != null) {
-    for (var item in productos) {
+    // for (var item in productos) {
+    //   // Cambiar el tamaño de la fuente solo para la columna de descripción
+    //   // await SunmiPrinter.setFontSize(SunmiFontSize.SM); // Ajustar a un tamaño más pequeño
+      
+    //   await SunmiPrinter.printRow(cols: [
+    //     ColumnMaker(
+    //       text: item['descripcion']?.toString() ?? 'N/A',
+    //       width: 12,
+    //       align: SunmiPrintAlign.LEFT,
+    //     ),
+    //   ]);
+
+    
+
+    //   // Imprimir las otras columnas con el tamaño de fuente normal
+    //   await SunmiPrinter.printRow(cols: [
+    //     ColumnMaker(
+    //       text: item['cantidad']?.toString() ?? '0',
+    //       width: 6,
+    //       align: SunmiPrintAlign.CENTER,
+    //     ),
+    //     ColumnMaker(
+    //       text: item['valorUnitario']?.toString() ?? '0',
+    //       width: 6,
+    //       align: SunmiPrintAlign.RIGHT,
+    //     ),
+    //     ColumnMaker(
+    //       text: item['precioSubTotalProducto']?.toString() ?? '0',
+    //       width: 6,
+    //       align: SunmiPrintAlign.RIGHT,
+    //     ),
+    //   ]);
+    // }
+  for  (var item in productos) {
       await SunmiPrinter.printRow(cols: [
         ColumnMaker(
           text: item['descripcion']?.toString() ?? 'N/A',
           width: 12,
           align: SunmiPrintAlign.LEFT,
+          
         ),
         ColumnMaker(
           text: item['cantidad']?.toString() ?? '0',
@@ -5961,68 +5929,71 @@ void _printTicket(Map<String, dynamic>? _info) async {
     // Manejo de caso en el que 'venProductos' es nulo o no es una lista
     await SunmiPrinter.printText('No hay productos para mostrar.');
   }
+  // Restaurar el tamaño de la fuente por defecto para las otras columnas
+      // await SunmiPrinter.resetFontSize();
+  // Imprime el subtotal
+  await SunmiPrinter.line();
+  await SunmiPrinter.printRow(cols: [
+    ColumnMaker(
+      text: 'SubTotal',
+      width: 20, // Ajuste el ancho si es necesario
+      align: SunmiPrintAlign.LEFT,
+    ),
+    ColumnMaker(
+      text: _info['venSubTotal']?.toString() ?? '0',
+      width: 10, // Aumenta el ancho para números más grandes
+      align: SunmiPrintAlign.RIGHT,
+    ),
+  ]);
 
- // Imprime el subtotal
-await SunmiPrinter.line();
-await SunmiPrinter.printRow(cols: [
-  ColumnMaker(
-    text: 'SubTotal',
-    width: 20, // Ajuste el ancho si es necesario
-    align: SunmiPrintAlign.LEFT,
-  ),
-  ColumnMaker(
-    text: _info['venSubTotal']?.toString() ?? '0',
-    width: 10, // Aumenta el ancho para números más grandes
-    align: SunmiPrintAlign.RIGHT,
-  ),
-]);
+  // Imprime el IVA
+  await SunmiPrinter.printRow(cols: [
+    ColumnMaker(
+      text: 'Iva',
+      width: 20, // Ajuste el ancho si es necesario
+      align: SunmiPrintAlign.LEFT,
+    ),
+    ColumnMaker(
+      text: _info['venTotalIva']?.toString() ?? '0',
+      width: 10, // Aumenta el ancho para números más grandes
+      align: SunmiPrintAlign.RIGHT,
+    ),
+  ]);
 
-// Imprime el IVA
-await SunmiPrinter.printRow(cols: [
-  ColumnMaker(
-    text: 'Iva',
-    width: 20, // Ajuste el ancho si es necesario
-    align: SunmiPrintAlign.LEFT,
-  ),
-  ColumnMaker(
-    text: _info['venTotalIva']?.toString() ?? '0',
-    width: 10, // Aumenta el ancho para números más grandes
-    align: SunmiPrintAlign.RIGHT,
-  ),
-]);
+  // Imprime el total
+  await SunmiPrinter.printRow(cols: [
+    ColumnMaker(
+      text: 'TOTAL',
+      width: 20, // Ajuste el ancho si es necesario
+      align: SunmiPrintAlign.LEFT,
+    ),
+    ColumnMaker(
+      text: _info['venTotal']?.toString() ?? '0',
+      width: 10, // Aumenta el ancho para números más grandes
+      align: SunmiPrintAlign.RIGHT,
+    ),
+  ]);
 
-// Imprime el total
-await SunmiPrinter.printRow(cols: [
-  ColumnMaker(
-    text: 'TOTAL',
-    width: 20, // Ajuste el ancho si es necesario
-    align: SunmiPrintAlign.LEFT,
-  ),
-  ColumnMaker(
-    text: _info['venTotal']?.toString() ?? '0',
-    width: 10, // Aumenta el ancho para números más grandes
-    align: SunmiPrintAlign.RIGHT,
-  ),
-]);
- await SunmiPrinter.line();
+  await SunmiPrinter.line();
   await SunmiPrinter.lineWrap(2);
   await SunmiPrinter.exitTransactionPrint(true);
 }
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 class RadioButtonWithLabel extends StatelessWidget {
   final int value;

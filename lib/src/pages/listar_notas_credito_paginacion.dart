@@ -21,7 +21,8 @@ import 'package:neitorcont/src/widgets/no_data.dart';
 import 'package:provider/provider.dart';
 
 class ListarNotasCreditoPaginacion extends StatefulWidget {
-  const ListarNotasCreditoPaginacion({Key? key}) : super(key: key);
+     final Session? user;
+  const ListarNotasCreditoPaginacion({Key? key, this.user}) : super(key: key);
 
   @override
   State<ListarNotasCreditoPaginacion> createState() => _ListarNotasCreditoPaginacionState();

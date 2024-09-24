@@ -320,6 +320,9 @@ _latestResponse={};
         if (data['tabla'] == 'proveedor' && data['perUser']==dataUser!.usuario && data['rucempresa']==dataUser.rucempresa) {
         final _ctrlPropietario=PropietariosController();
         _ctrlPropietario.buscaAllPropietarios('');
+        
+         _latestResponse=data;
+          print('DATA PROPIETARIO: $data');
          // Maneja la respuesta del servidor aquí
         _showSnackbar('Registro guardado exitosamente');
          notifyListeners();
@@ -333,8 +336,9 @@ _latestResponse={};
         // _ctrlComprobante.setFacturaOk(true);
         // _showSnackbar('Factura guardada exitosamente');
         //==============LA RSPUESTA ===================//
+       
         _latestResponse=data;
-        print(' $data');
+        print(' DATA VENTAS: $data');
         // Llama a cualquier función relacionada, si es necesario
         // final _ctrlFactura = FacturaController();
         // _ctrlFactura.someFunction();

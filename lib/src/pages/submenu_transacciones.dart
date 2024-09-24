@@ -6,6 +6,7 @@ import 'package:neitorcont/src/controllers/facturas_controller.dart';
 import 'package:neitorcont/src/controllers/notas_creditos_controller.dart';
 import 'package:neitorcont/src/controllers/prefacturas_controller.dart';
 import 'package:neitorcont/src/controllers/proformas_controller.dart';
+import 'package:neitorcont/src/models/sesison_model.dart';
 import 'package:neitorcont/src/pages/crear_caja.dart';
 import 'package:neitorcont/src/pages/crear_comprobante_print.dart';
 import 'package:neitorcont/src/pages/lista_caja_paginacion.dart';
@@ -26,10 +27,12 @@ import 'package:neitorcont/src/widgets/no_data.dart';
 import 'package:provider/provider.dart';
 
 class SubmenuTransacciones extends StatelessWidget {
-  const SubmenuTransacciones({Key? key}) : super(key: key);
+     final Session? user;
+  const SubmenuTransacciones({Key? key, this.user,}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+// final Session?  user =  ModalRoute.of(context)?.settings.arguments as Session?;
     final Responsive size = Responsive.of(context);
     return Scaffold(
         appBar: AppBar(
@@ -84,7 +87,7 @@ class SubmenuTransacciones extends StatelessWidget {
 
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) =>
-                                    const ListarFacturasPaginacion()));
+                                     ListarFacturasPaginacion(user: user,)));
                           },
                         ),
                         ElementosSubmenu(
@@ -119,7 +122,7 @@ class SubmenuTransacciones extends StatelessWidget {
 
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) =>
-                                    const ListarPreFacturasPaginacion()));
+                                     ListarPreFacturasPaginacion(user: user,)));
                           },
                         ),
                          ElementosSubmenu(
@@ -147,7 +150,7 @@ class SubmenuTransacciones extends StatelessWidget {
                                 '',false,0);
                                Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) =>
-                                    const ListarCajaPaginacion()));
+                                     ListarCajaPaginacion(user: user,)));
 
 
                           },
@@ -184,7 +187,7 @@ class SubmenuTransacciones extends StatelessWidget {
 
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) =>
-                                    const ListarProformasProformas()));
+                                     ListarProformasProformas(user: user,)));
                           },
                         ),
                         ElementosSubmenu(
@@ -224,7 +227,7 @@ class SubmenuTransacciones extends StatelessWidget {
 
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) =>
-                                    const ListarNotasCreditoPaginacion()));
+                                     ListarNotasCreditoPaginacion(user: user,)));
                           },
                         ),
                         ElementosSubmenu(
@@ -262,7 +265,7 @@ class SubmenuTransacciones extends StatelessWidget {
 
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) =>
-                                    const ListarAnuladasPaginacion()));
+                                     ListarAnuladasPaginacion(user: user,)));
                           },
                         ),
                          

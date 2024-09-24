@@ -464,7 +464,7 @@ class _ListaPropietariosState extends State<ListaPropietarios> {
                                                                 builder: (context) =>
                                                                     const CrearPropietario(
                                                                         action:
-                                                                            'EDIT')))
+                                                                            'EDIT',tipo: 'propietario',)))
                                                             .then((value) =>
                                                                 setState(() {
                                                                   providerPropietarios
@@ -718,7 +718,7 @@ class _ListaPropietariosState extends State<ListaPropietarios> {
                       Navigator.of(context)
                           .push(MaterialPageRoute(
                               builder: (context) =>
-                                  CrearPropietario(action: 'CREATE')))
+                                  CrearPropietario(action: 'CREATE',tipo: 'propietarios',)))
                           .then((value) {
                         setState(() {
                           context
@@ -904,7 +904,7 @@ class _ListaPropietariosState extends State<ListaPropietarios> {
                                           .push(MaterialPageRoute(
                                               builder: (context) =>
                                                   const CrearPropietario(
-                                                      action: 'SEARCH')))
+                                                      action: 'SEARCH',tipo: 'propietario',)))
                                           .then((value) => setState(() {
                                                 providerPersonas
                                                     .buscaAllPropietarios('');

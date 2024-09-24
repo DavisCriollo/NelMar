@@ -968,7 +968,7 @@ final  themeColor=context.read<AppTheme>();
                                           .push(MaterialPageRoute(
                                               builder: (context) =>
                                                   const CrearPropietario(
-                                                      action: 'SEARCH')))
+                                                      action: 'SEARCH',tipo: 'mascotas',)))
                                           .then((value) => setState(() {
                                                 providerPersonas
                                                     .buscaAllPropietarios('');

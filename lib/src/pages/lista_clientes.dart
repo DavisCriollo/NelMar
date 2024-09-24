@@ -402,7 +402,7 @@ class _ListaClientesState extends State<ListaClientes> {
                 Navigator.of(context)
                     .push(MaterialPageRoute(
                         builder: (context) =>
-                            CrearPropietario(action: 'CREATE',user: widget.user,)))
+                            CrearPropietario(action: 'CREATE',user: widget.user,tipo:'clientes')))
                     .then((value) {
                   setState(() {
                     context

@@ -869,6 +869,7 @@ ctrlPropi.setDocumento('');
                           .push(MaterialPageRoute(
                               builder: (context) =>
                                    CrearPropietario(action: 'CREATE',
+                                   tipo: 'propietarios',
                                   user: _usuario,)))
                           .then((value) {
                        onRefresh();
@@ -1064,7 +1065,7 @@ ctrlPropi.setDocumento('');
                                           .push(MaterialPageRoute(
                                               builder: (context) =>
                                                    CrearPropietario(
-                                                      action: 'SEARCH',user: _usuario)))
+                                                      action: 'SEARCH',user: _usuario,tipo: 'propietario',)))
                                           .then((value) => setState(() {
                                                 providerPersonas
                                                     .buscaAllPropietariosPaginacion(

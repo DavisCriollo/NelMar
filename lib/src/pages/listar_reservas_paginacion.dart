@@ -1004,7 +1004,7 @@ class _ListaReservasPaginacionState extends State<ListaReservasPaginacion> {
                                           .push(MaterialPageRoute(
                                               builder: (context) =>
                                                   const CrearPropietario(
-                                                      action: 'SEARCH')))
+                                                      action: 'SEARCH',tipo: 'reservas',)))
                                           .then((value) => setState(() {
                                                 providerPersonas
                                                     .buscaAllPropietarios('');
