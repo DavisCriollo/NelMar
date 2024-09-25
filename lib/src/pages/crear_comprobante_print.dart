@@ -3093,6 +3093,7 @@ import 'package:neitorcont/src/services/notifications_service.dart';
 import 'package:neitorcont/src/services/socket_service.dart';
 import 'package:neitorcont/src/theme/theme_provider.dart';
 import 'package:neitorcont/src/utils/dialogs.dart';
+import 'package:neitorcont/src/utils/fechaLocal.dart';
 import 'package:neitorcont/src/utils/letras_mayusculas_minusculas.dart';
 import 'package:neitorcont/src/utils/responsive.dart';
 import 'package:neitorcont/src/utils/solo_decimales.dart';
@@ -3352,7 +3353,7 @@ print('ESTA ES LA DATA DEL SOCKET PROPIETARIO: ${ctrlSock.latestResponse}');
         builder: (_,value, __) {
 
      return 
-         value.latestResponse!.isNotEmpty &&  value.latestResponse!['tabla']!='proveedor'
+         value.latestResponse!.isNotEmpty &&  value.latestResponse!['tabla']=='ventas'
         ? 
         Container(
             width: size.wScreen(100.0),
@@ -5770,22 +5771,10 @@ Future<bool?> _agregaPlaca(BuildContext context,
 void _printTicket(Map<String, dynamic>? _info,String? user) async {
   if (_info == null) return;
 
+
   //==============================================//
-  String utcDate = _info['venFecReg'];
-
-  // Parsear la fecha en UTC
-  DateTime dateTimeUtc = DateTime.parse(utcDate);
-
-  // Convertirla a hora local
-  DateTime dateTimeLocal = dateTimeUtc.toLocal();
-
-  // Formatear la fecha y hora local como 'YYYY-MM-DD HH:MM'
-  String formattedDate = DateFormat('yyyy-MM-dd HH:mm').format(dateTimeLocal);
-
-  // print(formattedDate);  // Resultado: 2024-09-18 19:27
-
+  String fechaLocal = convertirFechaLocal(_info['venFecReg']);
  //==============================================//
- 
 
 
 // Función principal de impresión
@@ -5833,7 +5822,8 @@ void _printTicket(Map<String, dynamic>? _info,String? user) async {
   await SunmiPrinter.printText('Cliente: ${_info['venNomCliente']}');
   await SunmiPrinter.printText('Ruc: ${_info['venRucCliente']}');
  await SunmiPrinter.line();
-  await SunmiPrinter.printText('Fecha: ${_info['venFechaFactura']}'); // O utiliza formattedDate si corresponde
+  // await SunmiPrinter.printText('Fecha: ${_info['venFechaFactura']}'); // O utiliza formattedDate si corresponde
+  await SunmiPrinter.printText('Fecha: $fechaLocal'); 
  await SunmiPrinter.line();
   await SunmiPrinter.printText('Conductor: ${_info['venConductor']}');
   await SunmiPrinter.printText('Placa: ${_info['venOtrosDetalles'][0]}');

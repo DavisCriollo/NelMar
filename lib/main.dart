@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:neitorcont/src/controllers/anuladas_controller.dart';
 import 'package:neitorcont/src/controllers/caja_controller.dart';
 import 'package:neitorcont/src/controllers/comprobantes_controller.dart';
+import 'package:neitorcont/src/controllers/cuentas_por_cobrar_controller.dart';
 import 'package:neitorcont/src/controllers/facturas_controller.dart';
 import 'package:neitorcont/src/controllers/historia_clinica.controller.dart';
 import 'package:neitorcont/src/controllers/home_controller.dart';
@@ -85,6 +86,7 @@ class MyApp extends StatelessWidget {
 
     
         ChangeNotifierProvider(create: (_) => CajaController()),
+         ChangeNotifierProvider(create: (_) => CuentasXCobrarController()),
 
         ChangeNotifierProvider(create: (_) => HomeController()),
         ChangeNotifierProvider(create: (_) => PropietariosController()),

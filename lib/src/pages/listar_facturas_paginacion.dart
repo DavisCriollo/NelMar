@@ -2566,22 +2566,24 @@ Container(
 void _printTicket(Map<String, dynamic>? _info,String? user) async {
   if (_info == null) return;
 
-  //==============================================//
-  String utcDate = _info['venFecReg'];
+//   //==============================================//
+//   String utcDate = _info['venFecReg'];
 
-  // Parsear la fecha en UTC
-  DateTime dateTimeUtc = DateTime.parse(utcDate);
+//   // Parsear la fecha en UTC
+//   DateTime dateTimeUtc = DateTime.parse(utcDate);
 
-  // Convertirla a hora local
-  DateTime dateTimeLocal = dateTimeUtc.toLocal();
+//   // Convertirla a hora local
+//   DateTime dateTimeLocal = dateTimeUtc.toLocal();
 
-  // Formatear la fecha y hora local como 'YYYY-MM-DD HH:MM'
-  String formattedDate = DateFormat('yyyy-MM-dd HH:mm').format(dateTimeLocal);
+//   // Formatear la fecha y hora local como 'YYYY-MM-DD HH:MM'
+//   String formattedDate = DateFormat('yyyy-MM-dd HH:mm').format(dateTimeLocal);
 
-  // print(formattedDate);  // Resultado: 2024-09-18 19:27
+//   // print(formattedDate);  // Resultado: 2024-09-18 19:27
 
+//  //==============================================//
+   //==============================================//
+  String fechaLocal = convertirFechaLocal(_info['venFecReg']);
  //==============================================//
- 
 
 
 // Función principal de impresión
@@ -2629,7 +2631,7 @@ void _printTicket(Map<String, dynamic>? _info,String? user) async {
   await SunmiPrinter.printText('Cliente: ${_info['venNomCliente']}');
   await SunmiPrinter.printText('Ruc: ${_info['venRucCliente']}');
  await SunmiPrinter.line();
-  await SunmiPrinter.printText('Fecha: ${_info['venFechaFactura']}'); // O utiliza formattedDate si corresponde
+  await SunmiPrinter.printText('Fecha: $fechaLocal'); // O utiliza formattedDate si corresponde
  await SunmiPrinter.line();
   await SunmiPrinter.printText('Conductor: ${_info['venConductor']}');
   await SunmiPrinter.printText('Placa: ${_info['venOtrosDetalles'][0]}');

@@ -1979,6 +1979,7 @@ _textCedula.text='';
                       Container(
                         // width: size.wScreen(45.0),
                         child: IntlPhoneField(
+                          initialCountryCode: 'EC',
                           autofocus: true,
                           controller: controllerTextCountry,
                           decoration: const InputDecoration(

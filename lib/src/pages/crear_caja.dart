@@ -145,7 +145,7 @@ bool printBinded = false;
         builder: (_,value, __) {
 
      return 
-         value.latestResponse!.isNotEmpty &&  value.latestResponse!['tabla']!='proveedor'
+         value.latestResponse!.isNotEmpty &&  value.latestResponse!['tabla']=='caja'
         ? 
         Container(
             width: size.wScreen(100.0),
@@ -547,6 +547,8 @@ bool printBinded = false;
                   ),
                   // //*****************************************/
                   TextFormField(
+                     minLines: 1,
+                          maxLines: 3,
                           inputFormatters: [
                             UpperCaseText(),
                           ],

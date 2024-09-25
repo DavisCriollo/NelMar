@@ -8,6 +8,7 @@ import 'package:neitorcont/src/controllers/propietarios_controller.dart';
 import 'package:neitorcont/src/controllers/reservas_controller.dart';
 import 'package:neitorcont/src/models/sesison_model.dart';
 import 'package:neitorcont/src/pages/crear_comprobante_print.dart';
+import 'package:neitorcont/src/pages/lista_cuentas_por_cobrar.dart';
 import 'package:neitorcont/src/pages/listar_reservas_paginacion.dart';
 import 'package:neitorcont/src/pages/submenu_transacciones.dart';
 
@@ -314,15 +315,13 @@ class _HomePageState extends State<HomePage> {
                                        ElementosHome(
                                       enabled: true,
                                       size: size,
-                                      image: 'assets/imgs/icon-factura.png',
+                                      image: 'assets/imgs/account.png',
                                       label: 'CUENTAS X COBRAR',
                                       onTap: () => 
                                         Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) =>
-                                     SubmenuTransacciones(user: widget.user,)))
-                                      // Navigator.pushNamed(
-                                      //     context, 'SubmenuTransacciones',arguments:usuario),
-                                      // onTap: () {},
+                                     ListarCuentasPorCobrar(user: widget.user,)))
+                                     
                                     ),
 
 
