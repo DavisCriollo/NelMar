@@ -155,6 +155,7 @@ class _HomePageState extends State<HomePage> {
                                             )),
                                 ),
                                 Wrap(
+                                  alignment: WrapAlignment.center,
                                   children: [
                                     ElementosHome(
                                       enabled: true,
@@ -309,6 +310,25 @@ class _HomePageState extends State<HomePage> {
                                       //     context, 'SubmenuTransacciones',arguments:usuario),
                                       // onTap: () {},
                                     ),
+
+                                       ElementosHome(
+                                      enabled: true,
+                                      size: size,
+                                      image: 'assets/imgs/icon-factura.png',
+                                      label: 'CUENTAS X COBRAR',
+                                      onTap: () => 
+                                        Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) =>
+                                     SubmenuTransacciones(user: widget.user,)))
+                                      // Navigator.pushNamed(
+                                      //     context, 'SubmenuTransacciones',arguments:usuario),
+                                      // onTap: () {},
+                                    ),
+
+
+
+
+
                             //          ElementosHome(
                             //           enabled: true,
                             //           size: size,

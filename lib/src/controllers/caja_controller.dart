@@ -127,7 +127,7 @@ final _nuevaCaja =
 
 };
 
-    print('LA NUEVA CAJA : $_nuevaCaja');
+    // print('LA NUEVA CAJA : $_nuevaCaja');
 
 socketService.sendMessage('client:guardarData', _nuevaCaja);
 
@@ -158,7 +158,7 @@ socketService.sendMessage('client:guardarData', _nuevaCaja);
 
   void onSearchTextCajaPaginacion(String data) {
     _nameSearchCajaPaginacion = data;
-     print('CajaOMBRE:${_nameSearchCajaPaginacion}');
+    //  print('CajaOMBRE:${_nameSearchCajaPaginacion}');
      }
 //=============================================================================//
 
@@ -545,7 +545,7 @@ void setInfoCaja(Map<String,dynamic>  _info){
 _infoCaja={};
 _infoCaja=_info;
 
-print('_infoCaja: $_infoCaja');
+// print('_infoCaja: $_infoCaja');
   notifyListeners();
 }
 

@@ -6,6 +6,8 @@ import 'package:provider/provider.dart';
 
 
 class DetalleCaja extends StatelessWidget {
+  const DetalleCaja({Key? key}) : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {

@@ -323,27 +323,23 @@ _latestResponse={};
         
          _latestResponse=data;
           print('DATA PROPIETARIO: $data');
-         // Maneja la respuesta del servidor aquí
-        _showSnackbar('Registro guardado exitosamente');
+         _showSnackbar('Registro guardado exitosamente');
          notifyListeners();
         }
         // Condición para la tabla 'factura'
     else if (data['tabla'] == 'ventas' && data['venUser']==dataUser!.usuario && data['rucempresa']==dataUser.rucempresa) {
-        // final _ctrlComprobante=ComprobantesController();
-        // Implementa la lógica específica para la tabla 'factura'
-        // print('Factura guardada exitosamente');
-        // _ctrlComprobante.setInfoFacturaResponse(data);
-        // _ctrlComprobante.setFacturaOk(true);
-        // _showSnackbar('Factura guardada exitosamente');
-        //==============LA RSPUESTA ===================//
        
-        _latestResponse=data;
-        print(' DATA VENTAS: $data');
-        // Llama a cualquier función relacionada, si es necesario
-        // final _ctrlFactura = FacturaController();
-        // _ctrlFactura.someFunction();
+        _showSnackbar('Registro guardada exitosamente');
+        //==============LA RSPUESTA ===================//
+      _latestResponse=data;
         notifyListeners();
     } 
+      else if (data['tabla'] == 'caja' && data['cajaUser']==dataUser!.usuario && data['rucempresa']==dataUser.rucempresa) {
+        _showSnackbar('Caja guardada exitosamente');
+        //==============LA RSPUESTA ===================//
+        _latestResponse=data;
+        notifyListeners();
+    }
         
        
     });
@@ -358,15 +354,17 @@ _latestResponse={};
          notifyListeners();
         }
          else if (data['tabla'] == 'ventas' && data['venUser']==dataUser!.usuario && data['rucempresa']==dataUser.rucempresa) {
-        final _ctrlComprobante=ComprobantesController();
-        // Implementa la lógica específica para la tabla 'factura'
-        // print('Factura guardada exitosamente');
-        _showSnackbar('Factura actualizada exitosamente');
+      
+        _showSnackbar('Registro actualizado exitosamente');
         //==============LA RSPUESTA ===================//
-        print('$data');
-        // Llama a cualquier función relacionada, si es necesario
-        // final _ctrlFactura = FacturaController();
-        // _ctrlFactura.someFunction();
+         notifyListeners();
+    } 
+         else if (data['tabla'] == 'caja' && data['cajaUser']==dataUser!.usuario && data['rucempresa']==dataUser.rucempresa) {
+      
+        _showSnackbar('Registro actualizado exitosamente');
+        //==============LA RSPUESTA ===================//
+        // print('$data');
+  
         notifyListeners();
     } 
        
@@ -384,14 +382,18 @@ _latestResponse={};
         }
         else if (data['tabla'] == 'ventas' && data['venUser']==dataUser!.usuario && data['rucempresa']==dataUser.rucempresa) {
         final _ctrlComprobante=ComprobantesController();
-        // Implementa la lógica específica para la tabla 'factura'
-        // print('Factura guardada exitosamente');
-        _showSnackbar('Factura eliminada exitosamente');
+        _showSnackbar('Registro eliminado exitosamente');
         //==============LA RSPUESTA ===================//
         print('$data');
-        // Llama a cualquier función relacionada, si es necesario
-        // final _ctrlFactura = FacturaController();
-        // _ctrlFactura.someFunction();
+    
+        notifyListeners();
+    } 
+     else if (data['tabla'] == 'caja' && data['cajaUser']==dataUser!.usuario && data['rucempresa']==dataUser.rucempresa) {
+        final _ctrlComprobante=ComprobantesController();
+        _showSnackbar('Registro eliminado exitosamente');
+        //==============LA RSPUESTA ===================//
+        print('$data');
+    
         notifyListeners();
     } 
        
@@ -408,14 +410,17 @@ _latestResponse={};
         }
         else if (data['tabla'] == 'ventas' && data['venUser']==dataUser!.usuario && data['rucempresa']==dataUser.rucempresa) {
         final _ctrlComprobante=ComprobantesController();
-        // Implementa la lógica específica para la tabla 'factura'
-        // _ctrlComprobante.setFacturaOk(false);
-       
-        _showSnackbarError('${data['msg']}');
+       _showSnackbarError('${data['msg']}');
         
         notifyListeners();
     } 
-       
+        else if (data['tabla'] == 'caja' && data['cajaUser']==dataUser!.usuario && data['rucempresa']==dataUser.rucempresa) {
+        final _ctrlComprobante=ComprobantesController();
+       _showSnackbarError('${data['msg']}');
+        
+        notifyListeners();
+    } 
+
     });
 
 

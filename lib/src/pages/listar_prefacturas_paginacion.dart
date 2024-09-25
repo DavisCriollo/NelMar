@@ -4489,6 +4489,45 @@ Container(
                                                                         .iScreen(
                                                                             2.0)),
                                                                 child: Text(
+                                                                  'Imprimir',
+                                                                  style: GoogleFonts.lexendDeca(
+                                                                      fontSize: size
+                                                                          .iScreen(
+                                                                              1.8),
+                                                                      color: Colors
+                                                                          .black87,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .normal),
+                                                                ),
+                                                              ),
+                                                              const Icon(
+                                                                FontAwesomeIcons
+                                                                    .print,
+                                                                color: Colors.green,
+                                                              )
+                                                            ],
+                                                          ),
+                                                          onPressed: () {
+                                                            Navigator.pop(
+                                                                context);
+                                                                _printTicket(_prefacturas,widget.user!.logo);
+
+                                                           
+                                                          },
+                                                        ),
+                                                        CupertinoActionSheetAction(
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              Container(
+                                                                margin: EdgeInsets.only(
+                                                                    right: size
+                                                                        .iScreen(
+                                                                            2.0)),
+                                                                child: Text(
                                                                   'Ver PDF',
                                                                   style: GoogleFonts.lexendDeca(
                                                                       fontSize: size
