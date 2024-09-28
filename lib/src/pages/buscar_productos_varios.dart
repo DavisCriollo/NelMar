@@ -74,7 +74,7 @@ class _BuscarProductosVariosState extends State<BuscarProductosVarios> {
                 controller: textSearchGuardiaMulta,
                 autofocus: false,
                 decoration: InputDecoration(
-                  hintText: 'búscar',
+                  hintText: 'Buscar',
                   suffixIcon: GestureDetector(
                     onTap: () async {},
                     child: const Icon(

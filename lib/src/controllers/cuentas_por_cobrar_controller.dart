@@ -1,7 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:neitorcont/src/api/api_provider.dart';
 import 'package:neitorcont/src/api/authentication_client.dart';
 import 'package:neitorcont/src/models/auth_response.dart';
+import 'package:neitorcont/src/services/socket_service.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class CuentasXCobrarController extends ChangeNotifier {
 
@@ -185,8 +190,7 @@ void setListaDeProductos(List _list){
 
     if (response != null) {
 
-      
-        // setListaDeProductos(response);
+              // setListaDeProductos(response);
 
        List<dynamic> filteredData = response.where((item) {
     if (_type == 'MOTOS') {
@@ -299,34 +303,58 @@ final _data ={
 
 
 
- List<dynamic> _allItemsFilters=[];
-   List<dynamic> get allItemsFilters => _allItemsFilters;
-   void setListFilter( List<dynamic> _list){
-  _allItemsFilters = [];
+//  List<dynamic> _allItemsFilters=[];
+//    List<dynamic> get allItemsFilters => _allItemsFilters;
+//    void setListFilter( List<dynamic> _list){
+//   _allItemsFilters = [];
+// _allItemsFilters.addAll(_list);
+// print('LA LISTA  _allItemsFilters: $_allItemsFilters ');
 
-// _sortList();
+//   notifyListeners();
+//  }
 
+//   void search(String query) {
+//       List<Map<String, dynamic>> originalList = List.from(_allItemsFilters); // Copia de la lista original
+//     if (query.isEmpty) {
+//       _allItemsFilters = originalList;
+//     } else {
+//       _allItemsFilters = originalList.where((item) {
+//         return 
+//          item['ccRucCliente'].toLowerCase().contains(query.toLowerCase()) ||
+//           item['ccNomCliente'].toLowerCase().contains(query.toLowerCase()) ||
+//            item['ccFactura'].toLowerCase().contains(query.toLowerCase()) ||
+//             item['ccFechaFactura'].toLowerCase().contains(query.toLowerCase()) ||
+//             item['ccEstado'].toLowerCase().contains(query.toLowerCase()) ;
+//       }).toList();
+//     }
+//     notifyListeners();
+//   }
+List<dynamic> _allItemsFilters = [];
+List<dynamic> _originalItemsFilters = []; // Lista original separada
 
-
-_allItemsFilters.addAll(_list);
-// print('LA LISTA DE LOS ESTUDIANTES _allItemsFilters: $_allItemsFilters ');
-
+List<dynamic> get allItemsFilters => _allItemsFilters;
+void setListFilter(List<dynamic> _list) {
+  _originalItemsFilters = List.from(_list); // Almacenar la lista original
+  _allItemsFilters = List.from(_list); // Inicialmente, la lista mostrada es igual a la original
+  // print('LA LISTA _allItemsFilters: $_allItemsFilters');
   notifyListeners();
- }
+}
 
-  void search(String query) {
-      List<Map<String, dynamic>> originalList = List.from(getListaDeProductos); // Copia de la lista original
-    if (query.isEmpty) {
-      _allItemsFilters = originalList;
-    } else {
-      _allItemsFilters = originalList.where((estudiante) {
-        return 
-        estudiante['invNombre'].toLowerCase().contains(query.toLowerCase())&&
-             estudiante['invCategoria'] == _typeAction; // Condición adicional para que sea "MOTOS" ;
-      }).toList();
-    }
-    notifyListeners();
+void search(String query) {
+  if (query.isEmpty) {
+    _allItemsFilters = List.from(_originalItemsFilters); // Restaurar la lista original cuando el campo de texto está vacío
+  } else {
+    _allItemsFilters = _originalItemsFilters.where((item) {
+      return item['ccRucCliente'].toLowerCase().contains(query.toLowerCase()) ||
+          item['ccNomCliente'].toLowerCase().contains(query.toLowerCase()) ||
+          item['ccFactura'].toLowerCase().contains(query.toLowerCase()) ||
+          item['ccFechaFactura'].toLowerCase().contains(query.toLowerCase()) ||
+          item['ccEstado'].toLowerCase().contains(query.toLowerCase());
+    }).toList();
   }
+  notifyListeners();
+}
+
 
 
  String _typeAction='';
@@ -337,6 +365,608 @@ _typeAction =_type;
 
   notifyListeners();
 }
+
+
+//=============================================================================//
+
+
+  List _listaCajaPaginacion = [];
+  // List<TipoMulta> get getListaTodosLosTiposDeMultas => _listaTodosLosTiposDeMultas;
+  List get getListaCajaPaginacion => _listaCajaPaginacion;
+
+
+ double _valorTotalCajasHoy = 0.00;
+  // List<TipoMulta> get getListaTodosLosTiposDeMultas => _listaTodosLosTiposDeMultas;
+  double get getValorTotalCajasHoy => _valorTotalCajasHoy;
+double _valorTotalCajasAntes = 0.00;
+  // List<TipoMulta> get getListaTodosLosTiposDeMultas => _listaTodosLosTiposDeMultas;
+  double get getValorTotalCajasAntes => _valorTotalCajasAntes;
+
+
+void resetValorTotal(){
+_valorTotalCajasHoy = 0.00;
+_valorTotalCajasAntes = 0.00;
+notifyListeners();
+}
+
+
+
+  void setInfoBusquedaCuentasPorCobrar(List data) {
+    _listaCajaPaginacion=[];
+    _listaCajaPaginacion.addAll(data);
+    // print('Cajas xxx :${_listaCajaPaginacion.length}');
+
+   if (_tabIndex==0) {
+  _valorTotalCajasHoy = 0.0;
+
+// Iterar sobre cada item en la lista
+for (var item in _listaCajaPaginacion) {
+  // Asegurarse de que 'venTotal' no sea nulo y sea un valor numérico
+  final venTotal = item['cajaIngreso'];
+  if (venTotal != null) {
+    // Convertir 'venTotal' a un número de tipo double y sumar
+    _valorTotalCajasHoy += double.tryParse(venTotal.toString()) ?? 0.0;
+  }
+}
+
+// Redondear a 3 decimales
+_valorTotalCajasHoy = double.parse(_valorTotalCajasHoy.toStringAsFixed(3));
+
+// Imprimir el valor total
+// print('-->: $_valorTotalCajasHoy');
+  
+} else {
+_valorTotalCajasAntes = 0.0;
+
+// Iterar sobre cada item en la lista
+for (var item in _listaCajaPaginacion) {
+  // Asegurarse de que 'venTotal' no sea nulo y sea un valor numérico
+  final venTotal = item['cajaIngreso'];
+  if (venTotal != null) {
+    // Convertir 'venTotal' a un número de tipo double y sumar
+    _valorTotalCajasAntes += double.tryParse(venTotal.toString()) ?? 0.0;
+  }
+}
+
+// Redondear a 3 decimales
+_valorTotalCajasAntes = double.parse(_valorTotalCajasAntes.toStringAsFixed(3));
+
+// Imprimir el valor total
+// print('-->: $_valorTotalFacturasAntes');
+
+
+
+}
+
+    notifyListeners();
+  }
+
+  bool? _errorCajaPaginacion; // sera nulo la primera vez
+  bool? get getErrorCajaPaginacion => _errorCajaPaginacion;
+  void setErrorCajaPaginacion(bool? value) {
+    _errorCajaPaginacion = value;
+    notifyListeners();
+  }
+
+  bool? _error401CajaPaginacion = false; // sera nulo la primera vez
+  bool? get getError401CajaPaginacion => _error401CajaPaginacion;
+  void setError401CajaPaginacion(bool? value) {
+    _error401CajaPaginacion = value;
+    notifyListeners();
+  }
+
+
+//************INDEX TAB*****************//
+int _tabIndex=0;
+
+int get getTabIndex=>_tabIndex;
+
+void setTabIndex( int _index)
+{
+_tabIndex=_index;
+
+notifyListeners();
+
+}
+
+
+//=================================================================================================================//
+  // ================= VARIABLES DE PAGINACION ====================//
+//=================================================================================================================//
+//===================BOTON SEARCH PAGINACION ==========================//
+
+  bool _btnSearchCajaPaginacion = false;
+  bool get btnSearchCajaPaginacion => _btnSearchCajaPaginacion;
+
+  void setBtnSearchCajaPaginacion(bool action) {
+    _btnSearchCajaPaginacion = action;
+     print('==_btnSearchCoros===> $_btnSearchCajaPaginacion');
+    notifyListeners();
+  }
+
+  //===================INPUT SEARCH PROPIETARIO==========================//
+  String _nameSearchCajaPaginacion = "";
+  String get nameSearchCajaPaginacion =>
+      _nameSearchCajaPaginacion;
+
+  void onSearchTextCajaPaginacion(String data) {
+    _nameSearchCajaPaginacion = data;
+    //  print('CajaOMBRE:${_nameSearchCajaPaginacion}');
+     }
+//=============================================================================//
+
+
+ int? _page = 0;
+  int? get getpage => _page;
+  void setPage(int? _pag) {
+    _page = _pag;
+    // print('_page: $_page');
+
+    notifyListeners();
+  }
+
+
+bool _isNext = false;
+  bool get getIsNext => _isNext;
+  void setIsNext(bool _next) {
+    _isNext = _next;
+    // print('_isNext: $_isNext');
+
+    notifyListeners();
+  }
+
+ 
+ int? _cantidadElelemtos = 25;
+  int? get getCantidadElementos => _cantidadElelemtos;
+  void setCantidadElementos(int? _cant) {
+    _cantidadElelemtos = _cant;
+    notifyListeners();
+  }
+
+
+  String? _next = '';
+  String? get getNext => _next;
+  void setNext(String? _nex) {
+    _next = _nex;
+    notifyListeners();
+  }
+
+List _facturas = [];
+  List _facturasFiltradas = [];
+
+  List get facturasFiltradas => _facturasFiltradas;
+
+  void setFacturas(List facturas) {
+    _facturas = facturas;
+    notifyListeners();
+  }
+
+
+  Future buscaAllCuentasPorCobrar(String? _search, bool _isSearch,int tipo) async {
+    final dataUser = await Auth.instance.getSession();
+// print('usuario : ${dataUser!.rucempresa}');
+    final response = await _api.getAllCuentasPorCobrar(
+      search: _search,
+      page: _page,
+      cantidad: _cantidadElelemtos,
+      input: 'ccId',
+      orden: false,
+    
+      token: '${dataUser!.token}',
+    );
+
+    if (response != null) {
+      if (response == 401) {
+        setInfoBusquedaCuentasPorCobrar([]);
+        _error401CajaPaginacion = true;
+        notifyListeners();
+        return response;
+      } else {
+        _errorCajaPaginacion = true;
+        if (_isSearch == true) {
+          _listaCajaPaginacion = [];
+        }
+        List<dynamic> dataSort = response['data']['results'];
+        dataSort.sort((a, b) => b['ccFecReg']!.compareTo(a['ccFecReg']!));
+
+        setPage(response['data']['pagination']['next']);
+        setListFilter(dataSort);
+
+
+        notifyListeners();
+        return response;
+      }
+
+      //===========================================//
+
+    }
+    if (response == null) {
+      _errorCajaPaginacion = false;
+      notifyListeners();
+      return null;
+    }
+  }
+
+
+//************ GET INFO DE ITEM CAJA*************//
+Map<String,dynamic> _infoCuentas={};
+Map<String,dynamic> get getInfoCuentas=>_infoCuentas;
+void setInfoCuentas(Map<String,dynamic>  _info){
+_infoCuentas={};
+_infoCuentas=_info;
+
+// print('_infoCaja: $_infoCaja');
+  notifyListeners();
+}
+
+
+//================== TIPOS   ==========================//
+
+final List _tipos=
+[
+  "EFECTIVO",
+  "TRANSFERENCIA",
+   "CHEQUE",
+   "CRUCE COMPRA",
+   "DEPOSITO",
+   "DONACION",
+   "RETENCION",
+   "TARJETA",
+   
+];
+   List get getListTipos=> _tipos;        
+  String _tipo = 'EFECTIVO';
+  String get getTipo  => _tipo;
+
+  void setTipo(String _tip) {
+   _tipo =''; 
+   _tipo = _tip;
+    //  print('==_tipo===> $_tipo');
+    notifyListeners();
+  }
+
+
+  //================================INPUT   CANTIDAD=============================================//
+  String? _numeroDocumeto ;
+  String? get getnumeroDocumeto => _numeroDocumeto;
+
+  
+
+  void setNumeroDocumeto(String? value) {
+    _numeroDocumeto = value;
+
+print('NumeroDocumeto ES: $_numeroDocumeto');
+
+
+    notifyListeners();
+  }
+
+
+
+//================== bancos   ==========================//
+
+  String _banco = '';
+  String get getBanco  => _banco;
+  void setBanco(String _tip) {
+   _banco =''; 
+   _banco = _tip;
+     print('==_banco===> $_banco');
+    notifyListeners();
+  }
+
+     List _listBancos= []; 
+   List get getListBancos=> _listBancos;        
+
+
+void setListaBancos(List _banc) {
+   _listBancos=[];
+  _listBancos.addAll(_banc);
+     print('==_listBancos===> $_listBancos');
+    notifyListeners();
+  }
+
+
+Future<dynamic> buscaAllBancos() async {
+    final dataUser = await Auth.instance.getSession();
+    
+    final response = await _api.getAllBancos(
+   
+      token: '${dataUser!.token}',
+    );
+
+    if (response != null) {
+
+ List dataSort = [];
+        dataSort = response['data'];
+        dataSort.sort((a, b) => a['banNombre']!.compareTo(b['banNombre']!));
+setListaBancos(dataSort);
+      notifyListeners();
+      // return null;
+    }
+
+    notifyListeners();
+    return null;
+  }
+
+//================== DEPOSITO   ==========================//
+
+final List _listDeposito=
+[
+  "SI",
+  "NO",
+"NINGUNO", 
+     
+];
+   List get getListDeposito=> _listDeposito;    
+
+  String _itemDeposito = 'NO';
+  String get getItemDeposito  => _itemDeposito;
+
+  void setItemDeposito(String _tip) {
+   _itemDeposito =''; 
+   _itemDeposito = _tip;
+     print('==_itemDeposito===> $_itemDeposito');
+    notifyListeners();
+  }
+
+  //================================INPUT   MONTO=============================================//
+  double _valor =0.0;
+  double get getValor => _valor;
+
+  void setValor(double value) {
+    _valor = value;
+
+print('el monto ES: $_valor');
+
+    notifyListeners();
+  }
+
+
+  String? _fechaAbono;
+  get getFechaAbono => _fechaAbono;
+  void setFechaAbono(String? date) async {
+    _fechaAbono = date;
+
+    notifyListeners();
+  }
+
+
+//================================INPUT  OBSERVACION MASCOTA=============================================//
+  String? _observacion = '';
+  String? get getObservacion => _observacion;
+
+  void setObservacion(String? value) {
+    _observacion = value;
+    // print('==_observacion ===> $_observacion');
+    notifyListeners();
+  }
+
+  //================= TOMAR FOTO   ====================//
+
+ bool _hasLocationPermission = false;
+  bool _hasCameraPermission = false;
+
+  bool get hasLocationPermission => _hasLocationPermission;
+  bool get hasCameraPermission => _hasCameraPermission;
+
+  Future<void> checkAndRequestPermissions() async {
+    // Verificación y solicitud de permisos de ubicación
+    PermissionStatus locationStatus = await Permission.location.status;
+    if (locationStatus.isGranted) {
+      _hasLocationPermission = true;
+    } else {
+      locationStatus = await Permission.location.request();
+      _hasLocationPermission = locationStatus.isGranted;
+    }
+
+    // Verificación y solicitud de permisos de la cámara
+    PermissionStatus cameraStatus = await Permission.camera.status;
+    if (cameraStatus.isGranted) {
+      _hasCameraPermission = true;
+    } else {
+      cameraStatus = await Permission.camera.request();
+      _hasCameraPermission = cameraStatus.isGranted;
+    }
+
+    // Notifica a los oyentes (widgets) sobre el cambio en el estado
+    notifyListeners();
+  }
+
+
+//========================== PROCESO DE TOMAR FOTO DE CAMARA =======================//
+  String _urlImage = "";
+  String get getUrlImage => _urlImage;
+  void setUrlImge(String data) {
+    _urlImage = "";
+    _urlImage = data;
+    // print('IMAGEN URL: $_urlImage');
+
+    notifyListeners();
+  }
+
+
+  bool _errorUrl = true;
+  bool get getErrorUrl => _errorUrl;
+  void setErrorUrl(bool _data) {
+    _errorUrl = _data;
+    notifyListeners();
+  }
+
+  Future eliminaUrlServer(String _url) async {
+    final Map<String, dynamic> _urlImageDelete = {
+      "urls": [
+        {"url": _url}
+      ],
+      "rucempresa": "ULTRA2022"
+    };
+
+    final response = await _api.deleteUrlDelServidor(
+      datos: _urlImageDelete,
+      // token: '${dataUser!.token}',
+    );
+
+    if (response != null) {
+      _errorUrl = true;
+      // setListaUrlse(response['data']);
+      // print('ES LOS URLS: ${response}');
+      setUrlImge('');
+      // image== null;
+
+      // print('las variables : image - $_urlImage');
+      notifyListeners();
+      return 'true';
+      // return response;
+    }
+
+    if (response == null) {
+      _errorUrl = false;
+      print('ES LOS URLS: ${response}');
+      notifyListeners();
+      return 'false';
+    }
+  }
+
+
+//-------------------------------------//
+  ///AGREGAMOS LA IMAGEN EN PANTALLA ////
+  String _url = '';
+  File? _selectedImage;
+
+  File? get selectedImage => _selectedImage;
+
+  void setImage(File image, String _tipo) {
+    _selectedImage = image;
+    _url = _selectedImage!.path;
+
+  // getUrlServer();
+
+    notifyListeners();
+  }
+
+  void clearImage() {
+    _selectedImage = null;
+    notifyListeners();
+  }
+
+  void deleteImage() {
+    if (_selectedImage != null) {
+      _selectedImage!.delete();
+      clearImage();
+    }
+  }
+
+  Future getUrlServer() async {
+    try {
+      final response = await _api.getUrlsServer(_selectedImage, 'fotoperfil');
+
+      if (response != null) {
+        _errorUrl = true;
+        setUrlImge(
+          response.toString(),
+        );
+        notifyListeners();
+        return response;
+      }
+
+      if (response == null) {
+        _errorUrl = false;
+
+        notifyListeners();
+      }
+    } catch (e) {
+      return false;
+    }
+  }
+
+
+
+//*************CREAR FACTURA ******************//
+
+
+
+ Future createPago(BuildContext context) async {
+   final socketService = SocketService();
+    final dataUser = await Auth.instance.getSession();
+  //   DateTime now = DateTime.now();
+  // String formattedDate = "${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}";
+  //  _listaAddPlacas=[];
+  // _listaAddPlacas!.add(_itemAddPlaca);
+
+
+final _nuevoPago =
+ 
+ {
+  "ccId": _infoCuentas['ccId'],
+  "ventaId": _infoCuentas['ventaId'],
+  "ccRucCliente":_infoCuentas['ccRucCliente'],
+  "ccNomCliente":_infoCuentas['ccNomCliente'],
+  "ccFactura":_infoCuentas['ccFactura'],
+  "ccFechaFactura":_infoCuentas['ccFechaFactura'],
+  "ccValorFactura":_infoCuentas['ccValorFactura'],
+  "ccValorRetencion":_infoCuentas['ccValorRetencion'],
+  "ccValorAPagar":_infoCuentas['ccValorAPagar'],
+  "ccFechaAbono":_infoCuentas['ccFechaAbono'],
+  "ccEstado":_infoCuentas['ccEstado'],
+  "ccProcedencia":_infoCuentas['ccProcedencia'],
+  "ccAbono":_infoCuentas['ccAbono'],
+  "ccSaldo":_infoCuentas['ccSaldo'],
+  "ccEmpresa":  dataUser!.usuario,
+  "ccUser":  dataUser.usuario,
+  "ccPagos": [
+    // {
+    //   "ccComprobante": "",
+    //   "ccTipo": "EFECTIVO",
+    //   "ccBanco": "",
+    //   "ccNumero": "0",
+    //   "ccDeposito": "NO",
+    //   "ccValor": "3",
+    //   "ccFechaAbono": "2024-09-24",
+    //   "ccDetalle": "segundo",
+    //   "ccProcedencia": "",
+    //   "ccEstado": "ACTIVO",
+    //   "imprimir": false,
+    //   "ccUsuario": "admin",
+    //   "uuid": "247ccd0e-77d6-408c-99b5-cd86f1f915ac"
+    // },
+    // {
+    //   "ccComprobante": "",
+    //   "ccTipo": "CHEQUE",
+    //   "ccBanco": "",
+    //   "ccNumero": "0",
+    //   "ccDeposito": "NO",
+    //   "ccValor": "2",
+    //   "ccFechaAbono": "2024-09-24",
+    //   "ccDetalle": "",
+    //   "ccProcedencia": "",
+    //   "ccEstado": "ACTIVO",
+    //   "imprimir": false,
+    //   "ccUsuario": dataUser!.usuario, 
+    //   "uuid": "e411584c-fcd3-425e-9f99-6a1f8a8a86c1"
+    // }
+  ],
+  "ccFecReg": _infoCuentas['ccFecReg'],
+  "ccFecUpd": _infoCuentas['ccFecUpd'],
+  "Todos": _infoCuentas['Todos'],
+  "ciudad":_infoCuentas['ciudad'],
+  "sector":_infoCuentas['sector'],
+  "enviarCorreo": false,
+
+       "tabla": "cuentasporcobrar", //DEFECTO
+      "rucempresa": dataUser.rucempresa, // LOGIN
+      "venUser": dataUser.usuario, // login
+      "rol": dataUser.rol, //LOGIN
+};
+
+print('LA DATA PARA IMPRIMIR COMPROBANTE $_nuevoPago');
+
+// socketService.sendMessage('client:actualizarData', _nuevoPago);
+
+
+ }
+
+
+
+
 
 
 }

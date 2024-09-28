@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -2290,9 +2291,180 @@ class ApiProvider {
 
 
 
+  //=========================GET ALL CUENTAS POR COBRAR=====================================//
+  Future getAllCuentasPorCobrar({
+     String? search,
+    int? page,
+    int? cantidad,
+    String? input,
+    bool? orden,
+
+    String? token,
+  }) async {
+    try {
+
+      final url =
+       Uri.parse('$_url/cuentasporcobrar?cantidad=$cantidad&page=$page&search=$search&input=$input&orden=$orden');
+         
+          // Uri.parse('$_url/cajas/?page=0&cantidad=10&search=&input=cajaId&orden=false&estado=DIARIA');
+
+      final dataResp = await _http.get(
+        url,
+        headers: {"x-auth-token": '$token'},
+      );
+
+      if (dataResp.body.isEmpty) {
+        return null;
+      }
+      // print('RESPONSE:ffff ${dataResp.body}');
+      if (dataResp.statusCode == 200) {
+
+
+        final responseData = jsonDecode(dataResp.body);
+
+        return responseData;
+      }
+      if (dataResp.statusCode == 404) {
+        return null;
+      }
+      if (dataResp.statusCode == 401) {
+     
+        return null;
+      }
+    } catch (e) {
+      //  NotificatiosnService.showSnackBarError("SIN 19 ");
+      return null;
+    }
+  }
 
 
 
+
+ //=========================BUSCA  FORMAS DE PAGO =====================================//
+  Future getAllBancos({
+    BuildContext? context,
+
+
+    String? token,
+  }) async {
+    try {
+   
+       final url = Uri.parse('$_url/bancos/filtro/0');
+      
+
+      final dataResp = await _http.get(
+        url,
+        headers: {"x-auth-token": '$token'},
+      );
+
+      if (dataResp.body.isEmpty) {
+        return null;
+      }
+       final responseData = jsonDecode(dataResp.body);
+      // print('RESPONSE: ${dataResp.statusCode}');
+      
+      // print('RESPONSE: ${dataResp.body}');
+      if (dataResp.statusCode == 200) {
+// print('RESPONSE: ${dataResp.body}');
+// print('RESPONSE:DSDSD ${dataResp.body}');
+        // final responseData = AllInformesGuardias.fromJson(dataResp.body);
+
+        return responseData;
+      }
+      if (dataResp.statusCode == 404) {
+        return null;
+      }
+       if (dataResp.statusCode == 409) {
+         snaks.NotificatiosnService.showSnackBarDanger("${responseData["msg"]}");
+        return null;
+      }
+      if (dataResp.statusCode == 401) {
+        // NotificatiosnService.showSnackBarError("Su Sesión ha Expirado");
+        //  Auth.instance.deleteSesion(context!);
+        // Auth.instance.deleteIdRegistro();
+        // Auth.instance.deleteTurnoSesion();
+        return null;
+      }
+    } catch (e) {
+      //  NotificatiosnService.showSnackBarError("SIN 19 ");
+      return null;
+    }
+  }
+
+
+//-------------IMAGEN AL SERVIDOR----------------//
+  Future getUrlsServer(File? _file, String _tipo) async {
+    var url = Uri.parse('$_url/upload_delete_multiple_files/uploadNotToken');
+
+    try {
+      var request = _http.MultipartRequest('POST', url);
+
+      File imageFile = File(_file!.path);
+
+      // Add parameters to the request
+      request.fields['tipo'] = _tipo;
+      request.fields['rucempresa'] = 'ULTRA2022';
+
+      // Add the image file to the request
+      request.files.add(await _http.MultipartFile.fromPath(
+        'archivo',
+        imageFile.path,
+      ));
+
+      // Send the request
+      var response = await request.send();
+
+      var responsed = await _http.Response.fromStream(response);
+
+      if (response.statusCode == 200) {
+        // print('Image responsed.body successfully. ${responsed.body}');
+        Map<String, dynamic> jsonMap = json.decode(responsed.body);
+
+        // Extraer la URL
+        return jsonMap['nombre'];
+      }
+      if (response.statusCode == 404) {
+        return null;
+      }
+      if (response.statusCode == 401) {
+        // Auth.instance.deleteSesion(context!);
+
+        return null;
+      }
+    } catch (e) {
+      print('=== response.statusCode ===> ${e}');
+      return false;
+    }
+
+    // else {
+    //   print('Image upload failed.');
+    // }
+  }
+
+  Future deleteUrlDelServidor({Map<String, dynamic>? datos}) async {
+    final String serverUrl =
+        '$_url/upload_delete_multiple_files/deleteNotToken'; // Reemplaza con la URL correcta
+    final Map<String, dynamic> requestData = datos!;
+
+    try {
+      final response = await _http.post(
+        Uri.parse(serverUrl),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(requestData),
+      );
+
+      if (response.statusCode == 200) {
+        // print('Imagen eliminada exitosamente');
+        return true;
+      } else {
+        // print(
+        //     'Error al eliminar la imagen. Código de estado: ${response.statusCode}');
+        // print('Respuesta del servidor: ${response.body}');
+      }
+    } catch (error) {
+      print('Error al enviar la solicitud: $error');
+    }
+  }
 
 
 }

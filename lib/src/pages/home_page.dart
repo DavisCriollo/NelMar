@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:neitorcont/src/controllers/comprobantes_controller.dart';
+import 'package:neitorcont/src/controllers/cuentas_por_cobrar_controller.dart';
 
 import 'package:neitorcont/src/controllers/home_controller.dart';
 
@@ -317,10 +318,18 @@ class _HomePageState extends State<HomePage> {
                                       size: size,
                                       image: 'assets/imgs/account.png',
                                       label: 'CUENTAS X COBRAR',
-                                      onTap: () => 
-                                        Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) =>
-                                     ListarCuentasPorCobrar(user: widget.user,)))
+                                      onTap: () {
+
+                                         final _ctrl =context.read<CuentasXCobrarController>();
+                                    
+                           _ctrl.resetValorTotal();
+                             _ctrl.buscaAllCuentasPorCobrar(
+                                '',false,0);
+
+                                        return Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context)=>
+                                     ListarCuentasPorCobrar(user: widget.user,)));
+                                      }
                                      
                                     ),
 
