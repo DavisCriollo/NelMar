@@ -1432,7 +1432,7 @@ if (_clienteComprobante.isNotEmpty) {
 }
 }
 
-// print('EL CLIENTE ENCOTRADO > $_clienteComprobante');
+print('EL CLIENTE  > $_clienteComprobante');
   notifyListeners();
   
 }
@@ -1599,6 +1599,8 @@ void setListaDeProductos(List _list){
       return item['invCategoria'] == 'MOTOS';
     } else if (_type == 'VEHICULOS') {
       return item['invCategoria'] == 'VEHICULOS';
+    }else if (_type == 'MATERIALES') {
+      return item['invCategoria'] == 'MATERIALES';
     }
     return false;
   }).toList();
@@ -1626,7 +1628,11 @@ void setListaDeProductos(List _list){
 
 
 //*********ENVIA ITEM PARA CALCULO***********//
+void resetCalculos(){
 
+   _respuestaCalculoItem={};
+   notifyListeners();
+}
 
 Map<String,dynamic> _respuestaCalculoItem={};
 

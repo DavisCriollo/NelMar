@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:neitorcont/src/controllers/caja_controller.dart';
+import 'package:neitorcont/src/controllers/comprobantes_controller.dart';
 import 'package:neitorcont/src/controllers/cuentas_por_cobrar_controller.dart';
 import 'package:neitorcont/src/pages/buscar_productos_varios.dart';
+import 'package:neitorcont/src/services/notifications_service.dart';
 import 'package:neitorcont/src/theme/theme_provider.dart';
 import 'package:neitorcont/src/utils/letras_mayusculas_minusculas.dart';
 import 'package:neitorcont/src/utils/responsive.dart';
@@ -146,32 +148,61 @@ class _CrearMaterialesState extends State<CrearMateriales> {
                         //   ),
                         //    textAlign: TextAlign.center,
                         // ),
-                        TextFormField(
-                          inputFormatters: [
-                            UpperCaseText(),
-                          ],
-                          decoration: InputDecoration(
-                            label:  const Text( 'Nombre Conductor'),
-                            // Texto de sugerencia dentro del campo
-                            // border: OutlineInputBorder(), // Opcional: Añade un borde al campo
-                            helperStyle: TextStyle(color: Colors.grey.shade50),
-                          ),
-                          style: TextStyle(
-                            fontSize:
-                                size.iScreen(2.3), // Ajusta el tamaño de la letra
-                            // fontWeight: FontWeight.bold, // Opcional: Aplica un peso de fuente más grueso
-                          ),
-                          textAlign: TextAlign.left,
-                        onChanged: (text) {
-                      ctrl.setNombreConductor(text);
-                    },
-                    validator: (text) {
-                      if (text!.trim().isNotEmpty) {
-                        return null;
-                      } else {
-                        return 'Ingrese nombre de Conductor';
-                      }
-                    },
+                    //     TextFormField(
+                    //       inputFormatters: [
+                    //         UpperCaseText(),
+                    //       ],
+                    //       decoration: InputDecoration(
+                    //         label:  const Text( 'Nombre Conductor'),
+                    //         // Texto de sugerencia dentro del campo
+                    //         // border: OutlineInputBorder(), // Opcional: Añade un borde al campo
+                    //         helperStyle: TextStyle(color: Colors.grey.shade50),
+                    //       ),
+                    //       style: TextStyle(
+                    //         fontSize:
+                    //             size.iScreen(2.3), // Ajusta el tamaño de la letra
+                    //         // fontWeight: FontWeight.bold, // Opcional: Aplica un peso de fuente más grueso
+                    //       ),
+                    //       textAlign: TextAlign.left,
+                    //     onChanged: (text) {
+                    //   ctrl.setNombreConductor(text);
+                    // },
+                    // validator: (text) {
+                    //   if (text!.trim().isNotEmpty) {
+                    //     return null;
+                    //   } else {
+                    //     return 'Ingrese nombre de Conductor';
+                    //   }
+                    // },
+                    Consumer<CuentasXCobrarController>(
+  builder: (context, provider, child) {
+    return TextFormField(
+      initialValue: provider.getClienteComprobante['perNombre'], // Carga inicial desde el Provider
+      inputFormatters: [
+        UpperCaseText(),
+      ],
+      decoration: InputDecoration(
+        label: const Text('Nombre Conductor'),
+        helperStyle: TextStyle(color: Colors.grey.shade50),
+      ),
+      style: TextStyle(
+        fontSize: size.iScreen(2.3), // Ajusta el tamaño de la letra
+      ),
+      textAlign: TextAlign.left,
+      onChanged: (text) {
+        provider.setNombreConductor(text); // Actualiza el valor en el Provider
+      },
+      validator: (text) {
+        if (text!.trim().isNotEmpty) {
+          return null;
+        } else {
+          return 'Ingrese nombre de Conductor';
+        }
+      },
+    );
+  },
+
+
 
 
 
@@ -216,13 +247,13 @@ class _CrearMaterialesState extends State<CrearMateriales> {
                           ),
                           textAlign: TextAlign.left,
                         onChanged: (text) {
-                      ctrl.setNombreConductor(text);
+                      ctrl.setDestino(text);
                     },
                     validator: (text) {
                       if (text!.trim().isNotEmpty) {
                         return null;
                       } else {
-                        return 'Ingrese nombre de Conductor';
+                        return 'Ingrese Destino';
                       }
                     },
 
@@ -260,8 +291,21 @@ class _CrearMaterialesState extends State<CrearMateriales> {
                         borderRadius: BorderRadius.circular(8),
                         child: GestureDetector(
                           onTap: () {
-                                 ctrl.setCantidad(1);
-                            ctrl.buscaAllProductos( ctrl.getTypeAction.toString());
+                                  //******************************************//
+                                   final _ctrl= context.read<ComprobantesController>();
+                                  
+  // __ctrl.setExistCliente(true);
+   _ctrl.setTotal();
+   _ctrl.setTarifa({});
+  //  _ctrl.setTipoDocumento('');
+    _ctrl.setPrecio(0);
+                         
+   _ctrl.setTypeAction('MATERIALES');
+
+
+ //******************************************//
+                                 _ctrl.setCantidad(1);
+                            _ctrl.buscaAllProductos( _ctrl.getTypeAction.toString());
             
                             // // _buscarMascota(context, size);
             
@@ -327,7 +371,7 @@ class _CrearMaterialesState extends State<CrearMateriales> {
                   //   },
                   // ),
             
-                          Consumer<CuentasXCobrarController>(builder: (_, value, __) { 
+                          Consumer<ComprobantesController>(builder: (_, value, __) { 
                   return  
                   value.getRespuestaCalculoItem.isNotEmpty
                  ? Wrap(
@@ -438,6 +482,118 @@ class _CrearMaterialesState extends State<CrearMateriales> {
                 
                  },),
                  
+                 //***********************************************/
+                  SizedBox(
+                    height: size.iScreen(1.0),
+                  ),
+                  //*****************************************/
+            
+                     
+            
+                  Container(
+                    width: size.wScreen(100),
+                    margin: EdgeInsets.only(right: size.iScreen(1.0)),
+                  
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                         
+         
+           
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                         
+                          children: [
+                            Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Container(
+                                      width: size.iScreen(10.0),
+            
+                                      // color: Colors.blue,
+                                      child: Text('SubTotal: ',
+                                          style: GoogleFonts.lexendDeca(
+                                              fontSize: size.iScreen(2.0),
+                                              fontWeight: FontWeight.normal,
+                                              color: Colors.grey), textAlign: TextAlign.right,),
+                                    ),
+                                    Consumer<ComprobantesController>(
+                                  builder: (_, valueSubTotal, __) {
+                                    return Text(valueSubTotal.getRespuestaCalculoItem['venSubTotal']==null?' 0.00':' \$ ${valueSubTotal.getRespuestaCalculoItem['venSubTotal']}',
+                                        style: GoogleFonts.lexendDeca(
+                                            fontSize: size.iScreen(2.0),
+                                            fontWeight: FontWeight.bold,
+                                            
+                                            ));
+                                  },
+                                ),
+                                  ],
+                                ),
+                                 Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                   Container(
+                                      width: size.iScreen(9.0),
+            
+                                      // color: Colors.blue,
+                                      child: Text('Iva: ',
+                                          style: GoogleFonts.lexendDeca(
+                                              fontSize: size.iScreen(2.0),
+                                              fontWeight: FontWeight.normal,
+                                              color: Colors.grey), textAlign: TextAlign.right,),
+                                    ),
+                                    Consumer<ComprobantesController>(
+                                  builder: (_, valueIvaTotal, __) {
+                                    return Text(valueIvaTotal.getRespuestaCalculoItem['venTotalIva']==null?'  0.00':' \$ ${valueIvaTotal.getRespuestaCalculoItem['venTotalIva']}',
+                                        style: GoogleFonts.lexendDeca(
+                                            fontSize: size.iScreen(2.0),
+                                            fontWeight: FontWeight.bold,
+                                            ));
+                                  },
+                                ),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Container(
+                                  width: size.iScreen(11.0),
+            
+                                      // color: Colors.blue,
+                                      child: Text('Total: ',
+                                          style: GoogleFonts.lexendDeca(
+                                              fontSize: size.iScreen(2.5),
+                                              fontWeight: FontWeight.normal,
+                                              color: Colors.grey),
+                                              textAlign: TextAlign.right,),
+                                    ),
+                                    Consumer<ComprobantesController>(
+                                  builder: (_, valueTotal, __) {
+                                    return Text(valueTotal.getRespuestaCalculoItem['venTotal']==null?' 0.00':' \$ ${valueTotal.getRespuestaCalculoItem['venTotal']}',
+                                        style: GoogleFonts.lexendDeca(
+                                            fontSize: size.iScreen(2.5),
+                                            fontWeight: FontWeight.bold,
+                                           ));
+                                  },
+                                ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                
+                  //***********************************************/
+                  SizedBox(
+                    height: size.iScreen(3.0),
+                  ),
+                  //*****************************************/
+
 
 
 
@@ -464,36 +620,44 @@ class _CrearMaterialesState extends State<CrearMateriales> {
     if (!isValid) return;
     if (isValid) {
 
+        
+  final _ctrl=context.read<ComprobantesController>();
+
  
 
-      // if (controller.getTipo.isEmpty) {
-      //   NotificatiosnService.showSnackBarDanger('Debe seleccionar Tipo');
-      // } else if (controller.getTipo.isEmpty) {
-      //   NotificatiosnService.showSnackBarDanger(
-      //       'Debe seleccionar Tipo documento');
-      // }
-      // //  else if (controller.getNombreConductor == "") {
-      // //   NotificatiosnService.showSnackBarDanger(
-      // //       'Debe ingresar nombre de Conductor');
-      // // }
-      // else if (controller.getAutorizacion.isEmpty) {
-      //   NotificatiosnService.showSnackBarDanger(
-      //       'Debe agregar Autorización');
-      // } else if (controller.getDetalle.isEmpty) {
-      //   NotificatiosnService.showSnackBarDanger(
-      //       'Debe agregar Detalle');
-      // }
-      // else{
+      if (controller.getPlaca.isEmpty) {
+        NotificatiosnService.showSnackBarDanger('Debe agregar Placa');
+      }else if (controller.getNombreConductor.isEmpty) {
+        NotificatiosnService.showSnackBarDanger('Debe agregar Conductor');
+      }else if (controller.getDestino.isEmpty) {
+        NotificatiosnService.showSnackBarDanger('Debe agregar Destino');
+      }else if (_ctrl.getRespuestaCalculoItem.isEmpty) {
+        NotificatiosnService.showSnackBarDanger('Debe agregar Material');
+      }
+      else{
           
-      //     controller.createCaja(context);
-      //      controller.setInfoBusquedaCajasPaginacion([]);
-      //                      controller.resetValorTotal();
-      //                        controller.buscaAllCajaPaginacion(
-      //                           '',false,0);
+        
+
+               controller.setFormaDePago('EFECTIVO');
+                                controller.setTipoDeTransaccion('D');
+
+
+
+
+          // print('RESPUESTA DEL CALCULO : ${_ctrl.getRespuestaCalculoItem}');
+
+             
+
+              controller.createMaterial(context,_ctrl.getRespuestaCalculoItem);
+
+                           controller.resetValorTotal();
+                           controller.buscaAllMaterialesPaginacion('',false,0);
+                            
+                            Navigator.pop(context);
                                
 
 
-      // }
+      }
 
     }
   }

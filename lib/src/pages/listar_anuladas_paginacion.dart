@@ -331,7 +331,7 @@ class _ListarAnuladasPaginacionState extends State<ListarAnuladasPaginacion> {
           ],
            onTap: (index) {
             final ctrl=context.read<AnuladasController>();
-                        print('EL INDICE :$index');
+                        // print('EL INDICE :$index');
                        ctrl.setTabIndex(index);
                         if (  index==0) {
                           ctrl. setInfoBusquedaAnuladasPaginacion([]);

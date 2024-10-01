@@ -322,24 +322,24 @@ _latestResponse={};
         _ctrlPropietario.buscaAllPropietarios('');
         
          _latestResponse=data;
-          print('DATA PROPIETARIO: $_latestResponse');
+          // print('DATA PROPIETARIO: $_latestResponse');
         //  _showSnackbar('Registro guardado exitosamente');
          notifyListeners();
         }
         // Condición para la tabla 'factura'
-    else if (data['tabla'] == 'ventas' && data['venUser']==dataUser!.usuario && data['rucempresa']==dataUser.rucempresa) {
+    if (data['tabla'] == 'ventas' && data['venUser']==dataUser!.usuario && data['rucempresa']==dataUser.rucempresa) {
        
         // _showSnackbar('Registro guardada exitosamente');
         //==============LA RSPUESTA ===================//
       _latestResponse=data;
-        print('DATA VENTAS: $data');
+        // print('DATA VENTAS: $data');
         notifyListeners();
     } 
-      else if (data['tabla'] == 'caja' && data['cajaUser']==dataUser!.usuario && data['rucempresa']==dataUser.rucempresa) {
+    if (data['tabla'] == 'caja' && data['cajaUser']==dataUser!.usuario && data['rucempresa']==dataUser.rucempresa) {
         // _showSnackbar('Caja guardada exitosamente');
         //==============LA RSPUESTA ===================//
         _latestResponse=data;
-          print('DATA CAJA: $_latestResponse');
+          // print('DATA CAJA: $_latestResponse');
         notifyListeners();
     }
         
@@ -386,7 +386,8 @@ _latestResponse={};
         final _ctrlComprobante=ComprobantesController();
         _showSnackbar('Registro eliminado exitosamente');
         //==============LA RSPUESTA ===================//
-        print('$data');
+        print('TABLA ${data['tabla']}');
+          print('$data');
     
         notifyListeners();
     } 

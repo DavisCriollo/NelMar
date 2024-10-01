@@ -74,7 +74,7 @@ print('el monto ES: $_monto');
   void setAutorizacion(String _autori) {
    _autorizacion =''; 
    _autorizacion = _autori;
-     print('==_autorizacion===> $_autorizacion');
+    //  print('==_autorizacion===> $_autorizacion');
     notifyListeners();
   }
 
@@ -86,7 +86,7 @@ print('el monto ES: $_monto');
   void setDetalle(String _det) {
    _detalle =''; 
    _detalle = _det;
-     print('==_detalle===> $_detalle');
+    //  print('==_detalle===> $_detalle');
     notifyListeners();
   }
 

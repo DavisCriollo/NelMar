@@ -388,7 +388,7 @@ bool printBinded = false;
             ),
           ],
            onTap: (index) {
-                        print('EL INDICE :$index');
+                        // print('EL INDICE :$index');
                        ctrl.setTabIndex(index);
                         if (  index==0) {
                           ctrl. setInfoBusquedaFacturasPaginacion([]);

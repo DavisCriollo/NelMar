@@ -439,52 +439,52 @@ Container(
                                                       // message: const Text('Your options are '),
                                                       actions: <Widget>[
                                                              
-                                                             _prefacturas['ccEstado'] != 'CANCELADO'?
-                                                               CupertinoActionSheetAction(
-                                                          child: Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .center,
-                                                            children: [
-                                                              Container(
-                                                                margin: EdgeInsets.only(
-                                                                    right: size
-                                                                        .iScreen(
-                                                                            2.0)),
-                                                                child: Text(
-                                                                  'Realizar Pago',
-                                                                  style: GoogleFonts.lexendDeca(
-                                                                      fontSize: size
-                                                                          .iScreen(
-                                                                              1.8),
-                                                                      color: Colors
-                                                                          .black87,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .normal),
-                                                                ),
-                                                              ),
-                                                               Icon(
-                                                                FontAwesomeIcons
-                                                                    .handHoldingUsd,
+                                //                              _prefacturas['ccEstado'] != 'CANCELADO'?
+                                //                                CupertinoActionSheetAction(
+                                //                           child: Row(
+                                //                             mainAxisAlignment:
+                                //                                 MainAxisAlignment
+                                //                                     .center,
+                                //                             children: [
+                                //                               Container(
+                                //                                 margin: EdgeInsets.only(
+                                //                                     right: size
+                                //                                         .iScreen(
+                                //                                             2.0)),
+                                //                                 child: Text(
+                                //                                   'Realizar Pago',
+                                //                                   style: GoogleFonts.lexendDeca(
+                                //                                       fontSize: size
+                                //                                           .iScreen(
+                                //                                               1.8),
+                                //                                       color: Colors
+                                //                                           .black87,
+                                //                                       fontWeight:
+                                //                                           FontWeight
+                                //                                               .normal),
+                                //                                 ),
+                                //                               ),
+                                //                                Icon(
+                                //                                 FontAwesomeIcons
+                                //                                     .handHoldingUsd,
                                                                     
-                                                                color: Colors.green,
-                                                                 size: size.iScreen(3.5),
-                                                              )
-                                                            ],
-                                                          ),
-                                                          onPressed: () {
-                                                             Navigator.pop(context);
-                                                            provider.setTipo('EFECTIVO');
-                                                             provider.setBanco('');
-                                                              provider.setItemDeposito('NO');
-                                                            provider.setInfoCuentas(_prefacturas);
-                                                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context)=>
-                                     CrearpagoCxC()));
+                                //                                 color: Colors.green,
+                                //                                  size: size.iScreen(3.5),
+                                //                               )
+                                //                             ],
+                                //                           ),
+                                //                           onPressed: () {
+                                //                              Navigator.pop(context);
+                                //                             provider.setTipo('EFECTIVO');
+                                //                              provider.setBanco('');
+                                //                               provider.setItemDeposito('NO');
+                                //                             provider.setInfoCuentas(_prefacturas);
+                                //                             Navigator.of(context).push(MaterialPageRoute(
+                                // builder: (context)=>
+                                //      CrearpagoCxC()));
                                                           
-                                                          },
-                                                        ):Container(),
+                                //                           },
+                                //                         ):Container(),
                                                                 
                                                                 
                                                                 

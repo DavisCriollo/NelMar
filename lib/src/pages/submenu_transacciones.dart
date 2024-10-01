@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:neitorcont/src/controllers/anuladas_controller.dart';
 import 'package:neitorcont/src/controllers/caja_controller.dart';
 import 'package:neitorcont/src/controllers/comprobantes_controller.dart';
+import 'package:neitorcont/src/controllers/cuentas_por_cobrar_controller.dart';
 import 'package:neitorcont/src/controllers/facturas_controller.dart';
 import 'package:neitorcont/src/controllers/notas_creditos_controller.dart';
 import 'package:neitorcont/src/controllers/prefacturas_controller.dart';
@@ -9,7 +10,10 @@ import 'package:neitorcont/src/controllers/proformas_controller.dart';
 import 'package:neitorcont/src/models/sesison_model.dart';
 import 'package:neitorcont/src/pages/crear_caja.dart';
 import 'package:neitorcont/src/pages/crear_comprobante_print.dart';
+import 'package:neitorcont/src/pages/crear_materiales.dart';
 import 'package:neitorcont/src/pages/lista_caja_paginacion.dart';
+import 'package:neitorcont/src/pages/lista_cuentas_por_cobrar.dart';
+import 'package:neitorcont/src/pages/lista_materiales.dart';
 import 'package:neitorcont/src/pages/listar_anuladas_paginacion.dart';
 import 'package:neitorcont/src/pages/listar_facturas.dart';
 import 'package:neitorcont/src/pages/listar_facturas_paginacion.dart';
@@ -54,7 +58,10 @@ class SubmenuTransacciones extends StatelessWidget {
               ),
             ),
             child: Center(
-                      child: Wrap(children: [
+                      child: Wrap(
+                        alignment: WrapAlignment.center,
+                        
+                        children: [
                         ElementosSubmenu(
                           enabled: true,
                           size: size,
@@ -268,7 +275,82 @@ class SubmenuTransacciones extends StatelessWidget {
                                      ListarAnuladasPaginacion(user: user,)));
                           },
                         ),
-                         
+                             ElementosSubmenu(
+                          enabled: true,
+                          size: size,
+                          image: 'assets/imgs/account.png',
+                          label: 'CUENTAS X COBRAR',
+                          color: Colors.cyan,
+                          // onTap: () => Navigator.pushNamed(context, 'mascotas'),
+                          onTap: () {
+
+
+                 
+//   final _ctrl =context.read<ComprobantesController>();
+//                           _ctrl.resetListasProdutos();
+//                           _ctrl.resetPlacas();
+//                                 _ctrl.setDocumento('');
+                                 
+//                                      //*************** RESET LA VARIABLE DE RESPONSE SOCKET***************************//
+//     final ctrlSocket=context.read<SocketService>();
+//      ctrlSocket.resetResponseSocket();
+//       //******************************************//
+
+//                                 _ctrl.setFacturaOk(false);
+//                                  _ctrl.setExistCliente(true);
+//                                    _ctrl.setFormaDePago('EFECTIVO');
+//                                      final ctrl =context.read<CuentasXCobrarController>();
+//                                 ctrl.setTipoDeTransaccion('D');
+//    ctrl.setClienteComprbante({
+// 			"perId": 1,
+// 			"perNombre": "",
+// 			"perDocNumero": "9999999999999",
+// 			"perDocTipo": "RUC",
+// 			"perTelefono": "0000000001",
+// 			"perDireccion": "s/n",
+// 			"perEmail": [
+// 				"sin@sincorreo.com"
+// 			],
+// 			"perCelular": [],
+// 			"perOtros": [
+				
+// 			]
+// 		});
+
+//                               _ctrl.setTotal();
+//                               _ctrl.setTarifa({});
+//                                _ctrl.setTipoDocumento('');
+//                            _ctrl.getAllFormaPago();
+//                            _ctrl.setPrecio(0);
+//                            _ctrl.setCantidad(1);
+//                        _ctrl.setTypeAction('MATERIALES');
+
+
+
+
+
+
+// ctrl.buscaAllMaterialesPaginacion('',false,0);
+
+//           Navigator.of(context).push(MaterialPageRoute(
+//                                 builder: (context) =>
+//                                      ListarMaterialesPaginacion(
+                                     
+//                                       user: user,)));
+
+
+               final _ctrl =context.read<CuentasXCobrarController>();
+                                    
+                           _ctrl.resetValorTotal();
+                             _ctrl.buscaAllCuentasPorCobrar(
+                                '',false,0);
+
+                                        return Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context)=>
+                                     ListarCuentasPorCobrar(user: user,)));
+
+                          },
+                        ),
                      
                       ]),
                     )

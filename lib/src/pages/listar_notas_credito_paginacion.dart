@@ -319,7 +319,7 @@ class _ListarNotasCreditoPaginacionState extends State<ListarNotasCreditoPaginac
           ],
            onTap: (index) {
             final ctrl=context.read<NotasCreditosController>();
-                        print('EL INDICE :$index');
+                        // print('EL INDICE :$index');
                        ctrl.setTabIndex(index);
                         if (  index==0) {
                           ctrl. setInfoBusquedaNotasCreditosPaginacion([]);

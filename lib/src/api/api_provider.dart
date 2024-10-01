@@ -2394,7 +2394,7 @@ class ApiProvider {
 
 //-------------IMAGEN AL SERVIDOR----------------//
   Future getUrlsServer(File? _file, String _tipo) async {
-    var url = Uri.parse('$_url/upload_delete_multiple_files/uploadNotToken');
+    var url = Uri.parse('$_url/upload_delete_multiple_files/upload');
 
     try {
       var request = _http.MultipartRequest('POST', url);
@@ -2403,7 +2403,7 @@ class ApiProvider {
 
       // Add parameters to the request
       request.fields['tipo'] = _tipo;
-      request.fields['rucempresa'] = 'ULTRA2022';
+      request.fields['rucempresa'] = 'NEIMAR';
 
       // Add the image file to the request
       request.files.add(await _http.MultipartFile.fromPath(
@@ -2415,15 +2415,17 @@ class ApiProvider {
       var response = await request.send();
 
       var responsed = await _http.Response.fromStream(response);
-
+        print('Responsed.body code. ${response.statusCode}');
+  print('Responsed.body only. ${responsed.body}');
       if (response.statusCode == 200) {
-        // print('Image responsed.body successfully. ${responsed.body}');
+        print('Image responsed.body successfully. ${responsed.body}');
         Map<String, dynamic> jsonMap = json.decode(responsed.body);
 
         // Extraer la URL
         return jsonMap['nombre'];
       }
       if (response.statusCode == 404) {
+        
         return null;
       }
       if (response.statusCode == 401) {
@@ -2443,7 +2445,11 @@ class ApiProvider {
 
   Future deleteUrlDelServidor({Map<String, dynamic>? datos}) async {
     final String serverUrl =
-        '$_url/upload_delete_multiple_files/deleteNotToken'; // Reemplaza con la URL correcta
+        // '$_url/upload_delete_multiple_files/deleteNotToken'; // Reemplaza con la URL correcta
+   
+   		"https://documentos.neitor.com/contable/ccComprobante/NEIMAR/";
+   
+   
     final Map<String, dynamic> requestData = datos!;
 
     try {
@@ -2454,7 +2460,9 @@ class ApiProvider {
       );
 
       if (response.statusCode == 200) {
-        // print('Imagen eliminada exitosamente');
+        print('Imagen eliminada exitosamente');
+        print('Imagen eliminada exitosamente');
+
         return true;
       } else {
         // print(
@@ -2466,5 +2474,50 @@ class ApiProvider {
     }
   }
 
+
+  //=========================GET ALL facturas PAGINACION=====================================//
+  Future getAllMaterialesPaginacion({
+     String? search,
+    int? page,
+    int? cantidad,
+    String? input,
+    bool? orden,
+    String? estado,
+    String? token,
+  }) async {
+    try {
+
+      final url =
+          // Uri.parse('$_url/proveedores/filtro/0?search=$search&estado=$estado');
+          Uri.parse('$_url/ventas?cantidad=$cantidad&page=$page&search=$search&input=$input&orden=$orden&estado=$estado');
+
+      final dataResp = await _http.get(
+        url,
+        headers: {"x-auth-token": '$token'},
+      );
+
+      if (dataResp.body.isEmpty) {
+        return null;
+      }
+      // print('RESPONSE: ${dataResp.body}');
+      if (dataResp.statusCode == 200) {
+
+
+        final responseData = jsonDecode(dataResp.body);
+
+        return responseData;
+      }
+      if (dataResp.statusCode == 404) {
+        return null;
+      }
+      if (dataResp.statusCode == 401) {
+     
+        return null;
+      }
+    } catch (e) {
+      //  NotificatiosnService.showSnackBarError("SIN 19 ");
+      return null;
+    }
+  }
 
 }

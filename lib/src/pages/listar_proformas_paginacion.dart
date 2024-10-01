@@ -705,7 +705,7 @@ bool printBinded = false;
             ),
           ],
            onTap: (index) {
-                        print('EL INDICE :$index');
+                        // print('EL INDICE :$index');
                         final ctrl=context.read<ProformasController>();
                        ctrl.setTabIndex(index);
                         if (  index==0) {

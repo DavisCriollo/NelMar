@@ -1054,7 +1054,7 @@ _fechaAbono(BuildContext context, CuentasXCobrarController controller,ThemeProvi
                       //  NotificatiosnService.showSnackBarDanger(' SI TIENE PERMISO DE CAMARA');
                          final image = await _getImage(context, ImageSource.camera);
                     if (image != null) {
-                      _controller.setImage(image,'fotocasa');
+                      _controller.setImage(image);
                     }
                     // Navigator.pop(context);
                     } else {
@@ -1096,7 +1096,7 @@ _fechaAbono(BuildContext context, CuentasXCobrarController controller,ThemeProvi
                       //  NotificatiosnService.showSnackBarDanger(' SI TIENE PERMISO DE CAMARA');
                          final image = await _getImage(context, ImageSource.gallery);
                     if (image != null) {
-                      _controller.setImage(image,'fotocasa');
+                      _controller.setImage(image,);
                     }
                     // Navigator.pop(context);
                     } else {

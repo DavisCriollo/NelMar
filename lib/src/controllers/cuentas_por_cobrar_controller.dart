@@ -45,6 +45,17 @@ class CuentasXCobrarController extends ChangeNotifier {
     notifyListeners();
   }
 
+  //================== DESTINO  ==========================//
+  String _destino = '';
+  String get getDestino  => _destino;
+
+  void setDestino(String _name) {
+   _destino =''; 
+   _destino = _name;
+     print('=Destino===> $_destino');
+    notifyListeners();
+  }
+
 
   //================================INPUT   CANTIDAD=============================================//
   double _cantidad =1;
@@ -336,7 +347,7 @@ List<dynamic> get allItemsFilters => _allItemsFilters;
 void setListFilter(List<dynamic> _list) {
   _originalItemsFilters = List.from(_list); // Almacenar la lista original
   _allItemsFilters = List.from(_list); // Inicialmente, la lista mostrada es igual a la original
-  // print('LA LISTA _allItemsFilters: $_allItemsFilters');
+  print('LA LISTA _allItemsFilters: $_allItemsFilters');
   notifyListeners();
 }
 
@@ -779,7 +790,7 @@ print('el monto ES: $_valor');
   void setUrlImge(String data) {
     _urlImage = "";
     _urlImage = data;
-    // print('IMAGEN URL: $_urlImage');
+    print('IMAGEN URL: $_urlImage');
 
     notifyListeners();
   }
@@ -797,7 +808,7 @@ print('el monto ES: $_valor');
       "urls": [
         {"url": _url}
       ],
-      "rucempresa": "ULTRA2022"
+      "rucempresa": "NEIMAR"
     };
 
     final response = await _api.deleteUrlDelServidor(
@@ -834,11 +845,11 @@ print('el monto ES: $_valor');
 
   File? get selectedImage => _selectedImage;
 
-  void setImage(File image, String _tipo) {
+  void setImage(File image,) {
     _selectedImage = image;
     _url = _selectedImage!.path;
 
-  // getUrlServer();
+  getUrlServer();
 
     notifyListeners();
   }
@@ -856,8 +867,10 @@ print('el monto ES: $_valor');
   }
 
   Future getUrlServer() async {
+      final dataUser = await Auth.instance.getSession();
+    const tipo='ccComprobante';
     try {
-      final response = await _api.getUrlsServer(_selectedImage, 'fotoperfil');
+      final response = await _api.getUrlsServer(_selectedImage, tipo);
 
       if (response != null) {
         _errorUrl = true;
@@ -884,89 +897,736 @@ print('el monto ES: $_valor');
 
 
 
- Future createPago(BuildContext context) async {
+//  Future createPago(BuildContext context) async {
+//    final socketService = SocketService();
+//     final dataUser = await Auth.instance.getSession();
+//   //   DateTime now = DateTime.now();
+//   // String formattedDate = "${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}";
+//   //  _listaAddPlacas=[];
+//   // _listaAddPlacas!.add(_itemAddPlaca);
+
+
+// final _nuevoPago =
+ 
+//  {
+//   "ccId": _infoCuentas['ccId'],
+//   "ventaId": _infoCuentas['ventaId'],
+//   "ccRucCliente":_infoCuentas['ccRucCliente'],
+//   "ccNomCliente":_infoCuentas['ccNomCliente'],
+//   "ccFactura":_infoCuentas['ccFactura'],
+//   "ccFechaFactura":_infoCuentas['ccFechaFactura'],
+//   "ccValorFactura":_infoCuentas['ccValorFactura'],
+//   "ccValorRetencion":_infoCuentas['ccValorRetencion'],
+//   "ccValorAPagar":_infoCuentas['ccValorAPagar'],
+//   "ccFechaAbono":_infoCuentas['ccFechaAbono'],
+//   "ccEstado":_infoCuentas['ccEstado'],
+//   "ccProcedencia":_infoCuentas['ccProcedencia'],
+//   "ccAbono":_infoCuentas['ccAbono'],
+//   "ccSaldo":_infoCuentas['ccSaldo'],
+//   "ccEmpresa":  dataUser!.usuario,
+//   "ccUser":  dataUser.usuario,
+//   "ccPagos": [
+//     // {
+//     //   "ccComprobante": "",
+//     //   "ccTipo": "EFECTIVO",
+//     //   "ccBanco": "",
+//     //   "ccNumero": "0",
+//     //   "ccDeposito": "NO",
+//     //   "ccValor": "3",
+//     //   "ccFechaAbono": "2024-09-24",
+//     //   "ccDetalle": "segundo",
+//     //   "ccProcedencia": "",
+//     //   "ccEstado": "ACTIVO",
+//     //   "imprimir": false,
+//     //   "ccUsuario": "admin",
+//     //   "uuid": "247ccd0e-77d6-408c-99b5-cd86f1f915ac"
+//     // },
+//     // {
+//     //   "ccComprobante": "",
+//     //   "ccTipo": "CHEQUE",
+//     //   "ccBanco": "",
+//     //   "ccNumero": "0",
+//     //   "ccDeposito": "NO",
+//     //   "ccValor": "2",
+//     //   "ccFechaAbono": "2024-09-24",
+//     //   "ccDetalle": "",
+//     //   "ccProcedencia": "",
+//     //   "ccEstado": "ACTIVO",
+//     //   "imprimir": false,
+//     //   "ccUsuario": dataUser!.usuario, 
+//     //   "uuid": "e411584c-fcd3-425e-9f99-6a1f8a8a86c1"
+//     // }
+//   ],
+//   "ccFecReg": _infoCuentas['ccFecReg'],
+//   "ccFecUpd": _infoCuentas['ccFecUpd'],
+//   "Todos": _infoCuentas['Todos'],
+//   "ciudad":_infoCuentas['ciudad'],
+//   "sector":_infoCuentas['sector'],
+//   "enviarCorreo": false,
+
+//        "tabla": "cuentasporcobrar", //DEFECTO
+//       "rucempresa": dataUser.rucempresa, // LOGIN
+//       "venUser": dataUser.usuario, // login
+//       "rol": dataUser.rol, //LOGIN
+// };
+
+// print('LA DATA PARA IMPRIMIR COMPROBANTE $_nuevoPago');
+
+// // socketService.sendMessage('client:actualizarData', _nuevoPago);
+
+
+//  }
+
+
+//================================SELECCIONAMOS EL COLOR=============================================//
+ String? _tipoDeTransaccion = '';
+  String? get getTipoDeTransaccion => _tipoDeTransaccion;
+
+  void setTipoDeTransaccion(String? value) {
+    _tipoDeTransaccion = '';
+  _tipoDeTransaccion = value;
+    // print('==_tipoDeTransaccion ===> $_tipoDeTransaccion');
+    notifyListeners();
+  }
+
+
+
+//============================= BUSCA CLIENTE COMPROBANTES  ================================//
+  List? _listaAddPlacas = [];
+  List? get getlistaAddPlacas => _listaAddPlacas;
+
+void agregaListaPlacas( ) {
+    _listaAddPlacas!.add(_placa);
+
+    notifyListeners();
+  }
+Map<String,dynamic> _clienteComprobante={};
+Map<String,dynamic> get getClienteComprobante=>_clienteComprobante;
+void setClienteComprbante(Map<String,dynamic> _info){
+  _clienteComprobante={};
+_clienteComprobante.addAll(_info);
+
+
+if (_clienteComprobante.isNotEmpty) {
+   _listaAddPlacas=[];
+  for (var item in _clienteComprobante['perOtros']) {
+   _listaAddPlacas!.add(item);
+  
+}
+}
+// if (_clienteComprobante.isNotEmpty) {
+//    _listaAddCorreos=[];
+//   for (var item in _clienteComprobante["perEmail"]) {
+//    _listaAddCorreos!.add(item);
+  
+// }
+
+
+// print('EL CLIENTE ENCOTRADO > $_clienteComprobante');
+  notifyListeners();
+  
+}
+
+
+//================== FORMA DE PAGO  ==========================//
+  String _formaDePago = 'EFECTIVO';
+  String get getFormaDePago  => _formaDePago;
+
+  void setFormaDePago(String _forma) {
+   _formaDePago =''; 
+   _formaDePago = _forma;
+    //  print('==_formaDePago===> $_formaDePago');
+    notifyListeners();
+  }
+  //================== CORREO  ==========================//
+  String _correo = 'EFECTIVO';
+  String get getCorreo  => _correo;
+
+  void setCorreo(String _forma) {
+   _correo =''; 
+   _correo = _forma;
+    //  print('==_correo===> $_correo');
+    notifyListeners();
+  }
+//========================== LISTA DE CORREOS  =======================//
+
+  List? _listaAddCorreos = [];
+  List? get getlistaAddCorreos => _listaAddCorreos;
+
+  void agregaListaCorreos() {
+    _listaAddCorreos!.add(_correo);
+
+    notifyListeners();
+  }
+
+  void eliminaCorreo(String? _correo) {
+    _listaAddCorreos!.removeWhere((element) => element == _correo);
+
+    notifyListeners();
+  }
+  resetCorreos(){
+     _listaAddCorreos!.clear();
+  }
+
+
+
+
+
+
+//*********************//
+Map<String, dynamic> _itemsMateriales={};
+
+Map<String, dynamic> get getItemsMateriales=>_itemsMateriales;
+
+void setItemsMateriales(Map<String, dynamic> _item){
+_itemsMateriales={};
+_itemsMateriales.addAll(_item);
+
+}
+
+
+//*************CREAR MATERIAL ******************//
+
+
+
+ Future createMaterial(BuildContext context,Map<String, dynamic> _respuestaCalculoItem) async {
    final socketService = SocketService();
     final dataUser = await Auth.instance.getSession();
-  //   DateTime now = DateTime.now();
-  // String formattedDate = "${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}";
-  //  _listaAddPlacas=[];
-  // _listaAddPlacas!.add(_itemAddPlaca);
+    DateTime now = DateTime.now();
+  String formattedDate = "${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}";
+   _listaAddPlacas=[];
+  _listaAddPlacas!.add(_placa);
 
 
-final _nuevoPago =
- 
+final _nuevoMaterial =
  {
-  "ccId": _infoCuentas['ccId'],
-  "ventaId": _infoCuentas['ventaId'],
-  "ccRucCliente":_infoCuentas['ccRucCliente'],
-  "ccNomCliente":_infoCuentas['ccNomCliente'],
-  "ccFactura":_infoCuentas['ccFactura'],
-  "ccFechaFactura":_infoCuentas['ccFechaFactura'],
-  "ccValorFactura":_infoCuentas['ccValorFactura'],
-  "ccValorRetencion":_infoCuentas['ccValorRetencion'],
-  "ccValorAPagar":_infoCuentas['ccValorAPagar'],
-  "ccFechaAbono":_infoCuentas['ccFechaAbono'],
-  "ccEstado":_infoCuentas['ccEstado'],
-  "ccProcedencia":_infoCuentas['ccProcedencia'],
-  "ccAbono":_infoCuentas['ccAbono'],
-  "ccSaldo":_infoCuentas['ccSaldo'],
-  "ccEmpresa":  dataUser!.usuario,
-  "ccUser":  dataUser.usuario,
-  "ccPagos": [
-    // {
-    //   "ccComprobante": "",
-    //   "ccTipo": "EFECTIVO",
-    //   "ccBanco": "",
-    //   "ccNumero": "0",
-    //   "ccDeposito": "NO",
-    //   "ccValor": "3",
-    //   "ccFechaAbono": "2024-09-24",
-    //   "ccDetalle": "segundo",
-    //   "ccProcedencia": "",
-    //   "ccEstado": "ACTIVO",
-    //   "imprimir": false,
-    //   "ccUsuario": "admin",
-    //   "uuid": "247ccd0e-77d6-408c-99b5-cd86f1f915ac"
-    // },
-    // {
-    //   "ccComprobante": "",
-    //   "ccTipo": "CHEQUE",
-    //   "ccBanco": "",
-    //   "ccNumero": "0",
-    //   "ccDeposito": "NO",
-    //   "ccValor": "2",
-    //   "ccFechaAbono": "2024-09-24",
-    //   "ccDetalle": "",
-    //   "ccProcedencia": "",
-    //   "ccEstado": "ACTIVO",
-    //   "imprimir": false,
-    //   "ccUsuario": dataUser!.usuario, 
-    //   "uuid": "e411584c-fcd3-425e-9f99-6a1f8a8a86c1"
-    // }
-  ],
-  "ccFecReg": _infoCuentas['ccFecReg'],
-  "ccFecUpd": _infoCuentas['ccFecUpd'],
-  "Todos": _infoCuentas['Todos'],
-  "ciudad":_infoCuentas['ciudad'],
-  "sector":_infoCuentas['sector'],
-  "enviarCorreo": false,
-
-       "tabla": "cuentasporcobrar", //DEFECTO
+  "venEmpRegimen": "", // default
+  "venProductosAntiguos": [], // default
+  "optionDocumento": _tipoDeTransaccion, // Indica el tipo de documento: 'F' para FACTURA, 'N' para PREFACTURA y 'P' para PROFORMA
+   "venTotalRetencion": "0.00", // default
+  "venOption": "1", // default 1 porque es nuevo, los otros numeros son para otros caso de editar, ect (1 => nuevo, 2 => copia, 3 => editar, 4 => notacredito)
+  "venTipoDocumento": _tipoDeTransaccion, // Indica el tipo de documento: 'F' para FACTURA, 'N' para PREFACTURA y 'P' para PROFORMA
+   "venIdCliente": _clienteComprobante['perId'], // tomar del endpoint cliente
+  "venRucCliente": _clienteComprobante['perDocNumero'], // tomar del endpoint cliente
+  "venTipoDocuCliente": _clienteComprobante['perDocTipo'], // tomar del endpoint cliente
+  "venNomCliente": _clienteComprobante['perNombre'], // tomar del endpoint cliente
+  "venEmailCliente":_listaAddCorreos ,//_clienteComprobante['perEmail'], // tomar del endpoint cliente
+  "venTelfCliente": _clienteComprobante['perTelefono'], // tomar del endpoint cliente
+  "venCeluCliente": _clienteComprobante['perCelular'], // tomar del endpoint cliente
+  "venDirCliente":_clienteComprobante['perDireccion'], // tomar del endpoint cliente
+   "venEmpRuc": "",// default
+  "venEmpNombre": "",// default
+  "venEmpComercial": "",// default
+  "venEmpDireccion": "",// default
+  "venEmpTelefono": "",// default
+  "venEmpEmail": "",// default
+  "venEmpObligado": "",// default
+   "venFormaPago": _formaDePago, // Método de pago:TARJETA PREPAGO,DINERO ELECTRONICO,TARJETA DEBITO,CHEQUE,DEPOSITO,TRANSFERENCIA,TARJETA DE CREDITO,EFECTIVO
+    "venNumero": "0", // default
+  "venFacturaCredito": "NO", // Indica si la factura es a crédito: 'SI' o 'NO'
+  "venDias": "0", // Número de días de crédito si 'venFacturaCredito' es 'SI'; de lo contrario, asignar 0
+  "venAbono": "0", // Monto del abono; por defecto 0, asignar el valor si existe un abono
+  "venDescPorcentaje": "0", // Porcentaje de descuento; de lo contrario, asignar 0
+    "venOtrosDetalles": _listaAddPlacas, //lista de placas 
+  "venConductor": _nombreConductor,
+  "venObservacion":_destino, // Observaciones sobre la factura; dejar vacío si no hay
+   "venSubTotal12": _respuestaCalculoItem['venSubTotal12'], // obtener del endpoint calcularProducto, por dafault 0
+  "venSubtotal0": _respuestaCalculoItem['venSubtotal0'], // obtener del endpoint calcularProducto, por dafault 0
+  "venDescuento": _respuestaCalculoItem['venDescuento'], // obtener del endpoint calcularProducto, por dafault 0
+  "venSubTotal": _respuestaCalculoItem['venSubTotal'], // obtener del endpoint calcularProducto, por dafault 0
+  "venTotalIva": _respuestaCalculoItem['venTotalIva'], // obtener del endpoint calcularProducto, por dafault 0
+  "venCostoProduccion": _respuestaCalculoItem['venCostoProduccion'], // obtener del endpoint calcularProducto, por dafault 0
+  "venTotal": _respuestaCalculoItem['venTotal'], // obtener del endpoint calcularProducto, por dafault 0
+  "venFechaFactura": formattedDate, // Fecha de emisión de la factura
+  "venNumFactura": "", // default
+  "venNumFacturaAnterior": "", // default
+  "venAutorizacion": "0", // default
+  "venFechaAutorizacion": "", // default
+  "venErrorAutorizacion": "NO", // default
+  "venEstado": "ACTIVA", // default
+  "venEnvio": "NO", // default
+  "fechaSustentoFactura": "", // default
+  "venEmpresa": dataUser!.rucempresa,  //login
+  "venProductos": _respuestaCalculoItem['venProductos'],
+   // obtener del endpoint calcularProducto, por dafault []
+       "tabla": "ventas", //DEFECTO
       "rucempresa": dataUser.rucempresa, // LOGIN
       "venUser": dataUser.usuario, // login
       "rol": dataUser.rol, //LOGIN
 };
 
-print('LA DATA PARA IMPRIMIR COMPROBANTE $_nuevoPago');
+// print('LA DATA PARA IMPRIMIR MATERIALES ${_nuevoMaterial['venProductos']}');
 
-// socketService.sendMessage('client:actualizarData', _nuevoPago);
+socketService.sendMessage('client:guardarData', _nuevoMaterial);
 
 
  }
 
+//===================MATERIALES======================//
 
 
 
+
+//=================================================================================================================//
+  // ================= VARIABLES DE PAGINACION ====================//
+//=================================================================================================================//
+//===================BOTON SEARCH PAGINACION ==========================//
+
+  bool _btnSearchMaterialesPaginacion = false;
+  bool get btnSearchPreFacturaPaginacion => _btnSearchMaterialesPaginacion;
+
+  void setBtnSearchPreFacturaPaginacion(bool action) {
+    _btnSearchMaterialesPaginacion = action;
+    //  print('==_btnSearchCoros===> $_btnSearchPropietarios');
+    notifyListeners();
+  }
+
+  //===================INPUT SEARCH PROPIETARIO==========================//
+  String _nameSearchPreFacturaPaginacion = "";
+  String get nameSearchPreFacturaPaginacion =>
+      _nameSearchPreFacturaPaginacion;
+
+  void onSearchTextPreFacturaPaginacion(String data) {
+    _nameSearchPreFacturaPaginacion = data;
+    //  print('PreFacturaOMBRE:${_nameSearchPreFacturaPaginacion}');
+     }
+//=============================================================================//
+
+
+  List _listaMaterialesPaginacion = [];
+  // List<TipoMulta> get getListaTodosLosTiposDeMultas => _listaTodosLosTiposDeMultas;
+  List get getListaMaterialesPaginacion => _listaMaterialesPaginacion;
+
+
+ double _valorTotalFacturasHoy = 0.00;
+  // List<TipoMulta> get getListaTodosLosTiposDeMultas => _listaTodosLosTiposDeMultas;
+  double get getValorTotalFacturasHoy => _valorTotalFacturasHoy;
+double _valorTotalFacturasAntes = 0.00;
+  // List<TipoMulta> get getListaTodosLosTiposDeMultas => _listaTodosLosTiposDeMultas;
+  double get getValorTotalFacturasAntes => _valorTotalFacturasAntes;
+
+
+void resetValorTotalMateriales(){
+_valorTotalFacturasHoy = 0.00;
+_valorTotalFacturasAntes = 0.00;
+notifyListeners();
+}
+
+
+
+  void setInfoBusquedaMaterialesPaginacion(List data) {
+    _listaMaterialesPaginacion=[];
+    _listaMaterialesPaginacion.addAll(data);
+    // print('Materiales xxx :${_listaMaterialesPaginacion.length}');
+
+   if (_tabIndex==0) {
+  _valorTotalFacturasHoy = 0.0;
+
+// Iterar sobre cada item en la lista
+for (var item in _listaMaterialesPaginacion) {
+  // Asegurarse de que 'venTotal' no sea nulo y sea un valor numérico
+  final venTotal = item['venTotal'];
+  if (venTotal != null) {
+    // Convertir 'venTotal' a un número de tipo double y sumar
+    _valorTotalFacturasHoy += double.tryParse(venTotal.toString()) ?? 0.0;
+  }
+}
+
+// Redondear a 3 decimales
+_valorTotalFacturasHoy = double.parse(_valorTotalFacturasHoy.toStringAsFixed(3));
+
+// Imprimir el valor total
+// print('-->: $_valorTotalFacturasHoy');
+  
+} else {
+_valorTotalFacturasAntes = 0.0;
+
+// Iterar sobre cada item en la lista
+for (var item in _listaMaterialesPaginacion) {
+  // Asegurarse de que 'venTotal' no sea nulo y sea un valor numérico
+  final venTotal = item['venTotal'];
+  if (venTotal != null) {
+    // Convertir 'venTotal' a un número de tipo double y sumar
+    _valorTotalFacturasAntes += double.tryParse(venTotal.toString()) ?? 0.0;
+  }
+}
+
+// Redondear a 3 decimales
+_valorTotalFacturasAntes = double.parse(_valorTotalFacturasAntes.toStringAsFixed(3));
+
+// Imprimir el valor total
+// print('-->: $_valorTotalFacturasAntes');
+
+
+
+}
+
+    notifyListeners();
+  }
+
+  bool? _errorMaterialesPaginacion; // sera nulo la primera vez
+  bool? get getErrorMaterialesPaginacion => _errorMaterialesPaginacion;
+  void setErrorMaterialesPaginacion(bool? value) {
+    _errorMaterialesPaginacion = value;
+    notifyListeners();
+  }
+
+  bool? _error401MaterialesPaginacion = false; // sera nulo la primera vez
+  bool? get getError401MaterialesPaginacion => _error401MaterialesPaginacion;
+  void setError401MaterialesPaginacion(bool? value) {
+    _error401MaterialesPaginacion = value;
+    notifyListeners();
+  }
+
+  bool _isNextMateriales = false;
+  bool get getIsNextMateriales => _isNextMateriales;
+  void setIsNextMateriales(bool _next) {
+    _isNext = _next;
+    // print('_isNext: $_isNext');
+
+    notifyListeners();
+  }
+
+  int? _pageMateriales = 0;
+  int? get getpageMateriales => _pageMateriales;
+  void setPageMateriales(int? _pag) {
+    _page = _pag;
+    // print('_page: $_page');
+
+    notifyListeners();
+  }
+
+  int? _cantidadMateriales = 25;
+  int? get getCantidadMateriales => _cantidadMateriales;
+  void setCantidadMateriales(int? _cant) {
+    _cantidadMateriales = _cant;
+    notifyListeners();
+  }
+
+  String? _nextMateriales = '';
+  String? get getNextMateriales => _nextMateriales;
+  void setNextMateriales(String? _nex) {
+    _next = _nex;
+    notifyListeners();
+  }
+   void resetFormPreFacturas() {
+     setInfoBusquedaMaterialesPaginacion([]);
+  }
+
+  Future buscaAllMaterialesPaginacion(String? _search, bool _isSearch,int tipo) async {
+    final dataUser = await Auth.instance.getSession();
+// print('usuario : ${dataUser!.rucempresa}');
+    final response = await _api.getAllMaterialesPaginacion(
+      search: _search,
+      page: _page,
+      cantidad: _cantidadMateriales,
+      input: 'venId',
+      orden: false,
+      estado:'DESPACHO',
+      token: '${dataUser!.token}',
+    );
+
+    if (response != null) {
+      if (response == 401) {
+        setInfoBusquedaMaterialesPaginacion([]);
+        _error401MaterialesPaginacion = true;
+        notifyListeners();
+        return response;
+      } else {
+        _errorMaterialesPaginacion = true;
+        if (_isSearch == true) {
+          _listaMaterialesPaginacion = [];
+        }
+        List<dynamic> dataSort = response['data']['results'];
+        dataSort.sort((a, b) => b['venFecReg']!.compareTo(a['venFecReg']!));
+
+        setPage(response['data']['pagination']['next']);
+
+
+                //============================//
+
+//           DateTime hoy = DateTime.now();
+  
+//   List listaFiltrada = response['data']['results'].where((element) {
+//     // Convertir la cadena en DateTime
+//     DateTime fechaRegistro = DateTime.parse(element['venFecReg']);
+    
+//     // Comparar solo la parte de la fecha
+//     return fechaRegistro.year == hoy.year &&
+//            fechaRegistro.month == hoy.month &&
+//            fechaRegistro.day == hoy.day;
+//   }).toList();
+
+// for (var item in listaFiltrada) {
+//   print('LA LISTA PRE FACTURAS VERIFICADA : ${item}'); // Solo mostrará los elementos con fecha de hoy
+// }
+
+  
+
+//  DateTime hoy = DateTime.now();
+  
+//   List listaFiltrada = response['data']['results'].where((element) {
+//     // Convertir la cadena en DateTime
+//     DateTime fechaRegistro = DateTime.parse(element['venFecReg']);
+    
+//     // Comparar si la fecha es anterior a hoy
+//     return fechaRegistro.isBefore(DateTime(hoy.year, hoy.month, hoy.day));
+//   }).toList();
+
+//    print('LA LISTA PRE FACTURAS VERIFICADA : ${listaFiltrada}');  // Solo mostrará los elementos con fecha anterior a hoy
+
+        //=============================//
+
+
+
+        // setInfoBusquedaPreFacturasPaginacion(dataSort);
+
+        if (tipo==0) {
+          //  setInfoBusquedaFacturasPaginacion([]);
+          setFacturasMateriales(dataSort);
+          filtrarFacturasDeHoy();
+        } else {
+          //  setInfoBusquedaFacturasPaginacion([]);
+             setFacturasMateriales(dataSort);
+          filtrarFacturasAnteriores();
+        }
+        notifyListeners();
+        return response;
+      }
+
+      //===========================================//
+
+    }
+    if (response == null) {
+      _errorMaterialesPaginacion = false;
+      notifyListeners();
+      return null;
+    }
+  }
+
+List _facturasMateriales = [];
+  List _facturasFiltradasMateriales = [];
+
+  List get facturasFiltradasMateriales => _facturasFiltradasMateriales;
+
+  void setFacturasMateriales(List facturas) {
+    _facturasMateriales = facturas;
+
+
+
+    notifyListeners();
+  }
+
+  // void filtrarFacturasDeHoy() {
+  //   DateTime hoy = DateTime.now();
+  //   String fechaHoy = DateFormat('yyyy-MM-dd').format(hoy);
+
+  //   _facturasFiltradas = _facturas.where((factura) {
+  //     String? fechaFactura = factura['venFecReg'];
+  //     if (fechaFactura != null) {
+  //       String fechaFacturaSoloFecha = fechaFactura.split('T').first;
+  //       return fechaFacturaSoloFecha == fechaHoy;
+  //     }
+  //     return false;
+  //   }).toList();
+  //   // setInfoBusquedaPreFacturasPaginacion(_facturasFiltradas);
+  //   setListFilter( _facturasFiltradas);
+  //   notifyListeners();
+  // }
+
+
+  // void filtrarFacturasAnteriores() {
+  //   DateTime hoy = DateTime.now();
+  //   String fechaHoy = DateFormat('yyyy-MM-dd').format(hoy);
+
+  //   _facturasFiltradas = _facturas.where((factura) {
+  //     String? fechaFactura = factura['venFecReg'];
+  //     if (fechaFactura != null) {
+  //       String fechaFacturaSoloFecha = fechaFactura.split('T').first;
+  //       return fechaFacturaSoloFecha != fechaHoy;
+  //     }
+  //     return false;
+  //   }).toList();
+  //     //  setInfoBusquedaPreFacturasPaginacion(_facturasFiltradas);
+  //        setListFilter( _facturasFiltradas);
+  //   notifyListeners();
+  // }
+//*********************************************************//
+  void filtrarFacturasDeHoy() {
+  DateTime hoy = DateTime.now();  // Fecha actual en hora local
+  String fechaHoy = DateFormat('yyyy-MM-dd').format(hoy);
+
+  _facturasFiltradasMateriales = _facturasMateriales.where((factura) {
+    String? fechaFactura = factura['venFecReg'];
+    if (fechaFactura != null) {
+      // Convertir la fecha de la factura a un DateTime y luego a la hora local
+      DateTime fechaFacturaDateTime = DateTime.parse(fechaFactura).toLocal();
+      String fechaFacturaSoloFecha = DateFormat('yyyy-MM-dd').format(fechaFacturaDateTime);
+      return fechaFacturaSoloFecha == fechaHoy;
+    }
+    return false;
+  }).toList();
+
+  // Actualizar la lista filtrada
+  setListFilterMateriales(_facturasFiltradasMateriales);
+  notifyListeners();
+}
+// void filtrarFacturasAnteriores() {
+//   DateTime hoy = DateTime.now();  // Fecha actual en hora local
+//   String fechaHoy = DateFormat('yyyy-MM-dd').format(hoy);
+
+//   _facturasFiltradasMateriales = _facturasMateriales.where((factura) {
+//     String? fechaFactura = factura['venFecReg'];
+//     if (fechaFactura != null) {
+//       // Convertir la fecha de la factura a DateTime y luego a la hora local
+//       DateTime fechaFacturaDateTime = DateTime.parse(fechaFactura).toLocal();
+//       String fechaFacturaSoloFecha = DateFormat('yyyy-MM-dd').format(fechaFacturaDateTime);
+//       return fechaFacturaSoloFecha != fechaHoy;  // Filtrar las fechas anteriores o diferentes a hoy
+//     }
+//     return false;
+//   }).toList();
+
+//   // Actualizar la lista filtrada
+//   setListFilterMateriales(_facturasFiltradasMateriales);
+//   notifyListeners();
+// }
+void filtrarFacturasAnteriores() {
+  DateTime hoy = DateTime.now();  // Fecha actual en hora local
+  String fechaHoy = DateFormat('yyyy-MM-dd').format(hoy);
+
+  _facturasFiltradasMateriales = _facturasMateriales.where((factura) {
+    String? fechaFactura = factura['venFecReg'];
+    if (fechaFactura != null) {
+      // Convertir la fecha de la factura a DateTime y luego a la hora local
+      DateTime fechaFacturaDateTime = DateTime.parse(fechaFactura).toLocal();
+      String fechaFacturaSoloFecha = DateFormat('yyyy-MM-dd').format(fechaFacturaDateTime);
+      return fechaFacturaSoloFecha != fechaHoy;  // Filtrar las fechas anteriores o diferentes a hoy
+    }
+    return false;
+  }).toList();
+
+  // Actualizar la lista filtrada
+  setListFilterMateriales(_facturasFiltradasMateriales);
+  notifyListeners();
+}
+//*********************************************************//
+
+
+
+//************INDEX TAB*****************//
+int _tabIndexMateriales=0;
+
+int get getTabIndexMateriales=>_tabIndexMateriales;
+
+void setTabIndexMateriales( int _index)
+{
+_tabIndex=_index;
+
+notifyListeners();
+
+}
+
+
+
+
+
+//=================BUSCADOR LOCAL==================//
+
+ List<dynamic> _allItemsFiltersMateriales=[];
+   List<dynamic> get allItemsFiltersMateriales => _allItemsFiltersMateriales;
+   void setListFilterMateriales( List<dynamic> _list){
+  _allItemsFiltersMateriales = [];
+
+// _sortList();
+
+
+
+_allItemsFiltersMateriales.addAll(_list);
+// print('LA LISTA DE LOS ESTUDIANTES _allItemsFilters: ${_allItemsFilters.length} ');
+print('LA LISTA DE LOS  _allItemsFilters: $_allItemsFiltersMateriales ');
+
+//====================== REALIZA LA SUMATORIA EN CADA CONSULTA  =============================//
+
+if (_tabIndex==0) {
+  _valorTotalFacturasHoy = 0.0;
+
+// Iterar sobre cada item en la lista
+for (var item in _allItemsFiltersMateriales) {
+  // Asegurarse de que 'venTotal' no sea nulo y sea un valor numérico
+  final venTotal = item['venTotal'];
+  if (venTotal != null) {
+    // Convertir 'venTotal' a un número de tipo double y sumar
+    _valorTotalFacturasHoy += double.tryParse(venTotal.toString()) ?? 0.0;
+  }
+}
+
+// Redondear a 3 decimales
+_valorTotalFacturasHoy = double.parse(_valorTotalFacturasHoy.toStringAsFixed(3));
+
+// Imprimir el valor total
+// print('-->: $_valorTotalFacturasHoy');
+  
+} else {
+_valorTotalFacturasAntes = 0.0;
+
+// Iterar sobre cada item en la lista
+for (var item in _allItemsFiltersMateriales) {
+  // Asegurarse de que 'venTotal' no sea nulo y sea un valor numérico
+  final venTotal = item['venTotal'];
+  if (venTotal != null) {
+    // Convertir 'venTotal' a un número de tipo double y sumar
+    _valorTotalFacturasAntes += double.tryParse(venTotal.toString()) ?? 0.0;
+  }
+}
+
+// Redondear a 3 decimales
+_valorTotalFacturasAntes = double.parse(_valorTotalFacturasAntes.toStringAsFixed(3));
+
+// Imprimir el valor total
+// print('-->: $_valorTotalFacturasAntes');
+
+}
+//===================================================//
+
+
+  notifyListeners();
+ }
+
+  void searchMateriales(String query) {
+      List<Map<String, dynamic>> originalList = List.from(_facturasFiltradasMateriales); // Copia de la lista original
+    if (query.isEmpty) {
+      _allItemsFiltersMateriales = originalList;
+    } else {
+      _allItemsFiltersMateriales = originalList.where((material) {
+        return 
+        // resident['resCedula'].toLowerCase().contains(query.toLowerCase()) ||
+               material['venNomCliente'].toLowerCase().contains(query.toLowerCase()) ;
+      }).toList();
+    }
+    notifyListeners();
+  }
+
+
+
+
+//====================================//
+
+//************ GET INFO DE ITEM MATERIALES*************//
+Map<String,dynamic> _infoMateriales={};
+Map<String,dynamic> get getInfoMateriales=>_infoMateriales;
+void setInfoMateriales(Map<String,dynamic>  _info){
+_infoMateriales={};
+_infoMateriales=_info;
+
+print('_infoMateriales: $_infoMateriales');
+  notifyListeners();
+}
+
+
+
+
+
+//===========================================//
 
 
 }

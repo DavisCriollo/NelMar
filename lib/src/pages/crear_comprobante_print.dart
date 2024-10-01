@@ -3207,7 +3207,7 @@ bool printBinded = false;
 		});
               
 
-print('ESTA ES LA DATA DEL SOCKET PROPIETARIO: ${ctrlSock.latestResponse}');
+// print('ESTA ES LA DATA DEL SOCKET PROPIETARIO: ${ctrlSock.latestResponse}');
 
 
 
@@ -3234,27 +3234,49 @@ print('ESTA ES LA DATA DEL SOCKET PROPIETARIO: ${ctrlSock.latestResponse}');
               ? Text('Crear Comprobante')
               : Text('Editar Comprobante'),
           actions: [
-          Consumer<SocketService>(
-            builder: (_,value, __) {
-             return value.latestResponse!.isEmpty ||  value.latestResponse!['tabla']=='proveedor'
-            ?Container(
+            Consumer<ComprobantesController>(builder: (BuildContext context, value, Widget? child) { 
+                return Container(
               margin: EdgeInsets.only(right: size.iScreen(1.5)),
               child: IconButton(
                   splashRadius: 28,
-                  onPressed: () {
+                  onPressed: value.getRespuestaCalculoItem.isNotEmpty?() {
                     _onSubmit(
                       context,
                       ctrl,
                     );
+                  }:(){
+                     NotificatiosnService.showSnackBarDanger(
+            'Debe agregar información necesaria');
                   },
                   icon: Icon(
                     Icons.save_outlined,
                     size: size.iScreen(4.0),
                   )),
-            ):Container();
+            );
+             },),
+             
+          // Consumer<SocketService>(
+          //   builder: (_,value, __) {
+          //    return value.latestResponse!.isEmpty ||  value.latestResponse!['tabla']=='proveedor'
+          //   ?
+          //   Container(
+          //     margin: EdgeInsets.only(right: size.iScreen(1.5)),
+          //     child: IconButton(
+          //         splashRadius: 28,
+          //         onPressed: () {
+          //           _onSubmit(
+          //             context,
+          //             ctrl,
+          //           );
+          //         },
+          //         icon: Icon(
+          //           Icons.save_outlined,
+          //           size: size.iScreen(4.0),
+          //         )),
+          //   ):Container();
 
-            // : Container();
-            })
+          //   // : Container();
+          //   })
           ],
         ),
         body: Container(
@@ -3353,7 +3375,8 @@ print('ESTA ES LA DATA DEL SOCKET PROPIETARIO: ${ctrlSock.latestResponse}');
         builder: (_,value, __) {
 
      return 
-         value.latestResponse!.isNotEmpty &&  value.latestResponse!['tabla']=='ventas'
+         value.latestResponse!.isNotEmpty
+         // &&  value.latestResponse!['tabla']=='ventas'
         ? 
         Container(
             width: size.wScreen(100.0),
@@ -4533,7 +4556,7 @@ ctrlPropi.setDocumento(value.getDocumento);
             
              Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) =>
-                                      const BuscarProductosVarios()));
+                                       BuscarProductosVarios()));
             
                             // modalTarifas(context, size, ctrl);
             

@@ -11,12 +11,15 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:neitorcont/src/api/authentication_client.dart';
 import 'package:neitorcont/src/controllers/comprobantes_controller.dart';
+import 'package:neitorcont/src/controllers/cuentas_por_cobrar_controller.dart';
 import 'package:neitorcont/src/controllers/prefacturas_controller.dart';
 
 import 'package:neitorcont/src/controllers/proformas_controller.dart';
 
 import 'package:neitorcont/src/models/sesison_model.dart';
 import 'package:neitorcont/src/pages/crear_comprobante_print.dart';
+import 'package:neitorcont/src/pages/crear_materiales.dart';
+import 'package:neitorcont/src/pages/detalle_materiales.dart';
 import 'package:neitorcont/src/pages/views_pdf.dart';
 import 'package:neitorcont/src/services/notifications_service.dart';
 import 'package:neitorcont/src/services/socket_service.dart';
@@ -32,17 +35,17 @@ import 'package:sunmi_printer_plus/enums.dart';
 import 'package:sunmi_printer_plus/sunmi_printer_plus.dart';
 import 'package:image/image.dart' as img;
 
-class ListarPreFacturasPaginacion extends StatefulWidget {
+class ListarMaterialesPaginacion extends StatefulWidget {
      final Session? user;
-  const ListarPreFacturasPaginacion({Key? key, this.user}) : super(key: key);
+  const ListarMaterialesPaginacion({Key? key, this.user}) : super(key: key);
 
   @override
-  State<ListarPreFacturasPaginacion> createState() =>
-      _ListarPreFacturasPaginacionState();
+  State<ListarMaterialesPaginacion> createState() =>
+      _ListarMaterialesPaginacionState();
 }
 
-class _ListarPreFacturasPaginacionState
-    extends State<ListarPreFacturasPaginacion> {
+class _ListarMaterialesPaginacionState
+    extends State<ListarMaterialesPaginacion> {
   final TextEditingController _textSearchController = TextEditingController();
   Session? _usuario;
   final _scrollController = ScrollController();
@@ -76,11 +79,11 @@ bool printBinded = false;
     _scrollController.addListener(() {
       if (_scrollController.position.maxScrollExtent ==
           _scrollController.offset) {
-        final _next = context.read<PreFacturasController>();
+        final _next = context.read<CuentasXCobrarController>();
         if (_next.getpage != null) {
           _next.setPage(_next.getpage);
           //       providerSearchPropietario.setCantidad(25);
-          _next.buscaAllPreFacturasPaginacion('', false,_next.getTabIndex);
+          _next.buscaAllMaterialesPaginacion('', false,_next.getTabIndex);
         } else {
           // print("ES NULL POR ESO NO HACER PETICION ");
         }
@@ -162,7 +165,7 @@ bool printBinded = false;
           backgroundColor: Colors.grey.shade100,
           appBar: AppBar(
             // backgroundColor: primaryColor,
-            title: Consumer<PreFacturasController>(
+            title: Consumer<CuentasXCobrarController>(
               builder: (_, providerSearchPreFacturas, __) {
                 return Row(
                   children: [
@@ -291,7 +294,7 @@ bool printBinded = false;
                                 alignment: Alignment.center,
                                 width: size.wScreen(90.0),
                                 child: Text(
-                                  'PREFACTURAS',
+                                  'LISTA DESPACHO',
                                   // style: GoogleFonts.lexendDeca(
                                   //     fontSize: size.iScreen(2.45),
                                   //     // color: Colors.white,
@@ -317,16 +320,16 @@ bool printBinded = false;
                                           .length >=
                                       3) {
                                     providerSearchPreFacturas
-                                        .setErrorPreFacturasPaginacion(null);
+                                        .setErrorMaterialesPaginacion(null);
 
                                     providerSearchPreFacturas
-                                        .setError401PreFacturasPaginacion(
+                                        .setError401MaterialesPaginacion(
                                             false);
                                     providerSearchPreFacturas.setPage(0);
                                     providerSearchPreFacturas.setCantidad(25);
 
                                     providerSearchPreFacturas
-                                        .buscaAllPreFacturasPaginacion(
+                                        .buscaAllMaterialesPaginacion(
                                             // '0803395581');
                                             ' ${providerSearchPreFacturas.nameSearchPreFacturaPaginacion}',
                                             true,providerSearchPreFacturas.getTabIndex);
@@ -364,15 +367,15 @@ bool printBinded = false;
                                   false) {
                                 //=====================//
                                 providerSearchPreFacturas
-                                    .setErrorPreFacturasPaginacion(null);
+                                    .setErrorMaterialesPaginacion(null);
 
                                 providerSearchPreFacturas
-                                    .setError401PreFacturasPaginacion(false);
+                                    .setError401MaterialesPaginacion(false);
 
                                 providerSearchPreFacturas.setPage(0);
                                 providerSearchPreFacturas.setCantidad(25);
                                 providerSearchPreFacturas
-                                    .buscaAllPreFacturasPaginacion('', true,providerSearchPreFacturas.getTabIndex);
+                                    .buscaAllMaterialesPaginacion('', true,providerSearchPreFacturas.getTabIndex);
                                 // } //=====================//
 
                               }
@@ -404,7 +407,7 @@ Container(
           tabs: [
            Tab(
               child:
-              Consumer<PreFacturasController>(builder: (_, valueHoy, __) {  
+              Consumer<CuentasXCobrarController>(builder: (_, valueHoy, __) {  
                 return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -418,7 +421,7 @@ Container(
             ),
             Tab(
               child:
-              Consumer<PreFacturasController>(builder: (_, valueAnteriores, __) {  
+              Consumer<CuentasXCobrarController>(builder: (_, valueAnteriores, __) {  
                 return   Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -443,26 +446,24 @@ Container(
                           //       '',false,ctrl.getTabIndex);
 
                          final _controllerPreFacturas =
-                                context.read<PreFacturasController>();
+                                context.read<CuentasXCobrarController>();
 
                             _controllerPreFacturas
                                 .onSearchTextPreFacturaPaginacion("");
 
                             _controllerPreFacturas
                                 .setBtnSearchPreFacturaPaginacion(false);
-                            _controllerPreFacturas
-                                .setErrorPreFacturasPaginacion(null);
+                          
 
-                            _controllerPreFacturas
-                                .setError401PreFacturasPaginacion(false);
+                         
 
                             _controllerPreFacturas.resetFormPreFacturas();
                             _controllerPreFacturas.setPage(0);
                             _controllerPreFacturas.setIsNext(false);
                             _controllerPreFacturas
-                                .setInfoBusquedaPreFacturasPaginacion([]);
+                                .setInfoBusquedaMaterialesPaginacion([]);
                             _controllerPreFacturas
-                                .buscaAllPreFacturasPaginacion('', true,_controllerPreFacturas.getTabIndex);
+                                .buscaAllMaterialesPaginacion('', true,_controllerPreFacturas.getTabIndex);
 
 
 
@@ -470,9 +471,12 @@ Container(
 
                         }
                         if ( index==1) {
-                           ctrl.setInfoBusquedaPreFacturasPaginacion([]);
+                             ctrl.setTabIndex(index);
+                          final _controllerPreFacturas =
+                                context.read<CuentasXCobrarController>();
+                           _controllerPreFacturas.setInfoBusquedaMaterialesPaginacion([]);
                            ctrl.resetValorTotal();
-                             ctrl.buscaAllPreFacturasPaginacion(
+                             _controllerPreFacturas.buscaAllMaterialesPaginacion(
                                 '',false,ctrl.getTabIndex);
                         }
                       },
@@ -487,10 +491,10 @@ Container(
               //========================TAB 1 =======================//
               // Text('data 1'),
 
-                   Consumer<PreFacturasController>(
+                   Consumer<CuentasXCobrarController>(
                         builder: (_, provider, __) {
                          
-                         if (provider.allItemsFilters.isEmpty) {
+                         if (provider.allItemsFiltersMateriales.isEmpty) {
                             return const NoData(
                               label: 'No existen datos para mostar',
                             );
@@ -499,7 +503,7 @@ Container(
 
                           return 
                           
-                          (provider.allItemsFilters.isEmpty)
+                          (provider.allItemsFiltersMateriales.isEmpty)
                                         ? Center(
                                             child: Column(
                                               mainAxisAlignment: MainAxisAlignment.center,
@@ -509,7 +513,7 @@ Container(
                                               Text('Por favor espere ....')
                                             ],
                                           ))
-                                        : (provider.allItemsFilters.length > 0)
+                                        : (provider.allItemsFiltersMateriales.length > 0)
                                             ?
                            RefreshIndicator(
                              onRefresh: () => onRefresh(),
@@ -517,15 +521,15 @@ Container(
                               controller: _scrollController,
                               physics: const BouncingScrollPhysics(),
                               itemCount: provider
-                                      .allItemsFilters.length +
+                                      .allItemsFiltersMateriales.length +
                                   1,
                               itemBuilder: (BuildContext context, int index) {
                                 if (index <
                                     provider
-                                        .allItemsFilters.length) {
+                                        .allItemsFiltersMateriales.length) {
                                   var _color;
                                   final _prefacturas = provider
-                                      .allItemsFilters[index];
+                                      .allItemsFiltersMateriales[index];
                           
                                   if (_prefacturas['venEstado'] == 'AUTORIZADO') {
                                     _color = Colors.green;
@@ -570,8 +574,7 @@ Container(
                                                       ),
                                                       // message: const Text('Your options are '),
                                                       actions: <Widget>[
-                                                     
-                                                         CupertinoActionSheetAction(
+                                                     CupertinoActionSheetAction(
                                                           child: Row(
                                                             mainAxisAlignment:
                                                                 MainAxisAlignment
@@ -583,7 +586,7 @@ Container(
                                                                         .iScreen(
                                                                             2.0)),
                                                                 child: Text(
-                                                                  'Imprimir',
+                                                                  'Ver Detalle',
                                                                   style: GoogleFonts.lexendDeca(
                                                                       fontSize: size
                                                                           .iScreen(
@@ -595,53 +598,16 @@ Container(
                                                                               .normal),
                                                                 ),
                                                               ),
-                                                              const Icon(
+                                                               Icon(
                                                                 FontAwesomeIcons
-                                                                    .print,
-                                                                color: Colors.green,
+                                                                    .infoCircle,
+                                                                    size: size.iScreen(3.5),
+                                                                color: Colors.blue,
                                                               )
                                                             ],
                                                           ),
                                                           onPressed: () {
-                                                            Navigator.pop(
-                                                                context);
-                                                                _printTicket(_prefacturas,widget.user!.logo);
-
-                                                           
-                                                          },
-                                                        ),
-                                                        CupertinoActionSheetAction(
-                                                          child: Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .center,
-                                                            children: [
-                                                              Container(
-                                                                margin: EdgeInsets.only(
-                                                                    right: size
-                                                                        .iScreen(
-                                                                            2.0)),
-                                                                child: Text(
-                                                                  'Ver PDF',
-                                                                  style: GoogleFonts.lexendDeca(
-                                                                      fontSize: size
-                                                                          .iScreen(
-                                                                              1.8),
-                                                                      color: Colors
-                                                                          .black87,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .normal),
-                                                                ),
-                                                              ),
-                                                              const Icon(
-                                                                FontAwesomeIcons
-                                                                    .filePdf,
-                                                                color: Colors.red,
-                                                              )
-                                                            ],
-                                                          ),
-                                                          onPressed: () {
+                                                            provider.setInfoMateriales(_prefacturas);
                                                             Navigator.pop(
                                                                 context);
                           
@@ -649,15 +615,101 @@ Container(
                                                               context,
                                                               MaterialPageRoute(
                                                                   builder: (context) =>
-                                                                      ViewsPDFs(
-                                                                          infoPdf:
-                                                                              // 'https://sysvet.neitor.com/reportes/carnet.php?id=${factura['venId']}&empresa=${_usuario!.rucempresa}',
-                                                                              'https://syscontable.neitor.com/reportes/factura.php?codigo=${_prefacturas['venId']}&empresa=${widget.user!.rucempresa}',
-                                                                          labelPdf:
-                                                                              'infoFactura.pdf')),
+                                                                     DetalleMateriales()),
                                                             );
                                                           },
                                                         ),
+                                                        //  CupertinoActionSheetAction(
+                                                        //   child: Row(
+                                                        //     mainAxisAlignment:
+                                                        //         MainAxisAlignment
+                                                        //             .center,
+                                                        //     children: [
+                                                        //       Container(
+                                                        //         margin: EdgeInsets.only(
+                                                        //             right: size
+                                                        //                 .iScreen(
+                                                        //                     2.0)),
+                                                        //         child: Text(
+                                                        //           'Imprimir',
+                                                        //           style: GoogleFonts.lexendDeca(
+                                                        //               fontSize: size
+                                                        //                   .iScreen(
+                                                        //                       1.8),
+                                                        //               color: Colors
+                                                        //                   .black87,
+                                                        //               fontWeight:
+                                                        //                   FontWeight
+                                                        //                       .normal),
+                                                        //         ),
+                                                        //       ),
+                                                        //       const Icon(
+                                                        //         FontAwesomeIcons
+                                                        //             .print,
+                                                        //         color: Colors.green,
+                                                        //       )
+                                                        //     ],
+                                                        //   ),
+                                                        //   onPressed: () {
+                                                        //     Navigator.pop(
+                                                        //         context);
+                                                        //         _printTicket(_prefacturas,widget.user!.logo);
+
+                                                           
+                                                        //   },
+                                                        // ),
+                                                        // CupertinoActionSheetAction(
+                                                        //   child: Row(
+                                                        //     mainAxisAlignment:
+                                                        //         MainAxisAlignment
+                                                        //             .center,
+                                                        //     children: [
+                                                        //       Container(
+                                                        //         margin: EdgeInsets.only(
+                                                        //             right: size
+                                                        //                 .iScreen(
+                                                        //                     2.0)),
+                                                        //         child: Text(
+                                                        //           'Ver PDF',
+                                                        //           style: GoogleFonts.lexendDeca(
+                                                        //               fontSize: size
+                                                        //                   .iScreen(
+                                                        //                       1.8),
+                                                        //               color: Colors
+                                                        //                   .black87,
+                                                        //               fontWeight:
+                                                        //                   FontWeight
+                                                        //                       .normal),
+                                                        //         ),
+                                                        //       ),
+                                                        //       const Icon(
+                                                        //         FontAwesomeIcons
+                                                        //             .filePdf,
+                                                        //         color: Colors.red,
+                                                        //       )
+                                                        //     ],
+                                                        //   ),
+                                                        //   onPressed: () {
+                                                        //     Navigator.pop(
+                                                        //         context);
+                          
+                                                        //     Navigator.push(
+                                                        //       context,
+                                                        //       MaterialPageRoute(
+                                                        //           builder: (context) =>
+                                                        //               ViewsPDFs(
+                                                        //                   infoPdf:
+                                                        //                       // 'https://sysvet.neitor.com/reportes/carnet.php?id=${factura['venId']}&empresa=${_usuario!.rucempresa}',
+                                                        //                       'https://syscontable.neitor.com/reportes/factura.php?codigo=${_prefacturas['venId']}&empresa=${widget.user!.rucempresa}',
+                                                        //                   labelPdf:
+                                                        //                       'infoFactura.pdf')),
+                                                        //     );
+                                                        //   },
+                                                        // ),
+                                                     
+                                                     
+                                                     
+                                                     
                                                       ],
                                                       cancelButton:
                                                           CupertinoActionSheetAction(
@@ -698,7 +750,7 @@ Container(
                                       
                                            leading: CircleAvatar(
                                             child: Text(
-                                               '${_prefacturas['venNomCliente'].substring(0, 1)}',
+                                               '${_prefacturas['venConductor'].substring(0, 1)}',
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .subtitle1,
@@ -712,7 +764,8 @@ Container(
                                               SizedBox(
                                                 width: size.wScreen(40.0),
                                                 child: Text(
-                                                  '${_prefacturas['venNomCliente']}',
+                                                   _prefacturas['venConductor']!=null
+                                                       ?'${_prefacturas['venConductor']}':'--- --- --- --- --- ---  ',
                                                   style: GoogleFonts.lexendDeca(
                                                       // fontSize: size.iScreen(2.45),
                                                       // color: Colors.white,
@@ -749,7 +802,7 @@ Container(
                                                       style:
                                                           GoogleFonts.lexendDeca(
                                                               fontSize: size
-                                                                  .iScreen(1.5),
+                                                                  .iScreen(1.7),
                                                               color:
                                                                   Colors.black54,
                                                               fontWeight:
@@ -769,29 +822,32 @@ Container(
                                                           : '--- --- ---',
                                                       style:
                                                           GoogleFonts.lexendDeca(
-                                                              // fontSize: size.iScreen(2.45),
+                                                              fontSize: size.iScreen(1.8),
                                                               color: Colors.grey,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .normal),
                                                     ),
                                                   ),
-                                                  Container(
+                                                 
+                                                   Container(
                                                     // color: Colors.green,
                                                     width: size.wScreen(50.0),
                                                     child: Text(
-                                                       _prefacturas['venConductor']!=null
-                                                       ?'${_prefacturas['venConductor']}':'--- --- --- --- --- ---  ',
+                                                      '${_prefacturas['venObservacion']}',
                                                       style:
                                                           GoogleFonts.lexendDeca(
-                                                              // fontSize: size.iScreen(1.9),
-                                                              // color: Colors.grey,
+                                                              fontSize: size
+                                                                  .iScreen(1.8),
+                                                              // color:
+                                                              //     Colors.black54,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .bold),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                     ),
                                                   ),
-                                                  
                                                 ],
                                               ),
                                               Container(
@@ -833,7 +889,7 @@ Container(
                                               ))
                                           // : Container();
                           
-                                          : provider.allItemsFilters.length > 25
+                                          : provider.allItemsFiltersMateriales.length > 25
                                               ? Container(
                                                   margin: EdgeInsets.symmetric(
                                                       vertical:
@@ -1150,361 +1206,14 @@ Container(
                      
 
 
-              //  Consumer<PreFacturasController>(
-              //           builder: (_, providersPrefacturas, __) {
-              //             if (providersPrefacturas
-              //                         .getErrorPreFacturasPaginacion ==
-              //                     null &&
-              //                 providersPrefacturas
-              //                         .getError401PreFacturasPaginacion ==
-              //                     false) {
-              //               return Center(
-              //                 // child: CircularProgressIndicator(),
-              //                 child: Column(
-              //                   mainAxisSize: MainAxisSize.min,
-              //                   children: [
-              //                     Text(
-              //                       'Cargando Datos...',
-              //                       style: GoogleFonts.lexendDeca(
-              //                           fontSize: size.iScreen(1.5),
-              //                           color: Colors.black87,
-              //                           fontWeight: FontWeight.bold),
-              //                     ),
-              //                     //***********************************************/
-              //                     SizedBox(
-              //                       height: size.iScreen(1.0),
-              //                     ),
-              //                     //*****************************************/
-              //                     const CircularProgressIndicator(),
-              //                   ],
-              //                 ),
-              //               );
-              //             } else if (providersPrefacturas
-              //                     .getErrorPreFacturasPaginacion ==
-              //                 false) {
-              //               return const NoData(
-              //                 label: 'No existen datos para mostar',
-              //               );
-              //             } else if (providersPrefacturas
-              //                     .getListaPreFacturasPaginacion.isEmpty &&
-              //                 providersPrefacturas
-              //                         .getErrorPreFacturasPaginacion ==
-              //                     false) {
-              //               return const NoData(
-              //                 label: 'No existen datos para mostar',
-              //               );
-              //             } else if (providersPrefacturas
-              //                     .getListaPreFacturasPaginacion.isEmpty &&
-              //                 providersPrefacturas
-              //                         .getError401PreFacturasPaginacion ==
-              //                     true) {
-              //               return const NoData(
-              //                 label:
-              //                     'Su sesión ha expirado, vuelva a iniciar sesión',
-              //               );
-              //             } else if (providersPrefacturas
-              //                     .getListaPreFacturasPaginacion.isEmpty &&
-              //                 providersPrefacturas
-              //                         .getError401PreFacturasPaginacion ==
-              //                     false) {
-              //               return const NoData(
-              //                 label: 'No existen datos para mostar',
-              //               );
-              //             }
-
-              //             return 
-              // 
-              // 
-              // RefreshIndicator(
-              //                onRefresh: () => onRefresh(),
-              //               child: ListView.builder(
-              //                 controller: _scrollController,
-              //                 physics: const BouncingScrollPhysics(),
-              //                 itemCount: providersPrefacturas
-              //                         .getListaPreFacturasPaginacion.length +
-              //                     1,
-              //                 itemBuilder: (BuildContext context, int index) {
-              //                   if (index <
-              //                       providersPrefacturas
-              //                           .getListaPreFacturasPaginacion.length) {
-              //                     var _color;
-              //                     final _prefacturas = providersPrefacturas
-              //                         .getListaPreFacturasPaginacion[index];
-                          
-              //                     if (_prefacturas['venEstado'] == 'AUTORIZADO') {
-              //                       _color = Colors.green;
-              //                     } else if (_prefacturas['venEstado'] ==
-              //                         'SIN AUTORIZAR') {
-              //                       _color = Colors.orange;
-              //                     }
-              //                     if (_prefacturas['venEstado'] == 'ANULADA') {
-              //                       _color = Colors.red;
-              //                     }
-                          
-              //                     return Slidable(
-              //                       startActionPane: ActionPane(
-              //                         // A motion is a widget used to control how the pane animates.
-              //                         motion: const ScrollMotion(),
-                          
-              //                         children: [
-              //                           SlidableAction(
-              //                                 backgroundColor: Colors.grey,
-              //                             foregroundColor: Colors.white,
-              //                             icon: Icons.list_alt_outlined,
-              //                             label: 'Más acciones',
-              //                             onPressed: (context) {
-              //                               showCupertinoModalPopup(
-              //                                 context: context,
-              //                                 builder: (BuildContext context) =>
-              //                                     CupertinoActionSheet(
-              //                                         title: Text(
-              //                                           'Acciones',
-              //                                           style: GoogleFonts
-              //                                               .lexendDeca(
-              //                                                   fontSize: size
-              //                                                       .iScreen(2.0),
-              //                                                   color:
-              //                                                       primaryColor,
-              //                                                   fontWeight:
-              //                                                       FontWeight
-              //                                                           .normal),
-              //                                         ),
-              //                                         // message: const Text('Your options are '),
-              //                                         actions: <Widget>[
-              //                                           CupertinoActionSheetAction(
-              //                                             child: Row(
-              //                                               mainAxisAlignment:
-              //                                                   MainAxisAlignment
-              //                                                       .center,
-              //                                               children: [
-              //                                                 Container(
-              //                                                   margin: EdgeInsets.only(
-              //                                                       right: size
-              //                                                           .iScreen(
-              //                                                               2.0)),
-              //                                                   child: Text(
-              //                                                     'Ver PDF',
-              //                                                     style: GoogleFonts.lexendDeca(
-              //                                                         fontSize: size
-              //                                                             .iScreen(
-              //                                                                 1.8),
-              //                                                         color: Colors
-              //                                                             .black87,
-              //                                                         fontWeight:
-              //                                                             FontWeight
-              //                                                                 .normal),
-              //                                                   ),
-              //                                                 ),
-              //                                                 const Icon(
-              //                                                   FontAwesomeIcons
-              //                                                       .filePdf,
-              //                                                   color: Colors.red,
-              //                                                 )
-              //                                               ],
-              //                                             ),
-              //                                             onPressed: () {
-              //                                               Navigator.pop(
-              //                                                   context);
-                          
-              //                                               Navigator.push(
-              //                                                 context,
-              //                                                 MaterialPageRoute(
-              //                                                     builder: (context) =>
-              //                                                         ViewsPDFs(
-              //                                                             infoPdf:
-              //                                                                 // 'https://sysvet.neitor.com/reportes/carnet.php?id=${factura['venId']}&empresa=${_usuario!.rucempresa}',
-              //                                                                 'https://syscontable.neitor.com/reportes/factura.php?codigo=${_prefacturas['venId']}&empresa=${_usuario!.rucempresa}',
-              //                                                             labelPdf:
-              //                                                                 'infoFactura.pdf')),
-              //                                               );
-              //                                             },
-              //                                           ),
-              //                                         ],
-              //                                         cancelButton:
-              //                                             CupertinoActionSheetAction(
-              //                                           child: Text('Cancel',
-              //                                               style: GoogleFonts
-              //                                                   .lexendDeca(
-              //                                                       fontSize: size
-              //                                                           .iScreen(
-              //                                                               2.0),
-              //                                                       color: Colors
-              //                                                           .red,
-              //                                                       fontWeight:
-              //                                                           FontWeight
-              //                                                               .normal)),
-              //                                           isDefaultAction: true,
-              //                                           onPressed: () {
-              //                                             Navigator.pop(
-              //                                                 context, 'Cancel');
-              //                                           },
-              //                                         )),
-              //                               );
-              //                             },
-              //                           ),
-              //                         ],
-              //                       ),
-              //                       child: Card(
-              //                         elevation: 5,
-              //                         child: Container(
-              //                           margin: EdgeInsets.only(
-              //                               bottom: size.iScreen(0.0)),
-              //                           color: index % 2 == 0
-              //                               ? Colors.grey.shade50
-              //                               : Colors.grey.shade200,
-              //                           child: ListTile(
-              //                             dense: true,
-              //                             visualDensity:
-              //                                 VisualDensity.comfortable,
-                                      
-              //                              leading: CircleAvatar(
-              //                               child: Text(
-              //                                  '${_prefacturas['venNomCliente'].substring(0, 1)}',
-              //                                 style: Theme.of(context)
-              //                                     .textTheme
-              //                                     .subtitle1,
-              //                               ),
-              //                               backgroundColor: Colors.grey[300],
-              //                             ),
-              //                             title: Row(
-              //                               mainAxisAlignment:
-              //                                   MainAxisAlignment.spaceBetween,
-              //                               children: [
-              //                                 SizedBox(
-              //                                   width: size.wScreen(40.0),
-              //                                   child: Text(
-              //                                     '${_prefacturas['venNomCliente']}',
-              //                                     style: GoogleFonts.lexendDeca(
-              //                                         // fontSize: size.iScreen(2.45),
-              //                                         // color: Colors.white,
-              //                                         fontWeight:
-              //                                             FontWeight.normal),
-              //                                     overflow: TextOverflow.ellipsis,
-              //                                   ),
-              //                                 ),
-              //                                 Text(
-              //                                   '${_prefacturas['venEstado']}',
-              //                                   // 'Estado: ',
-              //                                   style: GoogleFonts.lexendDeca(
-              //                                       fontSize: size.iScreen(1.5),
-              //                                       color: _color,
-              //                                       fontWeight: FontWeight.bold),
-              //                                 ),
-              //                               ],
-              //                             ),
-              //                             subtitle: Row(
-              //                               mainAxisAlignment:
-              //                                   MainAxisAlignment.spaceBetween,
-              //                               children: [
-              //                                 Column(
-              //                                   mainAxisAlignment:
-              //                                       MainAxisAlignment.start,
-              //                                   children: [
-              //                                     Container(
-              //                                       // color: Colors.green,
-              //                                       width: size.wScreen(50.0),
-              //                                       child: Text(
-              //                                         '${_prefacturas['venNumFactura']}',
-              //                                         style:
-              //                                             GoogleFonts.lexendDeca(
-              //                                                 fontSize: size
-              //                                                     .iScreen(1.5),
-              //                                                 color:
-              //                                                     Colors.black54,
-              //                                                 fontWeight:
-              //                                                     FontWeight
-              //                                                         .normal),
-              //                                         overflow:
-              //                                             TextOverflow.ellipsis,
-              //                                       ),
-              //                                     ),
-              //                                     Container(
-              //                                       // color: Colors.green,
-              //                                       width: size.wScreen(50.0),
-              //                                       child: Text(
-              //                                         _prefacturas['venFecReg'] !=
-              //                                                 ''
-              //                                             ? '${_prefacturas['venFecReg'].replaceAll('T', "  ").replaceAll('.000Z', "  ")}'
-              //                                             : '--- --- ---',
-              //                                         style:
-              //                                             GoogleFonts.lexendDeca(
-              //                                                 // fontSize: size.iScreen(2.45),
-              //                                                 color: Colors.grey,
-              //                                                 fontWeight:
-              //                                                     FontWeight
-              //                                                         .normal),
-              //                                       ),
-              //                                     ),
-              //                                   ],
-              //                                 ),
-              //                                 Container(
-              //                                   // color: Colors.green,
-              //                                   // width: size.wScreen(100.0),
-              //                                   child: Text(
-              //                                     '\$${_prefacturas['venTotal']}',
-              //                                     style: GoogleFonts.lexendDeca(
-              //                                         fontSize: size.iScreen(2.0),
-              //                                         color: Colors.black87,
-              //                                         fontWeight:
-              //                                             FontWeight.normal),
-              //                                     overflow: TextOverflow.ellipsis,
-              //                                   ),
-              //                                 ),
-              //                               ],
-              //                             ),
-              //                             // trailing: Icon(Icons.more_vert),
-              //                           ),
-              //                         ),
-              //                       ),
-              //                     );
-              //                   } else {
-              //                     return Consumer<PreFacturasController>(
-              //                       builder: (_, valueNext, __) {
-              //                         return valueNext.getpage == null
-              //                             ? Container(
-              //                                 margin: EdgeInsets.symmetric(
-              //                                     vertical: size.iScreen(2.0)),
-              //                                 child: Center(
-              //                                   child: Text(
-              //                                     'No existen más datos',
-              //                                     style: GoogleFonts.lexendDeca(
-              //                                         fontSize: size.iScreen(1.8),
-              //                                         // color: primaryColor,
-              //                                         fontWeight:
-              //                                             FontWeight.normal),
-              //                                   ),
-              //                                 ))
-              //                             // : Container();
-                          
-              //                             : providersPrefacturas
-              //                                         .getListaPreFacturasPaginacion
-              //                                         .length >
-              //                                     25
-              //                                 ? Container(
-              //                                     margin: EdgeInsets.symmetric(
-              //                                         vertical:
-              //                                             size.iScreen(2.0)),
-              //                                     child: const Center(
-              //                                         child:
-              //                                             CircularProgressIndicator()))
-              //                                 : Container();
-              //                       },
-              //                     );
-              //                   }
-              //                 },
-              //               ),
-              //             );
-              //           },
-              //         )
-              //       ,
 
 
 //========================TAB 2=======================//
 
-            Consumer<PreFacturasController>(
+           Consumer<CuentasXCobrarController>(
                         builder: (_, provider, __) {
                          
-                         if (provider.allItemsFilters.isEmpty) {
+                         if (provider.allItemsFiltersMateriales.isEmpty) {
                             return const NoData(
                               label: 'No existen datos para mostar',
                             );
@@ -1513,7 +1222,7 @@ Container(
 
                           return 
                           
-                          (provider.allItemsFilters.isEmpty)
+                          (provider.allItemsFiltersMateriales.isEmpty)
                                         ? Center(
                                             child: Column(
                                               mainAxisAlignment: MainAxisAlignment.center,
@@ -1523,7 +1232,7 @@ Container(
                                               Text('Por favor espere ....')
                                             ],
                                           ))
-                                        : (provider.allItemsFilters.length > 0)
+                                        : (provider.allItemsFiltersMateriales.length > 0)
                                             ?
                            RefreshIndicator(
                              onRefresh: () => onRefresh(),
@@ -1531,15 +1240,15 @@ Container(
                               controller: _scrollController,
                               physics: const BouncingScrollPhysics(),
                               itemCount: provider
-                                      .allItemsFilters.length +
+                                      .allItemsFiltersMateriales.length +
                                   1,
                               itemBuilder: (BuildContext context, int index) {
                                 if (index <
                                     provider
-                                        .allItemsFilters.length) {
+                                        .allItemsFiltersMateriales.length) {
                                   var _color;
                                   final _prefacturas = provider
-                                      .allItemsFilters[index];
+                                      .allItemsFiltersMateriales[index];
                           
                                   if (_prefacturas['venEstado'] == 'AUTORIZADO') {
                                     _color = Colors.green;
@@ -1553,6 +1262,7 @@ Container(
   //==============================================//
   String fechaLocal = convertirFechaLocal(_prefacturas['venFecReg']);
  //==============================================//
+                          
                                   return Slidable(
                                     startActionPane: ActionPane(
                                       // A motion is a widget used to control how the pane animates.
@@ -1583,7 +1293,7 @@ Container(
                                                       ),
                                                       // message: const Text('Your options are '),
                                                       actions: <Widget>[
-                                                        CupertinoActionSheetAction(
+                                                     CupertinoActionSheetAction(
                                                           child: Row(
                                                             mainAxisAlignment:
                                                                 MainAxisAlignment
@@ -1595,7 +1305,7 @@ Container(
                                                                         .iScreen(
                                                                             2.0)),
                                                                 child: Text(
-                                                                  'Imprimir',
+                                                                  'Ver Detalle',
                                                                   style: GoogleFonts.lexendDeca(
                                                                       fontSize: size
                                                                           .iScreen(
@@ -1607,53 +1317,16 @@ Container(
                                                                               .normal),
                                                                 ),
                                                               ),
-                                                              const Icon(
+                                                               Icon(
                                                                 FontAwesomeIcons
-                                                                    .print,
-                                                                color: Colors.green,
+                                                                    .infoCircle,
+                                                                    size: size.iScreen(3.5),
+                                                                color: Colors.blue,
                                                               )
                                                             ],
                                                           ),
                                                           onPressed: () {
-                                                            Navigator.pop(
-                                                                context);
-                                                                _printTicket(_prefacturas,widget.user!.logo);
-
-                                                           
-                                                          },
-                                                        ),
-                                                        CupertinoActionSheetAction(
-                                                          child: Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .center,
-                                                            children: [
-                                                              Container(
-                                                                margin: EdgeInsets.only(
-                                                                    right: size
-                                                                        .iScreen(
-                                                                            2.0)),
-                                                                child: Text(
-                                                                  'Ver PDF',
-                                                                  style: GoogleFonts.lexendDeca(
-                                                                      fontSize: size
-                                                                          .iScreen(
-                                                                              1.8),
-                                                                      color: Colors
-                                                                          .black87,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .normal),
-                                                                ),
-                                                              ),
-                                                              const Icon(
-                                                                FontAwesomeIcons
-                                                                    .filePdf,
-                                                                color: Colors.red,
-                                                              )
-                                                            ],
-                                                          ),
-                                                          onPressed: () {
+                                                            provider.setInfoMateriales(_prefacturas);
                                                             Navigator.pop(
                                                                 context);
                           
@@ -1661,15 +1334,101 @@ Container(
                                                               context,
                                                               MaterialPageRoute(
                                                                   builder: (context) =>
-                                                                      ViewsPDFs(
-                                                                          infoPdf:
-                                                                              // 'https://sysvet.neitor.com/reportes/carnet.php?id=${factura['venId']}&empresa=${_usuario!.rucempresa}',
-                                                                              'https://syscontable.neitor.com/reportes/factura.php?codigo=${_prefacturas['venId']}&empresa=${widget.user!.rucempresa}',
-                                                                          labelPdf:
-                                                                              'infoFactura.pdf')),
+                                                                     DetalleMateriales()),
                                                             );
                                                           },
                                                         ),
+                                                        //  CupertinoActionSheetAction(
+                                                        //   child: Row(
+                                                        //     mainAxisAlignment:
+                                                        //         MainAxisAlignment
+                                                        //             .center,
+                                                        //     children: [
+                                                        //       Container(
+                                                        //         margin: EdgeInsets.only(
+                                                        //             right: size
+                                                        //                 .iScreen(
+                                                        //                     2.0)),
+                                                        //         child: Text(
+                                                        //           'Imprimir',
+                                                        //           style: GoogleFonts.lexendDeca(
+                                                        //               fontSize: size
+                                                        //                   .iScreen(
+                                                        //                       1.8),
+                                                        //               color: Colors
+                                                        //                   .black87,
+                                                        //               fontWeight:
+                                                        //                   FontWeight
+                                                        //                       .normal),
+                                                        //         ),
+                                                        //       ),
+                                                        //       const Icon(
+                                                        //         FontAwesomeIcons
+                                                        //             .print,
+                                                        //         color: Colors.green,
+                                                        //       )
+                                                        //     ],
+                                                        //   ),
+                                                        //   onPressed: () {
+                                                        //     Navigator.pop(
+                                                        //         context);
+                                                        //         _printTicket(_prefacturas,widget.user!.logo);
+
+                                                           
+                                                        //   },
+                                                        // ),
+                                                        // CupertinoActionSheetAction(
+                                                        //   child: Row(
+                                                        //     mainAxisAlignment:
+                                                        //         MainAxisAlignment
+                                                        //             .center,
+                                                        //     children: [
+                                                        //       Container(
+                                                        //         margin: EdgeInsets.only(
+                                                        //             right: size
+                                                        //                 .iScreen(
+                                                        //                     2.0)),
+                                                        //         child: Text(
+                                                        //           'Ver PDF',
+                                                        //           style: GoogleFonts.lexendDeca(
+                                                        //               fontSize: size
+                                                        //                   .iScreen(
+                                                        //                       1.8),
+                                                        //               color: Colors
+                                                        //                   .black87,
+                                                        //               fontWeight:
+                                                        //                   FontWeight
+                                                        //                       .normal),
+                                                        //         ),
+                                                        //       ),
+                                                        //       const Icon(
+                                                        //         FontAwesomeIcons
+                                                        //             .filePdf,
+                                                        //         color: Colors.red,
+                                                        //       )
+                                                        //     ],
+                                                        //   ),
+                                                        //   onPressed: () {
+                                                        //     Navigator.pop(
+                                                        //         context);
+                          
+                                                        //     Navigator.push(
+                                                        //       context,
+                                                        //       MaterialPageRoute(
+                                                        //           builder: (context) =>
+                                                        //               ViewsPDFs(
+                                                        //                   infoPdf:
+                                                        //                       // 'https://sysvet.neitor.com/reportes/carnet.php?id=${factura['venId']}&empresa=${_usuario!.rucempresa}',
+                                                        //                       'https://syscontable.neitor.com/reportes/factura.php?codigo=${_prefacturas['venId']}&empresa=${widget.user!.rucempresa}',
+                                                        //                   labelPdf:
+                                                        //                       'infoFactura.pdf')),
+                                                        //     );
+                                                        //   },
+                                                        // ),
+                                                     
+                                                     
+                                                     
+                                                     
                                                       ],
                                                       cancelButton:
                                                           CupertinoActionSheetAction(
@@ -1710,7 +1469,7 @@ Container(
                                       
                                            leading: CircleAvatar(
                                             child: Text(
-                                               '${_prefacturas['venNomCliente'].substring(0, 1)}',
+                                               '${_prefacturas['venConductor'].substring(0, 1)}',
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .subtitle1,
@@ -1724,7 +1483,8 @@ Container(
                                               SizedBox(
                                                 width: size.wScreen(40.0),
                                                 child: Text(
-                                                  '${_prefacturas['venNomCliente']}',
+                                                   _prefacturas['venConductor']!=null
+                                                       ?'${_prefacturas['venConductor']}':'--- --- --- --- --- ---  ',
                                                   style: GoogleFonts.lexendDeca(
                                                       // fontSize: size.iScreen(2.45),
                                                       // color: Colors.white,
@@ -1761,7 +1521,7 @@ Container(
                                                       style:
                                                           GoogleFonts.lexendDeca(
                                                               fontSize: size
-                                                                  .iScreen(1.5),
+                                                                  .iScreen(1.7),
                                                               color:
                                                                   Colors.black54,
                                                               fontWeight:
@@ -1777,30 +1537,34 @@ Container(
                                                     child: Text(
                                                       fechaLocal !=
                                                               ''
-                                                          ? '$fechaLocal'
+                                                          ? fechaLocal
                                                           : '--- --- ---',
                                                       style:
                                                           GoogleFonts.lexendDeca(
-                                                              // fontSize: size.iScreen(2.45),
+                                                              fontSize: size.iScreen(1.8),
                                                               color: Colors.grey,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .normal),
                                                     ),
                                                   ),
+                                                 
                                                    Container(
                                                     // color: Colors.green,
                                                     width: size.wScreen(50.0),
                                                     child: Text(
-                                                       _prefacturas['venConductor']!=null
-                                                       ?'${_prefacturas['venConductor']}':'--- --- --- --- --- ---  ',
+                                                      '${_prefacturas['venObservacion']}',
                                                       style:
                                                           GoogleFonts.lexendDeca(
-                                                              // fontSize: size.iScreen(1.9),
-                                                              // color: Colors.grey,
+                                                              fontSize: size
+                                                                  .iScreen(1.8),
+                                                              // color:
+                                                              //     Colors.black54,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .bold),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                     ),
                                                   ),
                                                 ],
@@ -1844,7 +1608,7 @@ Container(
                                               ))
                                           // : Container();
                           
-                                          : provider.allItemsFilters.length > 25
+                                          : provider.allItemsFiltersMateriales.length > 25
                                               ? Container(
                                                   margin: EdgeInsets.symmetric(
                                                       vertical:
@@ -2161,354 +1925,7 @@ Container(
                      
 
 
-
-          //  Text('data 222'),
-              // Consumer<PreFacturasController>(
-              //           builder: (_, providersPrefacturas, __) {
-              //             if (providersPrefacturas
-              //                         .getErrorPreFacturasPaginacion ==
-              //                     null &&
-              //                 providersPrefacturas
-              //                         .getError401PreFacturasPaginacion ==
-              //                     false) {
-              //               return Center(
-              //                 // child: CircularProgressIndicator(),
-              //                 child: Column(
-              //                   mainAxisSize: MainAxisSize.min,
-              //                   children: [
-              //                     Text(
-              //                       'Cargando Datos...',
-              //                       style: GoogleFonts.lexendDeca(
-              //                           fontSize: size.iScreen(1.5),
-              //                           color: Colors.black87,
-              //                           fontWeight: FontWeight.bold),
-              //                     ),
-              //                     //***********************************************/
-              //                     SizedBox(
-              //                       height: size.iScreen(1.0),
-              //                     ),
-              //                     //*****************************************/
-              //                     const CircularProgressIndicator(),
-              //                   ],
-              //                 ),
-              //               );
-              //             } else if (providersPrefacturas
-              //                     .getErrorPreFacturasPaginacion ==
-              //                 false) {
-              //               return const NoData(
-              //                 label: 'No existen datos para mostar',
-              //               );
-              //             } else if (providersPrefacturas
-              //                     .getListaPreFacturasPaginacion.isEmpty &&
-              //                 providersPrefacturas
-              //                         .getErrorPreFacturasPaginacion ==
-              //                     false) {
-              //               return const NoData(
-              //                 label: 'No existen datos para mostar',
-              //               );
-              //             } else if (providersPrefacturas
-              //                     .getListaPreFacturasPaginacion.isEmpty &&
-              //                 providersPrefacturas
-              //                         .getError401PreFacturasPaginacion ==
-              //                     true) {
-              //               return const NoData(
-              //                 label:
-              //                     'Su sesión ha expirado, vuelva a iniciar sesión',
-              //               );
-              //             } else if (providersPrefacturas
-              //                     .getListaPreFacturasPaginacion.isEmpty &&
-              //                 providersPrefacturas
-              //                         .getError401PreFacturasPaginacion ==
-              //                     false) {
-              //               return const NoData(
-              //                 label: 'No existen datos para mostar',
-              //               );
-              //             }
-
-              //             return 
-              //             RefreshIndicator(
-              //                onRefresh: () => onRefresh(),
-              //               child: ListView.builder(
-              //                 controller: _scrollController,
-              //                 physics: const BouncingScrollPhysics(),
-              //                 itemCount: providersPrefacturas
-              //                         .getListaPreFacturasPaginacion.length +
-              //                     1,
-              //                 itemBuilder: (BuildContext context, int index) {
-              //                   if (index <
-              //                       providersPrefacturas
-              //                           .getListaPreFacturasPaginacion.length) {
-              //                     var _color;
-              //                     final _prefacturas = providersPrefacturas
-              //                         .getListaPreFacturasPaginacion[index];
-                          
-              //                     if (_prefacturas['venEstado'] == 'AUTORIZADO') {
-              //                       _color = Colors.green;
-              //                     } else if (_prefacturas['venEstado'] ==
-              //                         'SIN AUTORIZAR') {
-              //                       _color = Colors.orange;
-              //                     }
-              //                     if (_prefacturas['venEstado'] == 'ANULADA') {
-              //                       _color = Colors.red;
-              //                     }
-                          
-              //                     return Slidable(
-              //                       startActionPane: ActionPane(
-              //                         // A motion is a widget used to control how the pane animates.
-              //                         motion: const ScrollMotion(),
-                          
-              //                         children: [
-              //                           SlidableAction(
-              //                                 backgroundColor: Colors.grey,
-              //                             foregroundColor: Colors.white,
-              //                             icon: Icons.list_alt_outlined,
-              //                             label: 'Más acciones',
-              //                             onPressed: (context) {
-              //                               showCupertinoModalPopup(
-              //                                 context: context,
-              //                                 builder: (BuildContext context) =>
-              //                                     CupertinoActionSheet(
-              //                                         title: Text(
-              //                                           'Acciones',
-              //                                           style: GoogleFonts
-              //                                               .lexendDeca(
-              //                                                   fontSize: size
-              //                                                       .iScreen(2.0),
-              //                                                   color:
-              //                                                       primaryColor,
-              //                                                   fontWeight:
-              //                                                       FontWeight
-              //                                                           .normal),
-              //                                         ),
-              //                                         // message: const Text('Your options are '),
-              //                                         actions: <Widget>[
-              //                                           CupertinoActionSheetAction(
-              //                                             child: Row(
-              //                                               mainAxisAlignment:
-              //                                                   MainAxisAlignment
-              //                                                       .center,
-              //                                               children: [
-              //                                                 Container(
-              //                                                   margin: EdgeInsets.only(
-              //                                                       right: size
-              //                                                           .iScreen(
-              //                                                               2.0)),
-              //                                                   child: Text(
-              //                                                     'Ver PDF',
-              //                                                     style: GoogleFonts.lexendDeca(
-              //                                                         fontSize: size
-              //                                                             .iScreen(
-              //                                                                 1.8),
-              //                                                         color: Colors
-              //                                                             .black87,
-              //                                                         fontWeight:
-              //                                                             FontWeight
-              //                                                                 .normal),
-              //                                                   ),
-              //                                                 ),
-              //                                                 const Icon(
-              //                                                   FontAwesomeIcons
-              //                                                       .filePdf,
-              //                                                   color: Colors.red,
-              //                                                 )
-              //                                               ],
-              //                                             ),
-              //                                             onPressed: () {
-              //                                               Navigator.pop(
-              //                                                   context);
-                          
-              //                                               Navigator.push(
-              //                                                 context,
-              //                                                 MaterialPageRoute(
-              //                                                     builder: (context) =>
-              //                                                         ViewsPDFs(
-              //                                                             infoPdf:
-              //                                                                 // 'https://sysvet.neitor.com/reportes/carnet.php?id=${factura['venId']}&empresa=${_usuario!.rucempresa}',
-              //                                                                 'https://syscontable.neitor.com/reportes/factura.php?codigo=${_prefacturas['venId']}&empresa=${_usuario!.rucempresa}',
-              //                                                             labelPdf:
-              //                                                                 'infoFactura.pdf')),
-              //                                               );
-              //                                             },
-              //                                           ),
-              //                                         ],
-              //                                         cancelButton:
-              //                                             CupertinoActionSheetAction(
-              //                                           child: Text('Cancel',
-              //                                               style: GoogleFonts
-              //                                                   .lexendDeca(
-              //                                                       fontSize: size
-              //                                                           .iScreen(
-              //                                                               2.0),
-              //                                                       color: Colors
-              //                                                           .red,
-              //                                                       fontWeight:
-              //                                                           FontWeight
-              //                                                               .normal)),
-              //                                           isDefaultAction: true,
-              //                                           onPressed: () {
-              //                                             Navigator.pop(
-              //                                                 context, 'Cancel');
-              //                                           },
-              //                                         )),
-              //                               );
-              //                             },
-              //                           ),
-              //                         ],
-              //                       ),
-              //                       child: Card(
-              //                         elevation: 5,
-              //                         child: Container(
-              //                           margin: EdgeInsets.only(
-              //                               bottom: size.iScreen(0.0)),
-              //                           color: index % 2 == 0
-              //                               ? Colors.grey.shade50
-              //                               : Colors.grey.shade200,
-              //                           child: ListTile(
-              //                             dense: true,
-              //                             visualDensity:
-              //                                 VisualDensity.comfortable,
-                                      
-              //                              leading: CircleAvatar(
-              //                               child: Text(
-              //                                  '${_prefacturas['venNomCliente'].substring(0, 1)}',
-              //                                 style: Theme.of(context)
-              //                                     .textTheme
-              //                                     .subtitle1,
-              //                               ),
-              //                               backgroundColor: Colors.grey[300],
-              //                             ),
-              //                             title: Row(
-              //                               mainAxisAlignment:
-              //                                   MainAxisAlignment.spaceBetween,
-              //                               children: [
-              //                                 SizedBox(
-              //                                   width: size.wScreen(40.0),
-              //                                   child: Text(
-              //                                     '${_prefacturas['venNomCliente']}',
-              //                                     style: GoogleFonts.lexendDeca(
-              //                                         // fontSize: size.iScreen(2.45),
-              //                                         // color: Colors.white,
-              //                                         fontWeight:
-              //                                             FontWeight.normal),
-              //                                     overflow: TextOverflow.ellipsis,
-              //                                   ),
-              //                                 ),
-              //                                 Text(
-              //                                   '${_prefacturas['venEstado']}',
-              //                                   // 'Estado: ',
-              //                                   style: GoogleFonts.lexendDeca(
-              //                                       fontSize: size.iScreen(1.5),
-              //                                       color: _color,
-              //                                       fontWeight: FontWeight.bold),
-              //                                 ),
-              //                               ],
-              //                             ),
-              //                             subtitle: Row(
-              //                               mainAxisAlignment:
-              //                                   MainAxisAlignment.spaceBetween,
-              //                               children: [
-              //                                 Column(
-              //                                   mainAxisAlignment:
-              //                                       MainAxisAlignment.start,
-              //                                   children: [
-              //                                     Container(
-              //                                       // color: Colors.green,
-              //                                       width: size.wScreen(50.0),
-              //                                       child: Text(
-              //                                         '${_prefacturas['venNumFactura']}',
-              //                                         style:
-              //                                             GoogleFonts.lexendDeca(
-              //                                                 fontSize: size
-              //                                                     .iScreen(1.5),
-              //                                                 color:
-              //                                                     Colors.black54,
-              //                                                 fontWeight:
-              //                                                     FontWeight
-              //                                                         .normal),
-              //                                         overflow:
-              //                                             TextOverflow.ellipsis,
-              //                                       ),
-              //                                     ),
-              //                                     Container(
-              //                                       // color: Colors.green,
-              //                                       width: size.wScreen(50.0),
-              //                                       child: Text(
-              //                                         _prefacturas['venFecReg'] !=
-              //                                                 ''
-              //                                             ? '${_prefacturas['venFecReg'].replaceAll('T', "  ").replaceAll('.000Z', "  ")}'
-              //                                             : '--- --- ---',
-              //                                         style:
-              //                                             GoogleFonts.lexendDeca(
-              //                                                 // fontSize: size.iScreen(2.45),
-              //                                                 color: Colors.grey,
-              //                                                 fontWeight:
-              //                                                     FontWeight
-              //                                                         .normal),
-              //                                       ),
-              //                                     ),
-              //                                   ],
-              //                                 ),
-              //                                 Container(
-              //                                   // color: Colors.green,
-              //                                   // width: size.wScreen(100.0),
-              //                                   child: Text(
-              //                                     '\$${_prefacturas['venTotal']}',
-              //                                     style: GoogleFonts.lexendDeca(
-              //                                         fontSize: size.iScreen(2.0),
-              //                                         color: Colors.black87,
-              //                                         fontWeight:
-              //                                             FontWeight.normal),
-              //                                     overflow: TextOverflow.ellipsis,
-              //                                   ),
-              //                                 ),
-              //                               ],
-              //                             ),
-              //                             // trailing: Icon(Icons.more_vert),
-              //                           ),
-              //                         ),
-              //                       ),
-              //                     );
-              //                   } else {
-              //                     return Consumer<PreFacturasController>(
-              //                       builder: (_, valueNext, __) {
-              //                         return valueNext.getpage == null
-              //                             ? Container(
-              //                                 margin: EdgeInsets.symmetric(
-              //                                     vertical: size.iScreen(2.0)),
-              //                                 child: Center(
-              //                                   child: Text(
-              //                                     'No existen más datos',
-              //                                     style: GoogleFonts.lexendDeca(
-              //                                         fontSize: size.iScreen(1.8),
-              //                                         // color: primaryColor,
-              //                                         fontWeight:
-              //                                             FontWeight.normal),
-              //                                   ),
-              //                                 ))
-              //                             // : Container();
-                          
-              //                             : providersPrefacturas
-              //                                         .getListaPreFacturasPaginacion
-              //                                         .length >
-              //                                     25
-              //                                 ? Container(
-              //                                     margin: EdgeInsets.symmetric(
-              //                                         vertical:
-              //                                             size.iScreen(2.0)),
-              //                                     child: const Center(
-              //                                         child:
-              //                                             CircularProgressIndicator()))
-              //                                 : Container();
-              //                       },
-              //                     );
-              //                   }
-              //                 },
-              //               ),
-              //             );
-                       
-              //           },
-              //         )
-              //       ,
+     
             ],
           ),
         ),
@@ -2877,202 +2294,43 @@ Container(
      
      
           floatingActionButton: 
-  //        FloatingActionButton(
-  //                     child: const Icon(
-  //                       Icons.add,
-  //                       color: Colors.white,
-  //                     ),
-  //                     onPressed: () {
-                       
-  //                        final _ctrl =context.read<ComprobantesController>();
-  //                         _ctrl.resetListasProdutos();
-  //                         _ctrl.resetPlacas();
-  //                               _ctrl.setDocumento('');
-                                 
-  //                                    //*************** RESET LA VARIABLE DE RESPONSE SOCKET***************************//
-  //   final ctrlSocket=context.read<SocketService>();
-  //    ctrlSocket.resetResponseSocket();
-  //     //******************************************//
-
-  //                               _ctrl.setFacturaOk(false);
-  //                                _ctrl.setExistCliente(true);
-  //                                  _ctrl.setFormaDePago('EFECTIVO');
-  //                               _ctrl.setTipoDeTransaccion('N');
-  //  _ctrl.setClienteComprbante({
-	// 		"perId": 1,
-	// 		"perNombre": "CONSUMIDOR FINAL",
-	// 		"perDocNumero": "9999999999999",
-	// 		"perDocTipo": "RUC",
-	// 		"perTelefono": "0000000001",
-	// 		"perDireccion": "s/n",
-	// 		"perEmail": [
-	// 			"sin@sincorreo.com"
-	// 		],
-	// 		"perCelular": [],
-	// 		"perOtros": [
-	// 			"ZZZ9999"
-	// 		]
-	// 	});
   
-  //                             _ctrl.setTotal();
-  //                             _ctrl.setTarifa({});
-  //                              _ctrl.setTipoDocumento('');
-                           
-                     
-                           
-  //                           Navigator.of(context).push(MaterialPageRoute(
-  //                               builder: (context) =>
-  //                                    CrearComprobante(
-  //                                     user:_usuario ,
-  //                                     tipo: 'CREATE',
-  //                                   )));
-                       
-  //                     }
-                  
-  //           ,
-  //         ),
           
 
 
 
-    Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            // Primer FloatingActionButton con imagen 1
-            FloatingActionButton(
+   FloatingActionButton(
               backgroundColor:themeColor.appTheme.primaryColor,
               onPressed: () {
                 // Acción del primer botón
-                print("Botón 1 presionado");
-
-                     final _ctrl =context.read<ComprobantesController>();
-                          _ctrl.resetListasProdutos();
-                          _ctrl.resetPlacas();
-                                _ctrl.setDocumento('');
-                                 
-                                     //*************** RESET LA VARIABLE DE RESPONSE SOCKET***************************//
-    final ctrlSocket=context.read<SocketService>();
-     ctrlSocket.resetResponseSocket();
-      //******************************************//
-
-                                _ctrl.setFacturaOk(false);
-                                 _ctrl.setExistCliente(true);
-                                   _ctrl.setFormaDePago('EFECTIVO');
-                                _ctrl.setTipoDeTransaccion('N');
-   _ctrl.setClienteComprbante({
-			"perId": 1,
-			"perNombre": "CONSUMIDOR FINAL",
-			"perDocNumero": "9999999999999",
-			"perDocTipo": "RUC",
-			"perTelefono": "0000000001",
-			"perDireccion": "s/n",
-			"perEmail": [
-				"sin@sincorreo.com"
-			],
-			"perCelular": [],
-			"perOtros": [
-				
-			]
-		});
-
-                              _ctrl.setTotal();
-                              _ctrl.setTarifa({});
-                               _ctrl.setTipoDocumento('');
-                           _ctrl.getAllFormaPago();
-                           _ctrl.setPrecio(0);
-                           _ctrl.setCantidad(1);
-                       _ctrl.setTypeAction('MOTOS');
-                         
+  //
+  final ctrl=context.read<ComprobantesController>();
+  ctrl.resetCalculos();
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) =>
-                                     CrearComprobante(
-                                    
-                                      user:_usuario ,
+                                     CrearMateriales(
                                       tipo: 'CREATE',
-                                    )));
+                                      user: widget.user,)));
 
+//******************************************//
 
 
               },
-              child: Icon(Icons.two_wheeler_outlined,size:size.iScreen(4.5)), // Imagen 1
+              child: Icon(Icons.add), // Imagen 1
               heroTag: 'btn1', // Etiqueta única
             ),
-            SizedBox(width: 20), // Espacio entre los dos botones
-            // Segundo FloatingActionButton con imagen 2
-            FloatingActionButton(
-              backgroundColor: themeColor.appTheme.accentColor,
-              onPressed: () {
-                // Acción del segundo botón
-                // print("Botón 2 presionado");
-
-
-                     final _ctrl =context.read<ComprobantesController>();
-                          _ctrl.resetListasProdutos();
-                          _ctrl.resetPlacas();
-                                _ctrl.setDocumento('');
-                                 
-                                     //*************** RESET LA VARIABLE DE RESPONSE SOCKET***************************//
-    final ctrlSocket=context.read<SocketService>();
-     ctrlSocket.resetResponseSocket();
-      //******************************************//
-
-                                _ctrl.setFacturaOk(false);
-                                 _ctrl.setExistCliente(true);
-                                   _ctrl.setFormaDePago('EFECTIVO');
-                                _ctrl.setTipoDeTransaccion('N');
-   _ctrl.setClienteComprbante({
-			"perId": 1,
-			"perNombre": "CONSUMIDOR FINAL",
-			"perDocNumero": "9999999999999",
-			"perDocTipo": "RUC",
-			"perTelefono": "0000000001",
-			"perDireccion": "s/n",
-			"perEmail": [
-				"sin@sincorreo.com"
-			],
-			"perCelular": [],
-			"perOtros": [
-				
-			]
-		});
-  
-                              _ctrl.setTotal();
-                              _ctrl.setTarifa({});
-                               _ctrl.setTipoDocumento('');
-                            _ctrl.getAllFormaPago();
-                             _ctrl.setPrecio(0);
-                             _ctrl.setCantidad(1);
-                       _ctrl.setTypeAction('VEHICULOS');
-                         
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) =>
-                                     CrearComprobante(
-                                        
-                                      user:_usuario ,
-                                      tipo: 'CREATE',
-                                    )));
-
-
-
-
-              },
-              child: Icon(Icons.drive_eta_outlined,size:size.iScreen(4.5)), // Imagen 2
-              heroTag: 'btn2', // Etiqueta única
-            ),
-          ],
-        ),
-
-
+            
+            
           
           ),
     );
   }
 
     Future<void> onRefresh() async {
-    final _controller = Provider.of<PreFacturasController>(context, listen: false);
+    final _controller = Provider.of<CuentasXCobrarController>(context, listen: false);
     _controller.setPage(0);
     _controller.setCantidad(25);
-    _controller.buscaAllPreFacturasPaginacion('', true,_controller.getTabIndex);
+    _controller.buscaAllMaterialesPaginacion('', true,_controller.getTabIndex);
   }
 
  

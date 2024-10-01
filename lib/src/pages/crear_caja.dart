@@ -145,7 +145,8 @@ bool printBinded = false;
         builder: (_,value, __) {
 
      return 
-         value.latestResponse!.isNotEmpty &&  value.latestResponse!['tabla']=='caja'
+         value.latestResponse!.isNotEmpty 
+         //&&  value.latestResponse!['tabla']=='caja'
         ? 
         Container(
             width: size.wScreen(100.0),
