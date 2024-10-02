@@ -6,6 +6,7 @@ import 'package:neitorcont/src/api/api_provider.dart';
 import 'package:neitorcont/src/api/authentication_client.dart';
 import 'package:neitorcont/src/models/auth_response.dart';
 import 'package:neitorcont/src/services/socket_service.dart';
+import 'package:neitorcont/src/utils/crea_uuid.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class CuentasXCobrarController extends ChangeNotifier {
@@ -347,7 +348,7 @@ List<dynamic> get allItemsFilters => _allItemsFilters;
 void setListFilter(List<dynamic> _list) {
   _originalItemsFilters = List.from(_list); // Almacenar la lista original
   _allItemsFilters = List.from(_list); // Inicialmente, la lista mostrada es igual a la original
-  print('LA LISTA _allItemsFilters: $_allItemsFilters');
+  // print('LA LISTA _allItemsFilters: $_allItemsFilters');
   notifyListeners();
 }
 
@@ -606,7 +607,7 @@ void setInfoCuentas(Map<String,dynamic>  _info){
 _infoCuentas={};
 _infoCuentas=_info;
 
-// print('_infoCaja: $_infoCaja');
+print('_infoCaja: $_infoCuentas');
   notifyListeners();
 }
 
@@ -638,7 +639,7 @@ final List _tipos=
 
 
   //================================INPUT   CANTIDAD=============================================//
-  String? _numeroDocumeto ;
+  String? _numeroDocumeto ='';
   String? get getnumeroDocumeto => _numeroDocumeto;
 
   
@@ -732,15 +733,21 @@ print('el monto ES: $_valor');
     notifyListeners();
   }
 
-
-  String? _fechaAbono;
+//   DateTime now = DateTime.now();
+  
+//  _fechaAbono = "${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}";
+  String? _fechaAbono ='';
   get getFechaAbono => _fechaAbono;
   void setFechaAbono(String? date) async {
     _fechaAbono = date;
 
     notifyListeners();
   }
-
+  void initializeFechaAbono() {
+    DateTime now = DateTime.now();
+    _fechaAbono = "${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}";
+    notifyListeners(); // Notifica a los escuchadores sobre el cambio
+  }
 
 //================================INPUT  OBSERVACION MASCOTA=============================================//
   String? _observacion = '';
@@ -804,16 +811,24 @@ print('el monto ES: $_valor');
   }
 
   Future eliminaUrlServer(String _url) async {
-    final Map<String, dynamic> _urlImageDelete = {
-      "urls": [
-        {"url": _url}
-      ],
-      "rucempresa": "NEIMAR"
-    };
+
+    final dataUser = await Auth.instance.getSession();
+
+
+    final Map<String, dynamic> _urlImageDelete = 
+    
+    {
+	"urls": [
+		"https://documentos.neitor.com/contable/ccComprobante/NEIMAR/$_url"
+	]
+};
+    
+    
+   
 
     final response = await _api.deleteUrlDelServidor(
-      datos: _urlImageDelete,
-      // token: '${dataUser!.token}',
+      info: _urlImageDelete,
+      token: '${dataUser!.token}',
     );
 
     if (response != null) {
@@ -831,7 +846,7 @@ print('el monto ES: $_valor');
 
     if (response == null) {
       _errorUrl = false;
-      print('ES LOS URLS: ${response}');
+      // print('ES LOS URLS: ${response}');
       notifyListeners();
       return 'false';
     }
@@ -870,7 +885,7 @@ print('el monto ES: $_valor');
       final dataUser = await Auth.instance.getSession();
     const tipo='ccComprobante';
     try {
-      final response = await _api.getUrlsServer(_selectedImage, tipo);
+      final response = await _api.getUrlsServer(_selectedImage, tipo,dataUser!.token!);
 
       if (response != null) {
         _errorUrl = true;
@@ -893,89 +908,89 @@ print('el monto ES: $_valor');
 
 
 
-//*************CREAR FACTURA ******************//
+//========================== ENVIAR NOTIFICACION =======================//
+  bool _notificar = false;
+  bool get getNotificar => _notificar;
+  void setNotificar(bool state) {
+   _notificar=state;
+    notifyListeners();
+  }
 
 
 
-//  Future createPago(BuildContext context) async {
-//    final socketService = SocketService();
-//     final dataUser = await Auth.instance.getSession();
-//   //   DateTime now = DateTime.now();
-//   // String formattedDate = "${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}";
-//   //  _listaAddPlacas=[];
-//   // _listaAddPlacas!.add(_itemAddPlaca);
+//*************CREAR PAGOS ******************//
 
 
-// final _nuevoPago =
+
+ Future createPago(BuildContext context) async {
+   final socketService = SocketService();
+    final dataUser = await Auth.instance.getSession();
+  //   DateTime now = DateTime.now();
+  // String formattedDate = "${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}";
+  //  _listaAddPlacas=[];
+  // _listaAddPlacas!.add(_itemAddPlaca);
+
+    String _uuidV4 = generateUniqueId();
+
+final item ={
+      "ccComprobante": _urlImage,
+      "ccTipo": _tipo,
+      "ccBanco": _banco,
+      "ccNumero": _numeroDocumeto,
+      "ccDeposito": _itemDeposito,
+      "ccValor": _valor.toString(),
+      "ccFechaAbono": _fechaAbono,
+      "ccDetalle": _observacion,
+      "ccProcedencia": "",
+      "ccEstado": "ACTIVO",
+      "imprimir": false,
+      "ccUsuario": dataUser!.usuario,
+      "uuid": _uuidV4
+    };
+
+_infoCuentas['ccPagos'].add(item);
+
+
+final _nuevoPago =
  
-//  {
-//   "ccId": _infoCuentas['ccId'],
-//   "ventaId": _infoCuentas['ventaId'],
-//   "ccRucCliente":_infoCuentas['ccRucCliente'],
-//   "ccNomCliente":_infoCuentas['ccNomCliente'],
-//   "ccFactura":_infoCuentas['ccFactura'],
-//   "ccFechaFactura":_infoCuentas['ccFechaFactura'],
-//   "ccValorFactura":_infoCuentas['ccValorFactura'],
-//   "ccValorRetencion":_infoCuentas['ccValorRetencion'],
-//   "ccValorAPagar":_infoCuentas['ccValorAPagar'],
-//   "ccFechaAbono":_infoCuentas['ccFechaAbono'],
-//   "ccEstado":_infoCuentas['ccEstado'],
-//   "ccProcedencia":_infoCuentas['ccProcedencia'],
-//   "ccAbono":_infoCuentas['ccAbono'],
-//   "ccSaldo":_infoCuentas['ccSaldo'],
-//   "ccEmpresa":  dataUser!.usuario,
-//   "ccUser":  dataUser.usuario,
-//   "ccPagos": [
-//     // {
-//     //   "ccComprobante": "",
-//     //   "ccTipo": "EFECTIVO",
-//     //   "ccBanco": "",
-//     //   "ccNumero": "0",
-//     //   "ccDeposito": "NO",
-//     //   "ccValor": "3",
-//     //   "ccFechaAbono": "2024-09-24",
-//     //   "ccDetalle": "segundo",
-//     //   "ccProcedencia": "",
-//     //   "ccEstado": "ACTIVO",
-//     //   "imprimir": false,
-//     //   "ccUsuario": "admin",
-//     //   "uuid": "247ccd0e-77d6-408c-99b5-cd86f1f915ac"
-//     // },
-//     // {
-//     //   "ccComprobante": "",
-//     //   "ccTipo": "CHEQUE",
-//     //   "ccBanco": "",
-//     //   "ccNumero": "0",
-//     //   "ccDeposito": "NO",
-//     //   "ccValor": "2",
-//     //   "ccFechaAbono": "2024-09-24",
-//     //   "ccDetalle": "",
-//     //   "ccProcedencia": "",
-//     //   "ccEstado": "ACTIVO",
-//     //   "imprimir": false,
-//     //   "ccUsuario": dataUser!.usuario, 
-//     //   "uuid": "e411584c-fcd3-425e-9f99-6a1f8a8a86c1"
-//     // }
-//   ],
-//   "ccFecReg": _infoCuentas['ccFecReg'],
-//   "ccFecUpd": _infoCuentas['ccFecUpd'],
-//   "Todos": _infoCuentas['Todos'],
-//   "ciudad":_infoCuentas['ciudad'],
-//   "sector":_infoCuentas['sector'],
-//   "enviarCorreo": false,
+ {
+  "ccId": _infoCuentas['ccId'],
+  "ventaId": _infoCuentas['ventaId'],
+  "ccRucCliente":_infoCuentas['ccRucCliente'],
+  "ccNomCliente":_infoCuentas['ccNomCliente'],
+  "ccFactura":_infoCuentas['ccFactura'],
+  "ccFechaFactura":_infoCuentas['ccFechaFactura'],
+  "ccValorFactura":_infoCuentas['ccValorFactura'],
+  "ccValorRetencion":_infoCuentas['ccValorRetencion'],
+  "ccValorAPagar":_infoCuentas['ccValorAPagar'],
+  "ccFechaAbono":_infoCuentas['ccFechaAbono'],
+  "ccEstado":_infoCuentas['ccEstado'],
+  "ccProcedencia":_infoCuentas['ccProcedencia'],
+  "ccAbono":_infoCuentas['ccAbono'],
+  "ccSaldo":_infoCuentas['ccSaldo'],
+  "ccEmpresa":  dataUser.rucempresa,
+  "ccUser":  dataUser.usuario,
+  "ccPagos": _infoCuentas['ccPagos'],
+  "ccFecReg": _infoCuentas['ccFecReg'],
+  "ccFecUpd": _infoCuentas['ccFecUpd'],
+  "Todos": _infoCuentas['Todos'],
+  "ciudad":_infoCuentas['ciudad'],
+  "sector":_infoCuentas['sector'],
+  "enviarCorreo": _notificar,
 
-//        "tabla": "cuentasporcobrar", //DEFECTO
-//       "rucempresa": dataUser.rucempresa, // LOGIN
-//       "venUser": dataUser.usuario, // login
-//       "rol": dataUser.rol, //LOGIN
-// };
+       "tabla": "cuentasporcobrar", //DEFECTO
+      "rucempresa": dataUser.rucempresa, // LOGIN
+      "venUser": dataUser.usuario, // login
+      "rol": dataUser.rol, //LOGIN
+};
 
-// print('LA DATA PARA IMPRIMIR COMPROBANTE $_nuevoPago');
+// print('LA DATA PARA IMPRIMIR PAGO ${_nuevoPago['ccPagos']}');
+// print('LA DATA PARA IMPRIMIR TODO RL PAGO $_nuevoPago');
 
-// // socketService.sendMessage('client:actualizarData', _nuevoPago);
+socketService.sendMessage('client:actualizarData', _nuevoPago);
 
 
-//  }
+ }
 
 
 //================================SELECCIONAMOS EL COLOR=============================================//

@@ -2393,86 +2393,241 @@ class ApiProvider {
 
 
 //-------------IMAGEN AL SERVIDOR----------------//
-  Future getUrlsServer(File? _file, String _tipo) async {
-    var url = Uri.parse('$_url/upload_delete_multiple_files/upload');
+  // Future getUrlsServer(File? _file, String _tipo) async {
+  //   var url = Uri.parse('$_url/upload_delete_multiple_files/upload');
 
-    try {
-      var request = _http.MultipartRequest('POST', url);
+  //   try {
+  //     var request = _http.MultipartRequest('POST', url);
 
-      File imageFile = File(_file!.path);
+  //     File imageFile = File(_file!.path);
 
-      // Add parameters to the request
-      request.fields['tipo'] = _tipo;
-      request.fields['rucempresa'] = 'NEIMAR';
+  //     // Add parameters to the request
+  //     request.fields['tipo'] = _tipo;
+  //     request.fields['rucempresa'] = 'NEIMAR';
 
-      // Add the image file to the request
-      request.files.add(await _http.MultipartFile.fromPath(
-        'archivo',
-        imageFile.path,
-      ));
+  //     // Add the image file to the request
+  //     request.files.add(await _http.MultipartFile.fromPath(
+  //       'archivo',
+  //       imageFile.path,
+  //     ));
 
-      // Send the request
-      var response = await request.send();
+  //     // Send the request
+  //     var response = await request.send();
 
-      var responsed = await _http.Response.fromStream(response);
-        print('Responsed.body code. ${response.statusCode}');
-  print('Responsed.body only. ${responsed.body}');
-      if (response.statusCode == 200) {
-        print('Image responsed.body successfully. ${responsed.body}');
-        Map<String, dynamic> jsonMap = json.decode(responsed.body);
+  //     var responsed = await _http.Response.fromStream(response);
+  //       print('Responsed.body code. ${response.statusCode}');
+  // print('Responsed.body only. ${responsed.body}');
+  //     if (response.statusCode == 200) {
+  //       print('Image responsed.body successfully. ${responsed.body}');
+  //       Map<String, dynamic> jsonMap = json.decode(responsed.body);
 
-        // Extraer la URL
-        return jsonMap['nombre'];
-      }
-      if (response.statusCode == 404) {
+  //       // Extraer la URL
+  //       return jsonMap['nombre'];
+  //     }
+  //     if (response.statusCode == 404) {
         
-        return null;
-      }
-      if (response.statusCode == 401) {
-        // Auth.instance.deleteSesion(context!);
+  //       return null;
+  //     }
+  //     if (response.statusCode == 401) {
+  //       // Auth.instance.deleteSesion(context!);
 
-        return null;
-      }
-    } catch (e) {
-      print('=== response.statusCode ===> ${e}');
+  //       return null;
+  //     }
+  //   } catch (e) {
+  //     print('=== response.statusCode ===> ${e}');
+  //     return false;
+  //   }
+
+  //   // else {
+  //   //   print('Image upload failed.');
+  //   // }
+  // }
+  Future getUrlsServer(File? _file, String _tipo, String token) async {
+  var url = Uri.parse('$_url/upload_delete_multiple_files/upload');
+
+  try {
+    var request = _http.MultipartRequest('POST', url);
+
+    // Agregar el token en el header de la solicitud
+    // Agregar encabezados
+    request.headers['Content-Type'] = 'application/json';
+    request.headers['x-auth-token'] = token;
+ 
+
+    // Archivo de imagen
+    File imageFile = File(_file!.path);
+
+    // Agregar parámetros a la solicitud
+    request.fields['tipo'] = _tipo;
+    request.fields['rucempresa'] = 'NEIMAR';
+
+    // Agregar el archivo a la solicitud
+    request.files.add(await _http.MultipartFile.fromPath(
+      'archivo',
+      imageFile.path,
+    ));
+
+    // Enviar la solicitud
+    var response = await request.send();
+
+    // Obtener la respuesta
+    var responsed = await _http.Response.fromStream(response);
+    print('Responsed.body code. ${response.statusCode}');
+    print('Responsed.body only. ${responsed.body}');
+
+    if (response.statusCode == 200) {
+      print('Image responsed.body successfully. ${responsed.body}');
+      Map<String, dynamic> jsonMap = json.decode(responsed.body);
+
+      // Extraer la URL
+      return jsonMap['nombre'];
+    }
+    if (response.statusCode == 404) {
+      return null;
+    }
+    if (response.statusCode == 401) {
+      // Aquí podrías manejar la expiración o invalidez del token
+      return null;
+    }
+  } catch (e) {
+    print('=== response.statusCode ===> $e');
+    return false;
+  }
+}
+//=========================DELETE FOTO  =====================================//
+Future deleteUrlDelServidor({Map<String, dynamic>? datos, required String token, Map<String, dynamic>? info,}) async {
+  final String serverUrl = "$_url/upload_delete_multiple_files/delete/";
+
+  final Map<String, dynamic> requestData = info!;
+
+  try {
+    // Verificar qué se está enviando en el cuerpo de la solicitud
+    print('Datos enviados: ${jsonEncode(requestData)}');
+    
+    final response = await _http.post(
+      Uri.parse(serverUrl),
+      headers: {
+        'Content-Type': 'application/json',
+        'x-auth-token': token,  // Token de autenticación
+      },
+      body: jsonEncode(requestData),  // Datos de la imagen a eliminar
+    );
+
+    if (response.statusCode == 200) {
+      print('Imagen eliminada exitosamente');
+      return true;
+    } else {
+      print('Error al eliminar la imagen. Código de estado: ${response.statusCode}');
+      print('Respuesta del servidor: ${response.body}');
       return false;
     }
-
-    // else {
-    //   print('Image upload failed.');
-    // }
+  } catch (error) {
+    print('Error al enviar la solicitud: $error');
+    return false;
   }
+}
 
-  Future deleteUrlDelServidor({Map<String, dynamic>? datos}) async {
-    final String serverUrl =
-        // '$_url/upload_delete_multiple_files/deleteNotToken'; // Reemplaza con la URL correcta
+//   Future deleteUrlDelServidor({
+//     BuildContext? context,
+//     String? token,
+//     Map<String, dynamic>? info,
+//   }) async {
+//     try {
+//       final _data = json.encode(info);
+
+//       var response = await _http.post(
+//           Uri.parse(
+//               '$_url/upload_delete_multiple_files/delete'),
+//           headers: {
+//             "Content-Type": "application/json",
+//             "x-auth-token": '$token'
+//           },
+//           body: _data);
+//         print('RESPONSE:DSDSD ${response.body}');
+//       if (response.statusCode == 200) {
+// print('RESPONSE:DSDSD ${response.body}');
+//         if (response.body.isNotEmpty) {
+//           final responseData = jsonDecode(response.body);
+//           return responseData;
+//         }
+//         if (response.statusCode == 404) {
+//           // print('-OKkkkkkR->$respo');
+//           // snaks.NotificatiosnService.showSnackBarDanger("${response["msg"]}");
+//           // return null;
+//           return null;
+//         }
+//       }
+//       if (response.statusCode == 404) {
+//         return null;
+//       }
+//       if (response.statusCode == 401) {
+//         return 401;
+//       }
+//     } catch (e) {
+//       //  NotificatiosnService.showSnackBarError("SIN 19 ");
+//       return null;
+//     }
+//   }
+
+// Future deleteUrlDelServidor({Map<String, dynamic>? datos, required String token}) async {
+//   final String serverUrl = "$_url/upload_delete_multiple_files/delete";
+
+//   final Map<String, dynamic> requestData = datos!;
+
+//   try {
+//     final response = await _http.post(
+//       Uri.parse(serverUrl),
+//       headers: {
+//         'Content-Type': 'application/json',
+//         'x-auth-token': token,  // Token de autenticación
+//       },
+//       body: jsonEncode(requestData),  // Datos de la imagen a eliminar
+//     );
+
+//     if (response.statusCode == 200) {
+//       print('Imagen eliminada exitosamente');
+//       return true;
+//     } else {
+//       print('Error al eliminar la imagen. Código de estado: ${response.statusCode}');
+//       print('Respuesta del servidor: ${response.body}');
+//       return false;
+//     }
+//   } catch (error) {
+//     print('Error al enviar la solicitud: $error');
+//     return false;
+//   }
+// }
+
+  // Future deleteUrlDelServidor({Map<String, dynamic>? datos}) async {
+  //   final String serverUrl =
+  //       // '$_url/upload_delete_multiple_files/deleteNotToken'; // Reemplaza con la URL correcta
    
-   		"https://documentos.neitor.com/contable/ccComprobante/NEIMAR/";
+  //  		"https://documentos.neitor.com/contable/ccComprobante/NEIMAR/";
    
    
-    final Map<String, dynamic> requestData = datos!;
+  //   final Map<String, dynamic> requestData = datos!;
 
-    try {
-      final response = await _http.post(
-        Uri.parse(serverUrl),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode(requestData),
-      );
+  //   try {
+  //     final response = await _http.post(
+  //       Uri.parse(serverUrl),
+  //       headers: {'Content-Type': 'application/json'},
+  //       body: jsonEncode(requestData),
+  //     );
 
-      if (response.statusCode == 200) {
-        print('Imagen eliminada exitosamente');
-        print('Imagen eliminada exitosamente');
+  //     if (response.statusCode == 200) {
+  //       print('Imagen eliminada exitosamente');
+  //       print('Imagen eliminada exitosamente');
 
-        return true;
-      } else {
-        // print(
-        //     'Error al eliminar la imagen. Código de estado: ${response.statusCode}');
-        // print('Respuesta del servidor: ${response.body}');
-      }
-    } catch (error) {
-      print('Error al enviar la solicitud: $error');
-    }
-  }
+  //       return true;
+  //     } else {
+  //       // print(
+  //       //     'Error al eliminar la imagen. Código de estado: ${response.statusCode}');
+  //       // print('Respuesta del servidor: ${response.body}');
+  //     }
+  //   } catch (error) {
+  //     print('Error al enviar la solicitud: $error');
+  //   }
+  // }
 
 
   //=========================GET ALL facturas PAGINACION=====================================//

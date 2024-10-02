@@ -7,14 +7,34 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:neitorcont/src/controllers/cuentas_por_cobrar_controller.dart';
+import 'package:neitorcont/src/services/notifications_service.dart';
 import 'package:neitorcont/src/theme/theme_provider.dart';
 import 'package:neitorcont/src/utils/responsive.dart';
 import 'package:neitorcont/src/widgets/modal_permisos.dart';
 import 'package:provider/provider.dart';
 
 
-class CrearpagoCxC extends StatelessWidget {
+class CrearpagoCxC extends StatefulWidget {
   const CrearpagoCxC({Key? key}) : super(key: key);
+
+  @override
+  State<CrearpagoCxC> createState() => _CrearpagoCxCState();
+}
+
+class _CrearpagoCxCState extends State<CrearpagoCxC> {
+
+
+ @override
+  void initState() {
+
+  // Usar addPostFrameCallback para asegurarse de que el árbol de widgets esté construido
+  WidgetsBinding.instance!.addPostFrameCallback((_) {
+    final provider = Provider.of<CuentasXCobrarController>(context, listen: false);
+    provider.initializeFechaAbono();
+  });
+    super.initState();
+  }
+
 
 
   @override
@@ -35,11 +55,10 @@ class CrearpagoCxC extends StatelessWidget {
                 child: IconButton(
                     splashRadius: 28,
                     onPressed: () {
-
+                          // modalNotificarCliente(context,size,ctrlTheme);
                       _onSubmit(
                         context,
-                        ctrl,
-                      );
+                        ctrl,    size,ctrlTheme                  );
                     },
                     icon: Icon(
                       Icons.save_outlined,
@@ -261,7 +280,7 @@ class CrearpagoCxC extends StatelessWidget {
                                 style: GoogleFonts.lexendDeca(
                                     fontSize: size.iScreen(2.3),
                                     fontWeight: FontWeight.normal,
-                                    color: value.getTipo.isEmpty
+                                    color: value.getBanco.isEmpty
                                         ? Colors.grey
                                         : Colors.black)),
                           );
@@ -605,26 +624,45 @@ class CrearpagoCxC extends StatelessWidget {
                                                                   //   },
                                                                   // ),
     
-                                                                  Container(
-                                                                     decoration: BoxDecoration(
-                                                                            //  color: Colors.red,
-                                                                      borderRadius: BorderRadius.circular(8),
-                                                                    ),
+                                                      //             Container(
+                                                      //                decoration: BoxDecoration(
+                                                      //                       //  color: Colors.red,
+                                                      //                 borderRadius: BorderRadius.circular(8),
+                                                      //               ),
                                                              
-                                                                    // width: size.wScreen(100.0),
-                                                                    height: size.hScreen(20.0),
-                                                                      constraints: BoxConstraints(
-                                                      minHeight:
-                                                          size.iScreen(49.5), maxHeight: size.iScreen(49.5)),
-                                                                    child: FadeInImage(
-                                                            placeholder:
-                                                                const AssetImage(
-                                                                      'assets/imgs/loader.gif'),
-                                                            image: NetworkImage(
-                                                              '${valueFoto.getUrlImage}',
-                                                            ),
-                                                          ),
-                                                                  )),
+                                                      //               // width: size.wScreen(100.0),
+                                                      //               height: size.hScreen(20.0),
+                                                      //                 constraints: BoxConstraints(
+                                                      // minHeight:
+                                                      //     size.iScreen(49.5), maxHeight: size.iScreen(49.5)),
+                                                      //               child: FadeInImage(
+                                                      //       placeholder:
+                                                      //           const AssetImage(
+                                                      //                 'assets/imgs/loader.gif'),
+                                                      //       image: NetworkImage(
+                                                      //         '${valueFoto.getUrlImage}',
+                                                      //       ),
+                                                      //     ),
+                                                      //             )),
+                                                      Container(
+  decoration: BoxDecoration(
+    borderRadius: BorderRadius.circular(8),
+  ),
+  height: size.hScreen(20.0),
+  constraints: BoxConstraints(
+    minHeight: size.iScreen(49.5),
+    maxHeight: size.iScreen(49.5),
+  ),
+  child: ClipRRect(
+    borderRadius: BorderRadius.circular(8.0),
+    child: FadeInImage(
+      placeholder: const AssetImage('assets/imgs/loader.gif'),
+      image: NetworkImage('${valueFoto.getUrlImage}'),
+      fit: BoxFit.cover, // Esto hace que la imagen ocupe todo el contenedor
+      width: double.infinity, // Hace que el ancho ocupe todo el espacio disponible
+    ),
+  ),
+)),
                                                           Positioned(
                                                               top: size
                                                                   .iScreen(1.0),
@@ -707,16 +745,46 @@ class CrearpagoCxC extends StatelessWidget {
     );
   }
 
-  void _onSubmit(BuildContext context, ctrl) {
+  void _onSubmit(BuildContext context, CuentasXCobrarController ctrl ,Responsive size,ThemeProvider theme) {
       final isValid = ctrl.validateForm();
     if (!isValid) return;
     if (isValid) {
 
+
+
+      if (ctrl.getTipo.isEmpty) {
+        NotificatiosnService.showSnackBarDanger('Debe seleccionar Tipo');
+      } else if (ctrl.getBanco.isEmpty) {
+        NotificatiosnService.showSnackBarDanger(
+            'Debe seleccionar Banco');
+      }
+      
+      else if (ctrl.getValor == 0.0) {
+        NotificatiosnService.showSnackBarDanger(
+            'Debe agregar Valor');
+      } else if (ctrl.getFechaAbono.isEmpty) {
+        NotificatiosnService.showSnackBarDanger(
+            'Debe agregar Fecha');
+      }else if (ctrl.getnumeroDocumeto!.isEmpty &&ctrl.getTipo!='EFECTIVO') {
+        NotificatiosnService.showSnackBarDanger(
+            'Debe agregar # de Comprobante');
+      }
+      else if (ctrl.getUrlImage.isEmpty ) {
+        NotificatiosnService.showSnackBarDanger(
+            'Debe agregar imagen de Comprobante');
+      }
+      
+      else{
+           modalNotificarCliente(context,size,theme,ctrl);
+          // ctrl.createPago(context);
+          // ctrl.buscaAllCuentasPorCobrar('',false,0);
+          //    Navigator.pop(context);
+
+
+      }
+
   }
 }
-
-
-
 
   //**********************************************MODAL TIPO  **********************************************************************//
   Future<bool?> modalTipos(
@@ -799,6 +867,97 @@ class CrearpagoCxC extends StatelessWidget {
       },
     );
   }
+
+
+//**********************************************MODAL TIPO  **********************************************************************//
+Future<bool?> modalNotificarCliente(BuildContext context, Responsive size,ThemeProvider theme,CuentasXCobrarController crtl) {
+  return showDialog<bool>(
+    barrierColor: Colors.black54,
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: const Text("INFORMACIÓN"),
+        content: SizedBox(
+          width: size.wScreen(100),
+          // height: size.hScreen(30.0), // Ajusta la altura según sea necesario
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('¿Desea notificar al cliente sobre el pago realizado?',style:
+                                                            GoogleFonts.poppins(
+                                                                fontSize: size
+                                                                    .iScreen(2.0),
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                color: Colors
+                                                                    .black54)), // Pregunta que se muestra en el modal
+               SizedBox(height: size.iScreen(1.0)), // Espaciado entre el texto y los botones
+               Row(
+  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  children: [
+    TextButton(
+      onPressed: () {
+        // Acción para el botón "Sí"
+        crtl.setNotificar(true);
+         crtl.createPago(context);
+       
+        Navigator.pop(context);
+        Navigator.pop(context); // Retorna true si se selecciona "Sí"
+           crtl.buscaAllCuentasPorCobrar('',false,0);
+      },
+      style: TextButton.styleFrom(
+        backgroundColor: theme.appTheme.primaryColor,// Color azul
+        primary: Colors.white, // Texto en blanco
+      ),
+      child: const Text("Sí"),
+    ),
+    TextButton(
+      onPressed: () {
+         crtl.setNotificar(false);
+         crtl.createPago(context);
+         
+        Navigator.pop(context);
+        Navigator.pop(context); // Retorna true si se selecciona "Sí"
+         crtl.buscaAllCuentasPorCobrar('',false,0);
+      },
+      style: TextButton.styleFrom(
+        backgroundColor: theme.appTheme.accentColor,// Color azul
+        primary: Colors.white, // Texto en blanco
+      ),
+      child: const Text("No"),
+    ),
+  ],
+)
+
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              //   children: [
+              //     TextButton(
+              //       onPressed: () {
+              //         // Acción para el botón "Sí"
+              //         // Aquí puedes llamar a un método o hacer lo que necesites
+              //         Navigator.pop(context); // Retorna true si se selecciona "Sí"
+              //       },
+              //       child: const Text("Sí"),
+              //     ),
+              //     TextButton(
+              //       onPressed: () {
+              //         // Acción para el botón "No"
+              //         Navigator.pop(context); // Retorna false si se selecciona "No"
+              //       },
+              //       child: const Text("No"),
+              //     ),
+              //   ],
+              // ),
+            ],
+          ),
+        ),
+      );
+    },
+  );
+}
 
 
   //**********************************************MODAL TIPO  **********************************************************************//
@@ -965,35 +1124,7 @@ class CrearpagoCxC extends StatelessWidget {
     );
   }
 
-
   // _fechaAbono(BuildContext context, CuentasXCobrarController controller) async {
-  //   // _selectFechaNacimiento(
-  //   //                                     context, controller);
-  //   //================================================= SELECCIONA FECHA INICIO ==================================================//
-  //   // _selectFechaInicio(
-  //   //     BuildContext context, MascotasController mascotaController) async {
-  //   DateTime? picked = await showDatePicker(
-  //     context: context,
-  //     initialDate: DateTime.now(),
-  //     firstDate: DateTime(1900),
-  //     lastDate: DateTime(2100),
-  //     // locale: const Locale('es', 'ES'),
-  //   );
-  //   if (picked != null) {
-  //     String? anio, mes, dia;
-  //     anio = '${picked.year}';
-  //     mes = (picked.month < 10) ? '0${picked.month}' : '${picked.month}';
-  //     dia = (picked.day < 10) ? '0${picked.day}' : '${picked.day}';
-
-  //     // setState(() {
-  //     final _fechaAbono =
-  //         '${anio.toString()}-${mes.toString()}-${dia.toString()}';
-     
-  //     controller.setFechaAbono(_fechaAbono);
-  //     // print('FechaInicio: $_fechaInicio');
-  //     // });
-  //   }
-  // }
 _fechaAbono(BuildContext context, CuentasXCobrarController controller,ThemeProvider valueTheme) async {
   DateTime? picked = await showDatePicker(
     context: context,
@@ -1028,9 +1159,6 @@ _fechaAbono(BuildContext context, CuentasXCobrarController controller,ThemeProvi
   }
 }
 
-
-
-
   void bottomSheet(
     CuentasXCobrarController _controller,
     BuildContext context,
@@ -1046,7 +1174,7 @@ _fechaAbono(BuildContext context, CuentasXCobrarController controller,ThemeProvi
                     // if (image != null) {
                     //   _controller.setImage(image, 'fotocasa');
                     // }
-                    // Navigator.pop(context);
+                    Navigator.pop(context);
 
                      await _controller.checkAndRequestPermissions();
            
@@ -1128,25 +1256,7 @@ _fechaAbono(BuildContext context, CuentasXCobrarController controller,ThemeProvi
             ));
   }
 
-
   // void _funcionCamara(
-  //     ImageSource source, CuentasXCobrarController ctrl) async {
-  //   final picker = ImagePicker();
-  //   final XFile? pickedFile = await picker.pickImage(
-  //     source: source,
-  //     imageQuality: 100,
-  //   );
-
-  //   if (pickedFile == null) {
-  //     return;
-  //   }
-  //   ctrl.setNewPictureFile('${pickedFile.path}');
-
-  //   Navigator.pop(context);
-
-  // }
-
-
   Future<File?> _getImage(BuildContext context, ImageSource source) async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: source,imageQuality: 50);
@@ -1157,13 +1267,4 @@ _fechaAbono(BuildContext context, CuentasXCobrarController controller,ThemeProvi
 
     return File(pickedFile.path);
   }
-
-
-
-
-
-
-
-
-
 }

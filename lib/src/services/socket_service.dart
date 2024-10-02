@@ -369,7 +369,7 @@ _latestResponse={};
   
         notifyListeners();
     } 
-       
+        print('LA DATA ACTUALIZADA SOCKET: $data');
     });
         //=================ELIMINADO=====================//
     _socket?.on('server:eliminadoExitoso', (data) async {
