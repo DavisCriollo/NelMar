@@ -263,13 +263,13 @@ class PropietariosController extends ChangeNotifier {
   String? get getItemCodeCelular => _itemCodeCelulares;
 
   void seItemCodeCelular(String? valor) {
-    if (valor == '593') {
-      _itemCodeCelulares = '+$valor' + '9';
-    } else {
-      _itemCodeCelulares = '+$valor';
-    }
-
-    // print('item _itemCodeCelulares: $_itemCodeCelulares');
+    // if (valor == '593') {
+    //   _itemCodeCelulares = '+$valor' + '9';
+    // } else {
+    //   _itemCodeCelulares = '+$valor';
+    // }
+ _itemCodeCelulares = '+$valor';
+    print('item _itemCodeCelulares: $_itemCodeCelulares');
 
     notifyListeners();
   }
@@ -328,7 +328,7 @@ class PropietariosController extends ChangeNotifier {
 
   void seItemAddCelulars(String? valor) {
     _itemAddCelulares = valor;
-    // print('item Celulars: $_itemAddCelulares');
+    print('item Celulars: $_itemAddCelulares');
     notifyListeners();
   }
 

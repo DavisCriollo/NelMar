@@ -2009,9 +2009,11 @@ _textCedula.text='';
                     ),
                     TextButton(
                         onPressed: () {
-                          controller.seItemAddCelulars(
-                              controller.getItemAddCelular!.replaceAll(
-                                  '+593', controller.getItemCodeCelular!));
+                           controller.seItemAddCelulars(
+                              controller.getItemAddCelular!);
+                          // controller.seItemAddCelulars(
+                          //     controller.getItemAddCelular!.replaceAll(
+                          //         '+593', controller.getItemCodeCelular!));
 
                           final isValidS = controller.validateFormCelular();
                           if (!isValidS) return;
