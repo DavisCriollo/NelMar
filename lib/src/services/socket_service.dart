@@ -369,7 +369,7 @@ _latestResponse={};
   
         notifyListeners();
     } 
-        print('LA DATA ACTUALIZADA SOCKET: $data');
+        // print('LA DATA ACTUALIZADA SOCKET: $data');
     });
         //=================ELIMINADO=====================//
     _socket?.on('server:eliminadoExitoso', (data) async {
@@ -386,8 +386,8 @@ _latestResponse={};
         final _ctrlComprobante=ComprobantesController();
         _showSnackbar('Registro eliminado exitosamente');
         //==============LA RSPUESTA ===================//
-        print('TABLA ${data['tabla']}');
-          print('$data');
+        // print('TABLA ${data['tabla']}');
+          // print('$data');
     
         notifyListeners();
     } 
@@ -395,7 +395,7 @@ _latestResponse={};
         final _ctrlComprobante=ComprobantesController();
         _showSnackbar('Registro eliminado exitosamente');
         //==============LA RSPUESTA ===================//
-        print('$data');
+        // print('$data');
     
         notifyListeners();
     } 
