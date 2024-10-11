@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:neitorcont/src/controllers/comprobantes_controller.dart';
+import 'package:neitorcont/src/services/notifications_service.dart';
 import 'package:neitorcont/src/theme/theme_provider.dart';
+import 'package:neitorcont/src/utils/dialogs.dart';
 import 'package:neitorcont/src/utils/responsive.dart';
 import 'package:neitorcont/src/widgets/no_data.dart';
 import 'package:provider/provider.dart';
@@ -250,9 +252,21 @@ class _BuscarProductosVariosState extends State<BuscarProductosVarios> {
                                   if (provider.getTypeAction=='MOTOS') {
                                      
                                      provider.setPrecio(double.parse(producto['invprecios'][0].toString()));
-                                      await  provider.enviaProductoCalculo( producto,1);
+                                      //====================//
+                                       ProgressDialog.show(context);
+                                         final response =    await  provider.enviaProductoCalculo( producto,1);
+            ProgressDialog.dissmiss(context);
+              
+               if (response != null) {
+                Navigator.pop(context);
+              
+            }else  {
+                 NotificatiosnService.showSnackBarError('Error al realizar proceso');
+            }
+            //====================//
+                                   
                                     
-                          Navigator.pop(context);
+                        
                                     
                                   } else {
                                  
@@ -621,6 +635,7 @@ TextFormField(
     if (!isValidS) return;
     
     if (isValidS)  {
+      
       await controller.enviaProductoCalculo(_item, 1);
       
       // Cierra ambas modales, igual que en el botón
@@ -654,10 +669,26 @@ TextFormField(
                         if (!isValidS) return;
                         if (isValidS)  {
 
-                        await  controller.enviaProductoCalculo(_item,1);
-                          Navigator.pop(context);
-                          Navigator.pop(context);
+                        // await  controller.enviaProductoCalculo(_item,1);
+                        //   Navigator.pop(context);
+                        //   Navigator.pop(context);
                               // print('EL ITEM ES : $_item}');
+
+                         //====================//
+  ProgressDialog.show(context);
+    final response =    await controller.enviaProductoCalculo(_item, 1);
+            ProgressDialog.dissmiss(context);
+              
+               if (response != null) {
+                Navigator.pop(context);
+                 Navigator.pop(context);
+              
+            }else  {
+                 NotificatiosnService.showSnackBarError('Error al realizar proceso');
+            }
+            //====================//
+
+
                         }
                       },
                       child: Consumer<ThemeProvider>(

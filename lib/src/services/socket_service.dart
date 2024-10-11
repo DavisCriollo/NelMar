@@ -275,42 +275,7 @@ _latestResponse={};
       notifyListeners();
     });
 
-//     _socket?.on('response', (data) {
 
-//       final _ctrlPropietario=PropietariosController();
-
-
-//       // Maneja la respuesta del servidor aquí
-//       _showSnackbar('Respuesta del servidor: $data', 'info');
-
-// //  //******************************//
-// //   serviceSocket.socket!.on('server:guardadoExitoso', (data) async {
-// //       if (data['tabla'] == 'proveedor') {
-// //         loadInfo.buscaAllPropietarios('');
-// //         // NotificatiosnService.showSnackBarSuccsses(data['msg']);
-// //       }
-// //     });
-// //     serviceSocket.socket!.on('server:actualizadoExitoso', (data) async {
-// //       if (data['tabla'] == 'proveedor') {
-// //         loadInfo.buscaAllPropietarios('');
-// //         // NotificatiosnService.showSnackBarSuccsses(data['msg']);
-// //       }
-// //     });
-// //     serviceSocket.socket!.on('server:eliminadoExitoso', (data) async {
-// //       if (data['tabla'] == 'proveedor') {
-// //         loadInfo.buscaAllPropietarios('');
-// //         // NotificatiosnService.showSnackBarSuccsses(data['msg']);
-// //       }
-// //     });
-// //     serviceSocket.socket?.on('server:error', (data) {
-// //       NotificatiosnService.showSnackBarError(data['msg']);
-// //     });
-
-// // //********************************//
-
-
-//       notifyListeners();
-//     });
 
         //=================GUARDADO=====================//
     _socket?.on('server:guardadoExitoso', (data) async {
@@ -319,6 +284,7 @@ _latestResponse={};
 
         if (data['tabla'] == 'proveedor' && data['perUser']==dataUser!.usuario && data['rucempresa']==dataUser.rucempresa) {
         final _ctrlPropietario=PropietariosController();
+        
         _ctrlPropietario.buscaAllPropietarios('');
         
          _latestResponse=data;

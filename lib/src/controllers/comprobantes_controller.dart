@@ -1674,6 +1674,7 @@ final _data ={
     if (response != null) {
 
             setRespuestaCalculoItem(response);
+            return true;
     }
  if (response == null) {
        return null;
@@ -1992,7 +1993,17 @@ _typeAction =_type;
 
 
 
+  // Estado que se actualizará cuando se reciba una respuesta del servidor
+  Map<String, dynamic>? _infoSocketComprobante={};
+  Map<String, dynamic>? get getInfoSocketComprobante => _infoSocketComprobante;
+  void setInfoSocketComprobante( Map<String, dynamic>? _item){
 
+_infoSocketComprobante={};
+_infoSocketComprobante=_item;
+  print('_infoSocketComprobante : $_infoSocketComprobante');
+  notifyListeners();
+
+}
 
 //****************************//
 

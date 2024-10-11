@@ -3373,10 +3373,10 @@ bool printBinded = false;
                   //**********************SE MUESTRA LA OPCION DE IMPRIMIR *************************//
                         Consumer<SocketService>(
         builder: (_,value, __) {
-
+          
+         
      return 
-         value.latestResponse!.isNotEmpty
-         // &&  value.latestResponse!['tabla']=='ventas'
+         value.latestResponse!.isNotEmpty 
         ? 
         Container(
             width: size.wScreen(100.0),
@@ -3416,10 +3416,10 @@ bool printBinded = false;
                 
               ),
               onPressed: () {
+                     
+                     
 
-                      
-
-                    _printTicket(value.latestResponse,widget.user!.logo);
+                    _printTicket( value.latestResponse! ,widget.user!.logo);
 
                     //========================================//
                         final _ctrl =context.read<ComprobantesController>();
@@ -3502,9 +3502,9 @@ bool printBinded = false;
 
 Navigator.pop(context);
 
-                    //****************************************//
+                    //*********************LA DATA PARA IMPRIMIR*******************//
 
-
+              // print('LA DATA PARA IMPRIMIR =======>: ${value.latestResponse!}');
 
 
 
