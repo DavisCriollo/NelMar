@@ -145,7 +145,7 @@ bool printBinded = false;
         builder: (_,value, __) {
 
      return 
-         value.latestResponse!.isNotEmpty 
+         value.latestResponseCaja!.isNotEmpty 
          //&&  value.latestResponse!['tabla']=='caja'
         ? 
         Container(
@@ -189,7 +189,7 @@ bool printBinded = false;
 
                       
 
-                    _printTicket(value.latestResponse,widget.user!.logo);
+                    _printTicket(value.latestResponseCaja,widget.user!.logo);
 
                       //========================================//
                         final _ctrl =context.read<CajaController>();

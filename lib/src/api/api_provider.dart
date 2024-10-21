@@ -2082,7 +2082,8 @@ class ApiProvider {
         url,
         headers: {"x-auth-token": '$token'},
       );
-
+//  print('RESPONSE TARIFAS: ${dataResp.statusCode}');
+//   print('RESPONSE TARIFAS: ${dataResp.body}');
       if (dataResp.body.isEmpty) {
         return null;
       }

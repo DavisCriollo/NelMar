@@ -3192,18 +3192,18 @@ bool printBinded = false;
 
          WidgetsBinding.instance!.addPostFrameCallback((_) {
             final ctrlSock = context.read<SocketService>();
-              if ( ctrlSock.latestResponse!.isNotEmpty &&  ctrlSock.latestResponse!['tabla']=='proveedor') {
+              if ( ctrlSock.latestResponseVentas!.isNotEmpty &&  ctrlSock.latestResponseVentas!['tabla']=='proveedor') {
         final _ctrls=context.read<ComprobantesController>();
          _ctrls.setClienteComprbante({
-			"perId": ctrlSock.latestResponse!['perId'],
-			"perNombre": ctrlSock.latestResponse!['perNombre'],
-			"perDocNumero": ctrlSock.latestResponse!['perDocNumero'],
-			"perDocTipo": ctrlSock.latestResponse!['perDocTipo'],
-			"perTelefono":ctrlSock.latestResponse!['perTelefono'],
-			"perDireccion": ctrlSock.latestResponse!['perDireccion'],
-			"perEmail": ctrlSock.latestResponse!['perEmail'],
-			"perCelular": ctrlSock.latestResponse!['perCelular'],
-			"perOtros": ctrlSock.latestResponse!['perOtros'],
+			"perId": ctrlSock.latestResponseVentas!['perId'],
+			"perNombre": ctrlSock.latestResponseVentas!['perNombre'],
+			"perDocNumero": ctrlSock.latestResponseVentas!['perDocNumero'],
+			"perDocTipo": ctrlSock.latestResponseVentas!['perDocTipo'],
+			"perTelefono":ctrlSock.latestResponseVentas!['perTelefono'],
+			"perDireccion": ctrlSock.latestResponseVentas!['perDireccion'],
+			"perEmail": ctrlSock.latestResponseVentas!['perEmail'],
+			"perCelular": ctrlSock.latestResponseVentas!['perCelular'],
+			"perOtros": ctrlSock.latestResponseVentas!['perOtros'],
 		});
               
 
@@ -3376,7 +3376,7 @@ bool printBinded = false;
           
          
      return 
-         value.latestResponse!.isNotEmpty 
+         value.latestResponseVentas!.isNotEmpty 
         ? 
         Container(
             width: size.wScreen(100.0),
@@ -3417,9 +3417,18 @@ bool printBinded = false;
               ),
               onPressed: () {
                      
-                     
+                    //  print('LA INFORMACION PARA PRINT: ${value.latestResponseVentas!}');
+                       String fechaLocal ='';
 
-                    _printTicket( value.latestResponse! ,widget.user!.logo);
+                         
+                             fechaLocal= convertirFechaLocal(value.latestResponseVentas!['venFecReg']);
+                          
+
+                       
+
+                    _printTicket( value.latestResponseVentas! ,widget.user!.logo,fechaLocal);
+
+
 
                     //========================================//
                         final _ctrl =context.read<ComprobantesController>();
@@ -3606,6 +3615,7 @@ Navigator.pop(context);
            
         ],
           ),
+         
         ],
       ),
           ):Container();
@@ -5791,12 +5801,13 @@ Future<bool?> _agregaPlaca(BuildContext context,
 
 
 
-void _printTicket(Map<String, dynamic>? _info,String? user) async {
+void _printTicket(Map<String, dynamic>? _info,String? user,String fechaLocal) async {
   if (_info == null) return;
 
 
   //==============================================//
   String fechaLocal = convertirFechaLocal(_info['venFecReg']);
+    // print('LA FECHA PARA PRINT: $fechaLocal');
  //==============================================//
 
 

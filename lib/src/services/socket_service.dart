@@ -238,13 +238,17 @@ class SocketService extends ChangeNotifier {
   bool _snackbarShown = false;
 
 
-  // Estado que se actualizará cuando se reciba una respuesta del servidor
-  Map<String, dynamic>? _latestResponse={};
-  Map<String, dynamic>? get latestResponse => _latestResponse;
+  // =============VENTAS=============//
+  Map<String, dynamic>? _latestResponseVantes={};
+  Map<String, dynamic>? get latestResponseVentas => _latestResponseVantes;
+  
+  // =============VENTAS=============//
+  Map<String, dynamic>? _latestResponseCaja={};
+  Map<String, dynamic>? get latestResponseCaja => _latestResponseCaja;
   void resetResponseSocket(){
 
-_latestResponse={};
-
+_latestResponseVantes={};
+_latestResponseCaja={};
   notifyListeners();
 
 }
@@ -286,26 +290,27 @@ _latestResponse={};
         final _ctrlPropietario=PropietariosController();
         
         _ctrlPropietario.buscaAllPropietarios('');
-        
-         _latestResponse=data;
-          // print('DATA PROPIETARIO: $_latestResponse');
+         _latestResponseVantes={};
+         _latestResponseVantes=data;
+          print('DATA PROPIETARIO: $_latestResponseVantes');
         //  _showSnackbar('Registro guardado exitosamente');
          notifyListeners();
         }
         // Condición para la tabla 'factura'
-    if (data['tabla'] == 'ventas' && data['venUser']==dataUser!.usuario && data['rucempresa']==dataUser.rucempresa) {
+    if (data['tabla'] == 'ventas' && data['venUser']==dataUser!.usuario && data['rucempresa']==dataUser.rucempresa && data.containsKey('venId') ) {
        
         // _showSnackbar('Registro guardada exitosamente');
         //==============LA RSPUESTA ===================//
-      _latestResponse=data;
-        // print('DATA VENTAS: $data');
+         _latestResponseVantes={};
+      _latestResponseVantes=data;
+        print('DATA VENTAS: $data');
         notifyListeners();
     } 
-    if (data['tabla'] == 'caja' && data['cajaUser']==dataUser!.usuario && data['rucempresa']==dataUser.rucempresa) {
+    if (data['tabla'] == 'caja' && data['cajaUser']==dataUser!.usuario && data['rucempresa']==dataUser.rucempresa && data.containsKey('cajaId') ) {
         // _showSnackbar('Caja guardada exitosamente');
         //==============LA RSPUESTA ===================//
-        _latestResponse=data;
-          // print('DATA CAJA: $_latestResponse');
+        _latestResponseCaja=data;
+          print('DATA CAJA: $_latestResponseCaja');
         notifyListeners();
     }
         

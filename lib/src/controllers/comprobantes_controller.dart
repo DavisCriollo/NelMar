@@ -1527,7 +1527,7 @@ List<Map<String,dynamic>> get getListaDeProductosFactura=>_listaDeProductosFactu
 void setListaDeProductosFactura(Map<String,dynamic> _item){
     _listaDeProductosFactura.removeWhere((e) => e['invId']==_item['invId']);
   _listaDeProductosFactura.add(_item); 
-  print('TODOS LOS PRODUCTOSFactura :$_listaDeProductosFactura');
+  // print('TODOS LOS PRODUCTOSFactura :$_listaDeProductosFactura');
   notifyListeners();
 }
 
@@ -1572,7 +1572,7 @@ List get getListaDeProductos=>_listaDeProductos;
 void setListaDeProductos(List _list){
   _listaDeProductos=[]; 
   _listaDeProductos.addAll(_list); 
-  print('TODOS LOS PRODUCTOS :$_listaDeProductos');
+  // print('TODOS LOS PRODUCTOS :$_listaDeProductos');
   notifyListeners();
 }
 
