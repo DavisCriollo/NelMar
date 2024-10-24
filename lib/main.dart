@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:neitorcont/src/controllers/anuladas_controller.dart';
+import 'package:neitorcont/src/controllers/bluetooth_controller.dart';
 import 'package:neitorcont/src/controllers/caja_controller.dart';
 import 'package:neitorcont/src/controllers/comprobantes_controller.dart';
 import 'package:neitorcont/src/controllers/cuentas_por_cobrar_controller.dart';
@@ -104,6 +105,11 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => AnuladasController()),
         ChangeNotifierProvider(create: (_) => ReservasController()),
         ChangeNotifierProvider(create: (_) => ComprobantesController()),
+
+        // ChangeNotifierProvider(create: (_) => BluetoothProvider()),
+
+
+
       ],
       // child: Consumer<AppTheme>(
       child: Consumer<ThemeProvider>(

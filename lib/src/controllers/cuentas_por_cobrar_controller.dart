@@ -356,6 +356,9 @@ void search(String query) {
   if (query.isEmpty) {
     _allItemsFilters = List.from(_originalItemsFilters); // Restaurar la lista original cuando el campo de texto está vacío
   } else {
+
+
+
     _allItemsFilters = _originalItemsFilters.where((item) {
       return item['ccRucCliente'].toLowerCase().contains(query.toLowerCase()) ||
           item['ccNomCliente'].toLowerCase().contains(query.toLowerCase()) ||
@@ -1558,7 +1561,7 @@ notifyListeners();
 
 _allItemsFiltersMateriales.addAll(_list);
 // print('LA LISTA DE LOS ESTUDIANTES _allItemsFilters: ${_allItemsFilters.length} ');
-print('LA LISTA DE LOS  _allItemsFilters: $_allItemsFiltersMateriales ');
+// print('LA LISTA DE LOS  _allItemsFilters: $_allItemsFiltersMateriales ');
 
 //====================== REALIZA LA SUMATORIA EN CADA CONSULTA  =============================//
 
@@ -1615,7 +1618,10 @@ _valorTotalFacturasAntes = double.parse(_valorTotalFacturasAntes.toStringAsFixed
       _allItemsFiltersMateriales = originalList.where((material) {
         return 
         // resident['resCedula'].toLowerCase().contains(query.toLowerCase()) ||
-               material['venNomCliente'].toLowerCase().contains(query.toLowerCase()) ;
+               material['venConductor'].toLowerCase().contains(query.toLowerCase()) ||
+               material['venNumFactura'].toLowerCase().contains(query.toLowerCase(),
+               
+               ) ;
       }).toList();
     }
     notifyListeners();

@@ -10,7 +10,11 @@ class Auth {
   static final Auth _instance = Auth.internal();
   static Auth get instance => _instance;
 
-  final _storage = const FlutterSecureStorage();
+  final _storage = const FlutterSecureStorage(
+     aOptions:  AndroidOptions(
+      encryptedSharedPreferences: true,
+    ),
+  );
   final keySESION = 'SESSION';
   // final keyTURNO = 'TURNO';
   final keyCREDENCIALES = 'CEDENCIALES';

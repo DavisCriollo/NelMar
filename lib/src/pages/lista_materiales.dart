@@ -194,7 +194,7 @@ bool printBinded = false;
                                             // providerSearchPreFacturas
                                                 // .onSearchTextPreFacturaPaginacion(
                                                 //     text);
-                                                providerSearchPreFacturas.search(text);
+                                                providerSearchPreFacturas.searchMateriales(text);
                         //                         if (providerSearchPreFacturas
                         //                         .nameSearchPreFacturaPaginacion
                         //                         .isEmpty
@@ -619,95 +619,145 @@ Container(
                                                             );
                                                           },
                                                         ),
-                                                        //  CupertinoActionSheetAction(
-                                                        //   child: Row(
-                                                        //     mainAxisAlignment:
-                                                        //         MainAxisAlignment
-                                                        //             .center,
-                                                        //     children: [
-                                                        //       Container(
-                                                        //         margin: EdgeInsets.only(
-                                                        //             right: size
-                                                        //                 .iScreen(
-                                                        //                     2.0)),
-                                                        //         child: Text(
-                                                        //           'Imprimir',
-                                                        //           style: GoogleFonts.lexendDeca(
-                                                        //               fontSize: size
-                                                        //                   .iScreen(
-                                                        //                       1.8),
-                                                        //               color: Colors
-                                                        //                   .black87,
-                                                        //               fontWeight:
-                                                        //                   FontWeight
-                                                        //                       .normal),
-                                                        //         ),
-                                                        //       ),
-                                                        //       const Icon(
-                                                        //         FontAwesomeIcons
-                                                        //             .print,
-                                                        //         color: Colors.green,
-                                                        //       )
-                                                        //     ],
-                                                        //   ),
-                                                        //   onPressed: () {
-                                                        //     Navigator.pop(
-                                                        //         context);
-                                                        //         _printTicket(_prefacturas,widget.user!.logo);
+                                                         CupertinoActionSheetAction(
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              Container(
+                                                                margin: EdgeInsets.only(
+                                                                    right: size
+                                                                        .iScreen(
+                                                                            2.0)),
+                                                                child: Text(
+                                                                  'Imprimir',
+                                                                  style: GoogleFonts.lexendDeca(
+                                                                      fontSize: size
+                                                                          .iScreen(
+                                                                              1.8),
+                                                                      color: Colors
+                                                                          .black87,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .normal),
+                                                                ),
+                                                              ),
+                                                              const Icon(
+                                                                FontAwesomeIcons
+                                                                    .print,
+                                                                color: Colors.green,
+                                                              )
+                                                            ],
+                                                          ),
+                                                          onPressed: () {
+                                                            Navigator.pop(
+                                                                context);
+                                                                _printTicket(_prefacturas,widget.user!.logo);
 
                                                            
-                                                        //   },
-                                                        // ),
-                                                        // CupertinoActionSheetAction(
-                                                        //   child: Row(
-                                                        //     mainAxisAlignment:
-                                                        //         MainAxisAlignment
-                                                        //             .center,
-                                                        //     children: [
-                                                        //       Container(
-                                                        //         margin: EdgeInsets.only(
-                                                        //             right: size
-                                                        //                 .iScreen(
-                                                        //                     2.0)),
-                                                        //         child: Text(
-                                                        //           'Ver PDF',
-                                                        //           style: GoogleFonts.lexendDeca(
-                                                        //               fontSize: size
-                                                        //                   .iScreen(
-                                                        //                       1.8),
-                                                        //               color: Colors
-                                                        //                   .black87,
-                                                        //               fontWeight:
-                                                        //                   FontWeight
-                                                        //                       .normal),
-                                                        //         ),
-                                                        //       ),
-                                                        //       const Icon(
-                                                        //         FontAwesomeIcons
-                                                        //             .filePdf,
-                                                        //         color: Colors.red,
-                                                        //       )
-                                                        //     ],
-                                                        //   ),
-                                                        //   onPressed: () {
-                                                        //     Navigator.pop(
-                                                        //         context);
+                                                          },
+                                                        ),
+                                                        CupertinoActionSheetAction(
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              Container(
+                                                                margin: EdgeInsets.only(
+                                                                    right: size
+                                                                        .iScreen(
+                                                                            2.0)),
+                                                                child: Text(
+                                                                  'Ver PDF',
+                                                                  style: GoogleFonts.lexendDeca(
+                                                                      fontSize: size
+                                                                          .iScreen(
+                                                                              1.8),
+                                                                      color: Colors
+                                                                          .black87,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .normal),
+                                                                ),
+                                                              ),
+                                                              const Icon(
+                                                                FontAwesomeIcons
+                                                                    .filePdf,
+                                                                color: Colors.red,
+                                                              )
+                                                            ],
+                                                          ),
+                                                          onPressed: () {
+                                                            Navigator.pop(
+                                                                context);
                           
-                                                        //     Navigator.push(
-                                                        //       context,
-                                                        //       MaterialPageRoute(
-                                                        //           builder: (context) =>
-                                                        //               ViewsPDFs(
-                                                        //                   infoPdf:
-                                                        //                       // 'https://sysvet.neitor.com/reportes/carnet.php?id=${factura['venId']}&empresa=${_usuario!.rucempresa}',
-                                                        //                       'https://syscontable.neitor.com/reportes/factura.php?codigo=${_prefacturas['venId']}&empresa=${widget.user!.rucempresa}',
-                                                        //                   labelPdf:
-                                                        //                       'infoFactura.pdf')),
-                                                        //     );
-                                                        //   },
-                                                        // ),
+                                                            Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder: (context) =>
+                                                                      ViewsPDFs(
+                                                                          infoPdf:
+                                                                              // 'https://sysvet.neitor.com/reportes/carnet.php?id=${factura['venId']}&empresa=${_usuario!.rucempresa}',
+                                                                         'https://syscontable.neitor.com/reportes/factura.php?codigo=${_prefacturas['venId']}&empresa=${widget.user!.rucempresa}',
+                                                                         labelPdf:
+                                                                              'infoFactura.pdf')),
+                                                            );
+                                                          },
+                                                        ),
                                                      
-                                                     
+                                                       CupertinoActionSheetAction(
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              Container(
+                                                                margin: EdgeInsets.only(
+                                                                    right: size
+                                                                        .iScreen(
+                                                                            2.0)),
+                                                                child: Text(
+                                                                  'Ver PDF Ticket',
+                                                                  style: GoogleFonts.lexendDeca(
+                                                                      fontSize: size
+                                                                          .iScreen(
+                                                                              1.8),
+                                                                      color: Colors
+                                                                          .black87,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .normal),
+                                                                ),
+                                                              ),
+                                                              const Icon(
+                                                                FontAwesomeIcons
+                                                                    .filePdf,
+                                                                color: Colors.purple,
+                                                              )
+                                                            ],
+                                                          ),
+                                                          onPressed: () {
+                                                            Navigator.pop(
+                                                                context);
+                          
+                                                            Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder: (context) =>
+                                                                      ViewsPDFs(
+                                                                          infoPdf:
+                                                                              // 'https://sysvet.neitor.com/reportes/carnet.php?id=${factura['venId']}&empresa=${_usuario!.rucempresa}',
+                                                                        //  'https://syscontable.neitor.com/reportes/factura.php?codigo=${_prefacturas['venId']}&empresa=${widget.user!.rucempresa}',
+                                                                           'https://syscontable.neitor.com/reportes/facturaticket.php?codigo=${_prefacturas['venId']}&empresa=${widget.user!.rucempresa}',
+                                                                         
+                                                                          
+                                                                          labelPdf:
+                                                                              'infoFactura.pdf')),
+                                                            );
+                                                          },
+                                                        ),
                                                      
                                                      
                                                       ],
@@ -1338,6 +1388,146 @@ Container(
                                                             );
                                                           },
                                                         ),
+                                                           CupertinoActionSheetAction(
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              Container(
+                                                                margin: EdgeInsets.only(
+                                                                    right: size
+                                                                        .iScreen(
+                                                                            2.0)),
+                                                                child: Text(
+                                                                  'Imprimir',
+                                                                  style: GoogleFonts.lexendDeca(
+                                                                      fontSize: size
+                                                                          .iScreen(
+                                                                              1.8),
+                                                                      color: Colors
+                                                                          .black87,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .normal),
+                                                                ),
+                                                              ),
+                                                              const Icon(
+                                                                FontAwesomeIcons
+                                                                    .print,
+                                                                color: Colors.green,
+                                                              )
+                                                            ],
+                                                          ),
+                                                          onPressed: () {
+                                                            Navigator.pop(
+                                                                context);
+                                                                _printTicket(_prefacturas,widget.user!.logo);
+
+                                                           
+                                                          },
+                                                        ),
+                                                        CupertinoActionSheetAction(
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              Container(
+                                                                margin: EdgeInsets.only(
+                                                                    right: size
+                                                                        .iScreen(
+                                                                            2.0)),
+                                                                child: Text(
+                                                                  'Ver PDF',
+                                                                  style: GoogleFonts.lexendDeca(
+                                                                      fontSize: size
+                                                                          .iScreen(
+                                                                              1.8),
+                                                                      color: Colors
+                                                                          .black87,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .normal),
+                                                                ),
+                                                              ),
+                                                              const Icon(
+                                                                FontAwesomeIcons
+                                                                    .filePdf,
+                                                                color: Colors.red,
+                                                              )
+                                                            ],
+                                                          ),
+                                                          onPressed: () {
+                                                            Navigator.pop(
+                                                                context);
+                          
+                                                            Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder: (context) =>
+                                                                      ViewsPDFs(
+                                                                          infoPdf:
+                                                                              // 'https://sysvet.neitor.com/reportes/carnet.php?id=${factura['venId']}&empresa=${_usuario!.rucempresa}',
+                                                                         'https://syscontable.neitor.com/reportes/factura.php?codigo=${_prefacturas['venId']}&empresa=${widget.user!.rucempresa}',
+                                                                         labelPdf:
+                                                                              'infoFactura.pdf')),
+                                                            );
+                                                          },
+                                                        ),
+                                                     
+                                                       CupertinoActionSheetAction(
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              Container(
+                                                                margin: EdgeInsets.only(
+                                                                    right: size
+                                                                        .iScreen(
+                                                                            2.0)),
+                                                                child: Text(
+                                                                  'Ver PDF Ticket',
+                                                                  style: GoogleFonts.lexendDeca(
+                                                                      fontSize: size
+                                                                          .iScreen(
+                                                                              1.8),
+                                                                      color: Colors
+                                                                          .black87,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .normal),
+                                                                ),
+                                                              ),
+                                                              const Icon(
+                                                                FontAwesomeIcons
+                                                                    .filePdf,
+                                                                color: Colors.purple,
+                                                              )
+                                                            ],
+                                                          ),
+                                                          onPressed: () {
+                                                            Navigator.pop(
+                                                                context);
+                          
+                                                            Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder: (context) =>
+                                                                      ViewsPDFs(
+                                                                          infoPdf:
+                                                                              // 'https://sysvet.neitor.com/reportes/carnet.php?id=${factura['venId']}&empresa=${_usuario!.rucempresa}',
+                                                                        //  'https://syscontable.neitor.com/reportes/factura.php?codigo=${_prefacturas['venId']}&empresa=${widget.user!.rucempresa}',
+                                                                           'https://syscontable.neitor.com/reportes/facturaticket.php?codigo=${_prefacturas['venId']}&empresa=${widget.user!.rucempresa}',
+                                                                         
+                                                                          
+                                                                          labelPdf:
+                                                                              'infoFactura.pdf')),
+                                                            );
+                                                          },
+                                                        ),
+                                                     
                                                         //  CupertinoActionSheetAction(
                                                         //   child: Row(
                                                         //     mainAxisAlignment:
@@ -2304,6 +2494,14 @@ Container(
               onPressed: () {
                 // Acción del primer botón
   //
+
+
+
+  //*************** RESET LA VARIABLE DE RESPONSE SOCKET***************************//
+    final ctrlSocket=context.read<SocketService>();
+     ctrlSocket.resetResponseSocket();
+      //******************************************//
+
   final ctrl=context.read<ComprobantesController>();
   ctrl.resetCalculos();
                             Navigator.of(context).push(MaterialPageRoute(
@@ -2582,39 +2780,7 @@ void _printTicket(Map<String, dynamic>? _info,String? user) async {
   final productos = _info['venProductos'] as List<dynamic>?;
 
   if (productos != null) {
-    // for (var item in productos) {
-    //   // Cambiar el tamaño de la fuente solo para la columna de descripción
-    //   // await SunmiPrinter.setFontSize(SunmiFontSize.SM); // Ajustar a un tamaño más pequeño
-      
-    //   await SunmiPrinter.printRow(cols: [
-    //     ColumnMaker(
-    //       text: item['descripcion']?.toString() ?? 'N/A',
-    //       width: 12,
-    //       align: SunmiPrintAlign.LEFT,
-    //     ),
-    //   ]);
 
-    
-
-    //   // Imprimir las otras columnas con el tamaño de fuente normal
-    //   await SunmiPrinter.printRow(cols: [
-    //     ColumnMaker(
-    //       text: item['cantidad']?.toString() ?? '0',
-    //       width: 6,
-    //       align: SunmiPrintAlign.CENTER,
-    //     ),
-    //     ColumnMaker(
-    //       text: item['valorUnitario']?.toString() ?? '0',
-    //       width: 6,
-    //       align: SunmiPrintAlign.RIGHT,
-    //     ),
-    //     ColumnMaker(
-    //       text: item['precioSubTotalProducto']?.toString() ?? '0',
-    //       width: 6,
-    //       align: SunmiPrintAlign.RIGHT,
-    //     ),
-    //   ]);
-    // }
   for  (var item in productos) {
       await SunmiPrinter.printRow(cols: [
         ColumnMaker(

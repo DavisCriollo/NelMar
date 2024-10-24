@@ -44,7 +44,7 @@ dependencies:
   permission_handler: ^8.3.0
   firebase_core:
   socket_io_client: ^2.0.0-beta.3-nullsafety.0
-  flutter_secure_storage: ^5.0.2
+  flutter_secure_storage: ^7.0.0
   image_picker: ^0.8.5
   intl: ^0.17.0
   url_launcher: ^6.0.20
@@ -79,7 +79,7 @@ dependencies:
   flutter_blue_plus: ^1.32.0
   fvm: ^2.3.1
   image: ^3.0.1
-  
+
   # esc_pos_bluetooth: ^0.4.0
   # blue_thermal_printer: ^1.2.3
   # bluetooth_print: ^4.3.0

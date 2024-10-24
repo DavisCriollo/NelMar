@@ -12,6 +12,7 @@ import 'package:neitorcont/src/pages/crear_comprobante_print.dart';
 import 'package:neitorcont/src/pages/lista_cuentas_por_cobrar.dart';
 import 'package:neitorcont/src/pages/lista_materiales.dart';
 import 'package:neitorcont/src/pages/listar_reservas_paginacion.dart';
+import 'package:neitorcont/src/pages/prueba.dart';
 import 'package:neitorcont/src/pages/submenu_transacciones.dart';
 
 import 'package:neitorcont/src/services/socket_service.dart';
@@ -157,10 +158,10 @@ class _HomePageState extends State<HomePage> {
                                               ),
                                             )),
                                 ),
-                                Wrap(
+                               Wrap(
                                   alignment: WrapAlignment.center,
                                   children: [
-                                    ElementosHome(
+                                  widget.user!.rol!.contains('SUPERADMIN')?  ElementosHome(
                                       enabled: true,
                                       size: size,
                                       image: 'assets/imgs/businessman.png',
@@ -200,7 +201,7 @@ class _HomePageState extends State<HomePage> {
                                             'listaPropietariosPaginacion',
                                             arguments: widget.user);
                                       },
-                                    ),
+                                    ):Container(),
                                     // ElementosHome(
                                     //   enabled: true,
                                     //   size: size,
@@ -300,7 +301,7 @@ class _HomePageState extends State<HomePage> {
                                     //   // onTap: () => Navigator.pushNamed(context, 'facturas'),
                                     //   onTap: () {},
                                     // ),
-                                    ElementosHome(
+                                 !widget.user!.rol!.contains('DESPACHO')?   ElementosHome(
                                       enabled: true,
                                       size: size,
                                       image: 'assets/imgs/icon-factura.png',
@@ -312,7 +313,7 @@ class _HomePageState extends State<HomePage> {
                                       // Navigator.pushNamed(
                                       //     context, 'SubmenuTransacciones',arguments:usuario),
                                       // onTap: () {},
-                                    ),
+                                    ):Container(),
 
                                        ElementosHome(
                                       enabled: true,
@@ -386,7 +387,16 @@ ctrl.buscaAllMaterialesPaginacion('',false,0);
                                      
                                       user: widget.user,)));
 
+          //====================================//
+                //  Navigator.of(context).push(MaterialPageRoute(
+                //                 builder: (context) =>
+                //                      PrintScreen(
+                                     
+                //                      )));
+            
 
+
+          //=====================================//
 
 
                                       }
