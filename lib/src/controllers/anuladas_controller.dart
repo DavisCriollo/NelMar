@@ -417,21 +417,40 @@ _valorTotalFacturasAntes = double.parse(_valorTotalFacturasAntes.toStringAsFixed
   notifyListeners();
  }
 
-  void search(String query) {
-      List<Map<String, dynamic>> originalList = List.from(_facturasFiltradas); // Copia de la lista original
-    if (query.isEmpty) {
-      _allItemsFilters = originalList;
-    } else {
-      _allItemsFilters = originalList.where((estudiante) {
-        return 
-        // resident['resCedula'].toLowerCase().contains(query.toLowerCase()) ||
-               estudiante['venNomCliente'].toLowerCase().contains(query.toLowerCase()) ;
-      }).toList();
-    }
-    notifyListeners();
+  // void search(String query) {
+  //     List<Map<String, dynamic>> originalList = List.from(_facturasFiltradas); // Copia de la lista original
+  //   if (query.isEmpty) {
+  //     _allItemsFilters = originalList;
+  //   } else {
+  //     _allItemsFilters = originalList.where((estudiante) {
+  //       return 
+  //       // resident['resCedula'].toLowerCase().contains(query.toLowerCase()) ||
+  //              estudiante['venNomCliente'].toLowerCase().contains(query.toLowerCase()) ;
+  //     }).toList();
+  //   }
+  //   notifyListeners();
+  // }
+
+void search(String query) {
+  List<Map<String, dynamic>> originalList = List.from(_facturasFiltradas); // Copia de la lista original
+  if (query.isEmpty) {
+    _allItemsFilters = originalList;
+  } else {
+    _allItemsFilters = originalList.where((item) {
+      String venFecReg = item['venFecReg'];
+      
+      // Convertir `venFecReg` a formato de fecha corto si es necesario
+      String fechaFormateada = venFecReg.split("T").first;
+
+      return 
+        fechaFormateada.toLowerCase().contains(query.toLowerCase()) ||
+        item['venConductor'].toLowerCase().contains(query.toLowerCase())||
+         item['venUser'].toLowerCase().contains(query.toLowerCase())||
+        item['venNomCliente'].toLowerCase().contains(query.toLowerCase());
+    }).toList();
   }
-
-
+  notifyListeners();
+}
 
 
 //====================================//

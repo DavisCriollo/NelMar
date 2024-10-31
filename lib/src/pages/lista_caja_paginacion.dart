@@ -833,21 +833,54 @@ Container(
                                                           TextOverflow.ellipsis,
                                                     ),
                                                   ),
-                                                  Container(
+                                                  Column(
+                                                    children: [
+                                                      Container(
+                                                        // color: Colors.green,
+                                                        width: size.wScreen(70.0),
+                                                        child: Text(
+                                                          fechaLocal !=
+                                                                  ''
+                                                              ? fechaLocal
+                                                              : '--- --- ---',
+                                                          style:
+                                                              GoogleFonts.lexendDeca(
+                                                                  // fontSize: size.iScreen(2.45),
+                                                                  color: Colors.grey,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .normal),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                    Container(
                                                     // color: Colors.green,
                                                     width: size.wScreen(70.0),
-                                                    child: Text(
-                                                      fechaLocal !=
-                                                              ''
-                                                          ? fechaLocal
-                                                          : '--- --- ---',
-                                                      style:
-                                                          GoogleFonts.lexendDeca(
-                                                              // fontSize: size.iScreen(2.45),
-                                                              color: Colors.grey,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .normal),
+                                                    child: Row(
+                                                      children: [
+                                                        Text(
+                                                          'Usuario: ',
+                                                          style:
+                                                              GoogleFonts.lexendDeca(
+                                                                  // fontSize: size.iScreen(1.9),
+                                                                  color: Colors.grey,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                        ),
+                                                        Text(
+                                                           _prefacturas['cajaUser']!=null
+                                                           ?'${_prefacturas['cajaUser']}':'--- --- --- --- --- ---  ',
+                                                          style:
+                                                              GoogleFonts.lexendDeca(
+                                                                  // fontSize: size.iScreen(1.8),
+                                                                  // color: Colors.grey,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                        ),
+                                                      ],
                                                     ),
                                                   ),
                                                 ],
@@ -2595,6 +2628,35 @@ Container(
                                                               fontWeight:
                                                                   FontWeight
                                                                       .normal),
+                                                    ),
+                                                  ),
+                                                       Container(
+                                                    // color: Colors.green,
+                                                    width: size.wScreen(70.0),
+                                                    child: Row(
+                                                      children: [
+                                                        Text(
+                                                          'Usuario: ',
+                                                          style:
+                                                              GoogleFonts.lexendDeca(
+                                                                  // fontSize: size.iScreen(1.9),
+                                                                  color: Colors.grey,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                        ),
+                                                        Text(
+                                                           _prefacturas['cajaUser']!=null
+                                                           ?'${_prefacturas['cajaUser']}':'--- --- --- --- --- ---  ',
+                                                          style:
+                                                              GoogleFonts.lexendDeca(
+                                                                  // fontSize: size.iScreen(1.8),
+                                                                  // color: Colors.grey,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                        ),
+                                                      ],
                                                     ),
                                                   ),
                                                 ],

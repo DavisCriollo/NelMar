@@ -242,7 +242,7 @@ class SocketService extends ChangeNotifier {
   Map<String, dynamic>? _latestResponseVantes={};
   Map<String, dynamic>? get latestResponseVentas => _latestResponseVantes;
   
-  // =============VENTAS=============//
+  // =============CAJA=============//
   Map<String, dynamic>? _latestResponseCaja={};
   Map<String, dynamic>? get latestResponseCaja => _latestResponseCaja;
   void resetResponseSocket(){

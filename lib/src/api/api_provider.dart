@@ -1590,7 +1590,7 @@ class ApiProvider {
       if (dataResp.body.isEmpty) {
         return null;
       }
-      // print('RESPONSE:AVISOSALIDA ${dataResp.body}');
+      print('RESPONSE:AVISOSALIDA ${dataResp.body}');
       if (dataResp.statusCode == 200) {
 
 

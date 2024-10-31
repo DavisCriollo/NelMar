@@ -697,6 +697,34 @@ bool printBinded = false;
                                                                   FontWeight
                                                                       .bold),
                                                     ),
+                                                  ),    Container(
+                                                    // color: Colors.green,
+                                                    width: size.wScreen(50.0),
+                                                    child: Row(
+                                                      children: [
+                                                        Text(
+                                                          'Usuario: ',
+                                                          style:
+                                                              GoogleFonts.lexendDeca(
+                                                                  // fontSize: size.iScreen(1.9),
+                                                                  color: Colors.grey,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                        ),
+                                                        Text(
+                                                           factura['venUser']!=null
+                                                           ?'${factura['venUser']}':'--- --- --- --- --- ---  ',
+                                                          style:
+                                                              GoogleFonts.lexendDeca(
+                                                                  // fontSize: size.iScreen(1.8),
+                                                                  // color: Colors.grey,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
                                         Container(
                                           child: Text(
@@ -1272,6 +1300,35 @@ Container(
                                                               fontWeight:
                                                                   FontWeight
                                                                       .bold),
+                                                    ),
+                                                  ),
+                                                   Container(
+                                                    // color: Colors.green,
+                                                    width: size.wScreen(50.0),
+                                                    child: Row(
+                                                      children: [
+                                                        Text(
+                                                          'Usuario: ',
+                                                          style:
+                                                              GoogleFonts.lexendDeca(
+                                                                  // fontSize: size.iScreen(1.9),
+                                                                  color: Colors.grey,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                        ),
+                                                        Text(
+                                                           factura['venUser']!=null
+                                                           ?'${factura['venUser']}':'--- --- --- --- --- ---  ',
+                                                          style:
+                                                              GoogleFonts.lexendDeca(
+                                                                  // fontSize: size.iScreen(1.8),
+                                                                  // color: Colors.grey,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                        ),
+                                                      ],
                                                     ),
                                                   ),
                                         Container(

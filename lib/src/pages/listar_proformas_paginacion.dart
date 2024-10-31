@@ -1058,6 +1058,35 @@ bool printBinded = false;
                                                                       .bold),
                                                     ),
                                                   ),
+                                                   Container(
+                                                    // color: Colors.green,
+                                                    width: size.wScreen(50.0),
+                                                    child: Row(
+                                                      children: [
+                                                        Text(
+                                                          'Usuario: ',
+                                                          style:
+                                                              GoogleFonts.lexendDeca(
+                                                                  // fontSize: size.iScreen(1.9),
+                                                                  color: Colors.grey,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                        ),
+                                                        Text(
+                                                           _prefacturas['venUser']!=null
+                                                           ?'${_prefacturas['venUser']}':'--- --- --- --- --- ---  ',
+                                                          style:
+                                                              GoogleFonts.lexendDeca(
+                                                                  // fontSize: size.iScreen(1.8),
+                                                                  // color: Colors.grey,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
                                                 ],
                                               ),
                                               Container(
@@ -2216,6 +2245,35 @@ Consumer<ProformasController>(
                                                               fontWeight:
                                                                   FontWeight
                                                                       .bold),
+                                                    ),
+                                                  ),
+                                                     Container(
+                                                    // color: Colors.green,
+                                                    width: size.wScreen(50.0),
+                                                    child: Row(
+                                                      children: [
+                                                        Text(
+                                                          'Usuario: ',
+                                                          style:
+                                                              GoogleFonts.lexendDeca(
+                                                                  // fontSize: size.iScreen(1.9),
+                                                                  color: Colors.grey,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                        ),
+                                                        Text(
+                                                           _prefacturas['venUser']!=null
+                                                           ?'${_prefacturas['venUser']}':'--- --- --- --- --- ---  ',
+                                                          style:
+                                                              GoogleFonts.lexendDeca(
+                                                                  // fontSize: size.iScreen(1.8),
+                                                                  // color: Colors.grey,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                        ),
+                                                      ],
                                                     ),
                                                   ),
                                                 ],
