@@ -1619,7 +1619,11 @@ _valorTotalFacturasAntes = double.parse(_valorTotalFacturasAntes.toStringAsFixed
         return 
         // resident['resCedula'].toLowerCase().contains(query.toLowerCase()) ||
                material['venConductor'].toLowerCase().contains(query.toLowerCase()) ||
+                 material['venUser'].toLowerCase().contains(query.toLowerCase())||
+                  material['venOtrosDetalles'][0].toLowerCase().contains(query.toLowerCase())||
+                  material['venObservacion'][0].toLowerCase().contains(query.toLowerCase())||
                material['venNumFactura'].toLowerCase().contains(query.toLowerCase(),
+              
                
                ) ;
       }).toList();
