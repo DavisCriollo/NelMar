@@ -367,7 +367,8 @@ Container(
                 children: [
                   Text('HOY', style: TextStyle(fontSize: size.iScreen(1.8))),
                   // Espacio entre los textos
-                  Text('\$${valueHoy.getValorTotalCajasHoy}', style: TextStyle(fontSize: size.iScreen(2.5))),
+                  // Text('\$${valueHoy.getValorTotalCajasHoy}', style: TextStyle(fontSize: size.iScreen(2.5))),
+                  Text('\$${valueHoy.totalGeneralHoy}', style: TextStyle(fontSize: size.iScreen(2.5))),
                 ],
               );
               },)
@@ -381,7 +382,8 @@ Container(
                 children: [
                   Text('ANTERIORES',style: TextStyle(fontSize: size.iScreen(1.8))),
                    // Espacio entre los textos
-                   Text('\$${valueAnteriores.getValorTotalCajasAntes}', style: TextStyle(fontSize: size.iScreen(2.5))),
+                  //  Text('\$${valueAnteriores.getValorTotalCajasAntes}', style: TextStyle(fontSize: size.iScreen(2.5))),
+                  Text('\$${valueAnteriores.totalGeneralAyer}', style: TextStyle(fontSize: size.iScreen(2.5))),
                 ],
               );
               },)
@@ -393,6 +395,7 @@ Container(
                         // print('EL INDICE :$index');
                         final ctrl=context.read<CajaController>();
                        ctrl.setTabIndex(index);
+                         ctrl.setPage(0);
                         if (  index==0) {
                         //   ctrl. setInfoBusquedaCajasPaginacion([]);
                         //   ctrl.resetValorTotal();
@@ -433,6 +436,7 @@ Container(
                                
 
                             ctrl.resetFormCaja();
+                             ctrl.setPage(0);
                             ctrl.setInfoBusquedaCajasPaginacion([]);
                            ctrl.resetValorTotal();
                              ctrl.buscaAllCajaPaginacion(
@@ -442,6 +446,7 @@ Container(
 
                         }
                         if ( index==1) {
+                            ctrl.setPage(0);
                            ctrl.setInfoBusquedaCajasPaginacion([]);
                            ctrl.resetValorTotal();
                              ctrl.buscaAllCajaPaginacion(
@@ -4334,36 +4339,76 @@ Container(
      
      
           floatingActionButton: 
-         FloatingActionButton(
-                      child: const Icon(
-                        Icons.add,
-                        color: Colors.white,
-                      ),
-                      onPressed: () {
-                       
+
+         Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+           children: [
+             Consumer<CajaController>(builder: (_, valueTot, __) {  
+              return  Container(
+              height: size.iScreen(5.0),
+  padding: EdgeInsets.symmetric(horizontal:size.iScreen(2.0)), // Espaciado interno
+  margin: EdgeInsets.all(8.0), // Espaciado externo
+  decoration: BoxDecoration(
+    color: Colors.grey, // Color de fondo
+    borderRadius: BorderRadius.circular(8.0), // Bordes redondeados
+    boxShadow: [
+      BoxShadow(
+        color: Colors.black26,
+        offset: Offset(2, 2),
+        blurRadius: 6.0,
+      ),
+    ],
+  ),
+  child: Center(
+    child: Text(
+      '\$ ${valueTot.totalIngresos}', // Monto a mostrar
+      style: TextStyle(
+        color: Colors.white,
+        fontSize: size.iScreen(2.2),
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+  ),
+);
+
+            },),
+           
+
+
+
+            SizedBox(width: 20), 
+             FloatingActionButton(
+                          child: const Icon(
+                            Icons.add,
+                            color: Colors.white,
+                          ),
+                          onPressed: () {
+                           
    //*************** RESET LA VARIABLE DE RESPONSE SOCKET***************************//
      final ctrlSocket=context.read<SocketService>();
      ctrlSocket.resetResponseSocket();
    //******************************************//
-                         final _ctrl =context.read<CajaController>();
-                           _ctrl.setTipo('EFECTIVO');
-                               _ctrl.setTipoDocumento('EGRESO');
-                                 _ctrl.setMonto(0.0);
-                               _ctrl.setAutorizacion('');
-                                   _ctrl.setDetalle('');
-                                    _ctrl.setTabIndex(0);
+                             final _ctrl =context.read<CajaController>();
+                               _ctrl.setTipo('EFECTIVO');
+                                   _ctrl.setTipoDocumento('EGRESO');
+                                     _ctrl.setMonto(0.0);
+                                   _ctrl.setAutorizacion('');
+                                       _ctrl.setDetalle('');
+                                        _ctrl.setTabIndex(0);
+                               
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) =>
+                                         CreaCaja(
+                                          user:_usuario ,
+                                          tipo: 'CREATE',
+                                        )));
                            
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) =>
-                                     CreaCaja(
-                                      user:_usuario ,
-                                      tipo: 'CREATE',
-                                    )));
-                       
-                      }
-                  
-            ,
-          ),
+                          }
+                      
+                ,
+              ),
+           ],
+         ),
           
 
 

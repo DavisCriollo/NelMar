@@ -372,6 +372,11 @@ class _HomePageState extends State<HomePage> {
                            _ctrl.getAllFormaPago();
                            _ctrl.setPrecio(0);
                            _ctrl.setCantidad(1);
+_ctrl.resetCalculos();
+ final ctrlMateriales =context.read<CuentasXCobrarController>();
+ctrlMateriales.resetValorTotalMateriales();
+
+
                        _ctrl.setTypeAction('MATERIALES');
 
 

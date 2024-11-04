@@ -2321,6 +2321,35 @@ Container(
     Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
+               Consumer<FacturasController>(builder: (_, valueTot, __) {  
+              return  Container(
+              height: size.iScreen(5.0),
+  padding: EdgeInsets.symmetric(horizontal:size.iScreen(2.0)), // Espaciado interno
+  margin: EdgeInsets.all(8.0), // Espaciado externo
+  decoration: BoxDecoration(
+    color:  Colors.grey, 
+    borderRadius: BorderRadius.circular(8.0), // Bordes redondeados
+    boxShadow: [
+      BoxShadow(
+        color: Colors.black26,
+        offset: Offset(2, 2),
+        blurRadius: 6.0,
+      ),
+    ],
+  ),
+  child: Center(
+    child: Text(
+     '\$ ${valueTot.totalIngresos}',
+      style: TextStyle(
+        color: Colors.white,
+        fontSize: size.iScreen(2.0),
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+  ),
+);
+
+            },),
             // Primer FloatingActionButton con imagen 1
             FloatingActionButton(
               backgroundColor:themeColor.appTheme.primaryColor,

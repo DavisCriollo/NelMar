@@ -73,6 +73,7 @@ bool printBinded = false;
 
   @override
   void initState() {
+    
     _scrollController.addListener(() {
       if (_scrollController.position.maxScrollExtent ==
           _scrollController.offset) {
@@ -81,6 +82,7 @@ bool printBinded = false;
           _next.setPage(_next.getpage);
           //       providerSearchPropietario.setCantidad(25);
           _next.buscaAllPreFacturasPaginacion('', false,_next.getTabIndex);
+          
         } else {
           // print("ES NULL POR ESO NO HACER PETICION ");
         }
@@ -408,9 +410,16 @@ Container(
                 return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('HOY', style: TextStyle(fontSize: size.iScreen(1.8))),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: [
+                      Text('HOY ', style: TextStyle(fontSize: size.iScreen(1.8))),
+                  //     Text('(${valueHoy.getPaginacionHoy['current']}/${valueHoy.getPaginacionHoy['numRows']})', style: TextStyle(fontSize: size.iScreen(1.8))),
+                  //   ],
+                  // ),
                   // Espacio entre los textos
-                  Text('\$${valueHoy.getValorTotalFacturasHoy}', style: TextStyle(fontSize: size.iScreen(2.5))),
+                  // Text('\$${valueHoy.getValorTotalFacturasHoy}', style: TextStyle(fontSize: size.iScreen(2.5))),
+                   Text('\$${valueHoy.totalGeneralHoy}', style: TextStyle(fontSize: size.iScreen(2.5))),
                 ],
               );
               },)
@@ -422,9 +431,16 @@ Container(
                 return   Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('ANTERIORES',style: TextStyle(fontSize: size.iScreen(1.8))),
+                  // Row(
+                  //   children: [
+                      Text('ANTERIORES',style: TextStyle(fontSize: size.iScreen(1.8))),
+                  //     Text('ANTERIORES ', style: TextStyle(fontSize: size.iScreen(1.8))),
+                  //     Text('(${valueAnteriores.allItemsFilters.length}/${valueAnteriores.getPaginacionHoy['numRows']})', style: TextStyle(fontSize: size.iScreen(1.8))),
+                  //   ],
+                  // ),
                    // Espacio entre los textos
-                   Text('\$${valueAnteriores.getValorTotalFacturasAntes}', style: TextStyle(fontSize: size.iScreen(2.5))),
+                  //  Text('\$${valueAnteriores.getValorTotalFacturasAntes}', style: TextStyle(fontSize: size.iScreen(2.5))),
+                    Text('\$${valueAnteriores.totalGeneralAyer}', style: TextStyle(fontSize: size.iScreen(2.5))),
                 ],
               );
               },)
@@ -436,6 +452,7 @@ Container(
                         // print('EL INDICE :$index');
                         final ctrl=context.read<PreFacturasController>();
                        ctrl.setTabIndex(index);
+                         ctrl.setPage(0);
                         if (  index==0) {
                           ctrl. setInfoBusquedaPreFacturasPaginacion([]);
                           ctrl.resetValorTotal();
@@ -457,7 +474,10 @@ Container(
                                 .setError401PreFacturasPaginacion(false);
 
                             _controllerPreFacturas.resetFormPreFacturas();
+                             _controllerPreFacturas.resetValorTotal();
+                              _controllerPreFacturas.restetTotalGenerales();
                             _controllerPreFacturas.setPage(0);
+                            _controllerPreFacturas.setCantidad(25);
                             _controllerPreFacturas.setIsNext(false);
                             _controllerPreFacturas
                                 .setInfoBusquedaPreFacturasPaginacion([]);
@@ -470,6 +490,7 @@ Container(
 
                         }
                         if ( index==1) {
+                             ctrl.setPage(0);
                            ctrl.setInfoBusquedaPreFacturasPaginacion([]);
                            ctrl.resetValorTotal();
                              ctrl.buscaAllPreFacturasPaginacion(
@@ -2996,6 +3017,40 @@ Container(
     Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
+            Consumer<PreFacturasController>(builder: (_, valueTot, __) {  
+              return  Container(
+              height: size.iScreen(5.0),
+  padding: EdgeInsets.symmetric(horizontal:size.iScreen(2.0)), // Espaciado interno
+  margin: EdgeInsets.all(8.0), // Espaciado externo
+  decoration: BoxDecoration(
+    color:  Colors.grey, 
+    borderRadius: BorderRadius.circular(8.0), // Bordes redondeados
+    boxShadow: [
+      BoxShadow(
+        color: Colors.black26,
+        offset: Offset(2, 2),
+        blurRadius: 6.0,
+      ),
+    ],
+  ),
+  child: Center(
+    child: Text(
+     '\$ ${valueTot.totalIngresos}',
+      style: TextStyle(
+        color: Colors.white,
+        fontSize: size.iScreen(2.0),
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+  ),
+);
+
+            },),
+           
+
+
+
+            SizedBox(width: 20), 
             // Primer FloatingActionButton con imagen 1
             FloatingActionButton(
               backgroundColor:themeColor.appTheme.primaryColor,
@@ -3128,9 +3183,11 @@ Container(
 
     Future<void> onRefresh() async {
     final _controller = Provider.of<PreFacturasController>(context, listen: false);
+    _controller.restetTotalGenerales();
     _controller.setPage(0);
     _controller.setCantidad(25);
     _controller.buscaAllPreFacturasPaginacion('', true,_controller.getTabIndex);
+   
   }
 
  
@@ -3349,6 +3406,9 @@ void _printTicket(Map<String, dynamic>? _info,String? user) async {
   await SunmiPrinter.printText('Ruc: ${_info['venRucCliente']}');
  await SunmiPrinter.line();
   await SunmiPrinter.printText('Fecha: $fechaLocal'); // O utiliza formattedDate si corresponde
+ await SunmiPrinter.line();
+  await SunmiPrinter.line();
+   await SunmiPrinter.printText('Ticket: ${_info['venNumFactura']}'); 
  await SunmiPrinter.line();
   await SunmiPrinter.printText('Conductor: ${_info['venConductor']}');
   await SunmiPrinter.printText('Placa: ${_info['venOtrosDetalles'][0]}');

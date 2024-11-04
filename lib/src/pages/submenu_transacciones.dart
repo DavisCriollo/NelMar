@@ -95,6 +95,7 @@ class SubmenuTransacciones extends StatelessWidget {
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) =>
                                      ListarFacturasPaginacion(user: user,)));
+
                           },
                         ),
                         ElementosSubmenu(
@@ -120,8 +121,11 @@ class SubmenuTransacciones extends StatelessWidget {
                                 .setError401PreFacturasPaginacion(false);
 
                             _controllerPreFacturas.resetFormPreFacturas();
+                              _controllerPreFacturas.resetValorTotal();
+                                _controllerPreFacturas.restetTotalGenerales();
                             _controllerPreFacturas.setPage(0);
                             _controllerPreFacturas.setIsNext(false);
+                              _controllerPreFacturas.setCantidad(25);
                             _controllerPreFacturas
                                 .setInfoBusquedaPreFacturasPaginacion([]);
                             _controllerPreFacturas
@@ -130,6 +134,7 @@ class SubmenuTransacciones extends StatelessWidget {
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) =>
                                      ListarPreFacturasPaginacion(user: user,)));
+                                      _controllerPreFacturas.setPage(0);
                           },
                         ),
                          ElementosSubmenu(
@@ -155,10 +160,11 @@ class SubmenuTransacciones extends StatelessWidget {
                            _ctrl.resetValorTotal();
                              _ctrl.buscaAllCajaPaginacion(
                                 '',false,0);
+                                 _ctrl.calculateTotalIngreso();
                                Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) =>
                                      ListarCajaPaginacion(user: user,)));
-
+                                   _ctrl.setPage(0);
 
                           },
                         ),

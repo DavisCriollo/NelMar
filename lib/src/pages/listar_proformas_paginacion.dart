@@ -3233,6 +3233,7 @@ Consumer<ProformasController>(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             // Primer FloatingActionButton con imagen 1
+            
             FloatingActionButton(
               backgroundColor:themeColor.appTheme.primaryColor,
               onPressed: () {

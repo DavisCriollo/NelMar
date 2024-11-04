@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:neitorcont/src/controllers/cuentas_por_cobrar_controller.dart';
 import 'package:neitorcont/src/services/notifications_service.dart';
 import 'package:neitorcont/src/theme/theme_provider.dart';
+import 'package:neitorcont/src/utils/letras_mayusculas_minusculas.dart';
 import 'package:neitorcont/src/utils/responsive.dart';
 import 'package:neitorcont/src/widgets/modal_permisos.dart';
 import 'package:provider/provider.dart';
@@ -210,59 +211,66 @@ class _CrearpagoCxCState extends State<CrearpagoCxC> {
                     height: size.iScreen(1.0),
                   ),
                   //*****************************************/
-                  Row(
+
+          Consumer<CuentasXCobrarController>(builder: (_, values, __) {  
+                return   
+                 values.getTipo!='EFECTIVO'
+                  ? 
+                 Column(
                     children: [
-                      SizedBox(
-                        // width: size.wScreen(20.0),
+                      Row(
+                        children: [
+                          SizedBox(
+                            // width: size.wScreen(20.0),
             
-                        // color: Colors.blue,
-                        child: Text('Seleccione Banco : ',
-                            style: GoogleFonts.lexendDeca(
-                                fontSize: size.iScreen(2.0),
-                                fontWeight: FontWeight.normal,
-                                color: Colors.grey)),
-                      ),
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: GestureDetector(
-                          onTap: () {
-                            context.read<CuentasXCobrarController>().buscaAllBancos();
-            
-                            // // _buscarMascota(context, size);
-                            
-                            modalBancos(context, size);
-            
-                            // //*******************************************/
-                          },
-                          child: Consumer<ThemeProvider>(
-                            builder: (_, valueTheme, __) {
-                              return Container(
-                                
-                                alignment: Alignment.center,
-                                color: valueTheme.appTheme.primaryColor,
-                                width: size.iScreen(5.0),
-                                 height: size.iScreen(4.0),
-                                padding: EdgeInsets.only(
-                                  top: size.iScreen(0.5),
-                                  bottom: size.iScreen(0.5),
-                                  left: size.iScreen(0.5),
-                                  right: size.iScreen(0.5),
-                                ),
-                                child: Icon(
-                                  Icons.keyboard_arrow_down_outlined,
-                                  color: Colors.white,
-                                  size: size.iScreen(2.0),
-                                ),
-                              );
-                            },
+                            // color: Colors.blue,
+                            child: Text('Seleccione Banco : ',
+                                style: GoogleFonts.lexendDeca(
+                                    fontSize: size.iScreen(2.0),
+                                    fontWeight: FontWeight.normal,
+                                    color: Colors.grey)),
                           ),
-                        ),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: GestureDetector(
+                              onTap: () {
+                                context.read<CuentasXCobrarController>().buscaAllBancos();
+            
+                                // // _buscarMascota(context, size);
+                                
+                                modalBancos(context, size);
+            
+                                // //*******************************************/
+                              },
+                              child: Consumer<ThemeProvider>(
+                                builder: (_, valueTheme, __) {
+                                  return Container(
+                                    
+                                    alignment: Alignment.center,
+                                    color: valueTheme.appTheme.primaryColor,
+                                    width: size.iScreen(5.0),
+                                     height: size.iScreen(4.0),
+                                    padding: EdgeInsets.only(
+                                      top: size.iScreen(0.5),
+                                      bottom: size.iScreen(0.5),
+                                      left: size.iScreen(0.5),
+                                      right: size.iScreen(0.5),
+                                    ),
+                                    child: Icon(
+                                      Icons.keyboard_arrow_down_outlined,
+                                      color: Colors.white,
+                                      size: size.iScreen(2.0),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                        
+                          
+                        ],
                       ),
-                    
-                      
-                    ],
-                  ),
-                   // //***********************************************/
+                       // //***********************************************/
                   SizedBox(
                     height: size.iScreen(1.0),
                   ),
@@ -286,6 +294,11 @@ class _CrearpagoCxCState extends State<CrearpagoCxC> {
                           );
                        },),
                 
+                    ],
+                  ):Container();
+          },),
+
+                  
                   //***********************************************/
                   SizedBox(
                     height: size.iScreen(0.5),
@@ -519,6 +532,9 @@ class _CrearpagoCxCState extends State<CrearpagoCxC> {
               fontSize: size.iScreen(3.0),
               color: Colors.black,
             ),
+             inputFormatters: <TextInputFormatter>[
+                                  UpperCaseText(),
+                                ],
                           onChanged: (text) {
                             ctrl.setObservacion(text);
                           },
@@ -754,7 +770,7 @@ class _CrearpagoCxCState extends State<CrearpagoCxC> {
 
       if (ctrl.getTipo.isEmpty) {
         NotificatiosnService.showSnackBarDanger('Debe seleccionar Tipo');
-      } else if (ctrl.getBanco.isEmpty) {
+      } else if (ctrl.getBanco.isEmpty && ctrl.getTipo!='EFECTIVO') {
         NotificatiosnService.showSnackBarDanger(
             'Debe seleccionar Banco');
       }
@@ -769,7 +785,7 @@ class _CrearpagoCxCState extends State<CrearpagoCxC> {
         NotificatiosnService.showSnackBarDanger(
             'Debe agregar # de Comprobante');
       }
-      else if (ctrl.getUrlImage.isEmpty ) {
+      else if (ctrl.getUrlImage.isEmpty && ctrl.getTipo!='EFECTIVO' ) {
         NotificatiosnService.showSnackBarDanger(
             'Debe agregar imagen de Comprobante');
       }

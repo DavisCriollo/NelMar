@@ -241,7 +241,8 @@ class SocketService extends ChangeNotifier {
   // =============VENTAS=============//
   Map<String, dynamic>? _latestResponseVantes={};
   Map<String, dynamic>? get latestResponseVentas => _latestResponseVantes;
-  
+    bool _estadoPrintVenta=false;
+  bool get getEstadoPrintVenta => _estadoPrintVenta;
   // =============CAJA=============//
   Map<String, dynamic>? _latestResponseCaja={};
   Map<String, dynamic>? get latestResponseCaja => _latestResponseCaja;
@@ -249,6 +250,7 @@ class SocketService extends ChangeNotifier {
 
 _latestResponseVantes={};
 _latestResponseCaja={};
+_estadoPrintVenta=false;
   notifyListeners();
 
 }
@@ -302,6 +304,7 @@ _latestResponseCaja={};
         // _showSnackbar('Registro guardada exitosamente');
         //==============LA RSPUESTA ===================//
          _latestResponseVantes={};
+         _estadoPrintVenta=true;
       _latestResponseVantes=data;
         print('DATA VENTAS: $data');
         notifyListeners();

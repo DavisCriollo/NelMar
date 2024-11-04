@@ -3234,7 +3234,12 @@ bool printBinded = false;
               ? Text('Crear Comprobante')
               : Text('Editar Comprobante'),
           actions: [
-            Consumer<ComprobantesController>(builder: (BuildContext context, value, Widget? child) { 
+
+              Consumer<SocketService>(builder: (_, values, __) {  
+
+                  return  
+                  values.getEstadoPrintVenta==false
+                  ?Consumer<ComprobantesController>(builder: (BuildContext context, value, Widget? child) { 
                 return Container(
               margin: EdgeInsets.only(right: size.iScreen(1.5)),
               child: IconButton(
@@ -3253,8 +3258,12 @@ bool printBinded = false;
                     size: size.iScreen(4.0),
                   )),
             );
-             },),
-             
+             },):Container();
+            
+
+              },),
+
+            
           // Consumer<SocketService>(
           //   builder: (_,value, __) {
           //    return value.latestResponse!.isEmpty ||  value.latestResponse!['tabla']=='proveedor'
@@ -3378,6 +3387,7 @@ bool printBinded = false;
      return 
          value.latestResponseVentas!.isNotEmpty 
         ? 
+        
         Container(
             width: size.wScreen(100.0),
           
@@ -3473,6 +3483,8 @@ bool printBinded = false;
                             .setError401PreFacturasPaginacion(false);
 
                         _controllerPreFacturas.resetFormPreFacturas();
+                        _controllerPreFacturas.resetValorTotal();
+                        _controllerPreFacturas.restetTotalGenerales();
                         _controllerPreFacturas.setPage(0);
                         _controllerPreFacturas.setIsNext(false);
                         _controllerPreFacturas
@@ -5856,8 +5868,10 @@ void _printTicket(Map<String, dynamic>? _info,String? user,String fechaLocal) as
   await SunmiPrinter.printText('Cliente: ${_info['venNomCliente']}');
   await SunmiPrinter.printText('Ruc: ${_info['venRucCliente']}');
  await SunmiPrinter.line();
-  // await SunmiPrinter.printText('Fecha: ${_info['venFechaFactura']}'); // O utiliza formattedDate si corresponde
+ // await SunmiPrinter.printTghfghext('Fecha: $fgh{_info['venFechfghfghactura']}'); // O utiliza formattedDate si corresponde
   await SunmiPrinter.printText('Fecha: $fechaLocal'); 
+  await SunmiPrinter.line();
+   await SunmiPrinter.printText('Ticket: ${_info['venNumFactura']}'); 
  await SunmiPrinter.line();
   await SunmiPrinter.printText('Conductor: ${_info['venConductor']}');
   await SunmiPrinter.printText('Placa: ${_info['venOtrosDetalles'][0]}');

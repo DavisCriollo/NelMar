@@ -725,7 +725,7 @@ class ApiProvider {
       if (dataResp.body.isEmpty) {
         return null;
       }
-      print('RESPONSE:AVISOSALIDA ${dataResp.body}');
+      // print('RESPONSE:AVISOSALIDA ${dataResp.body}');
       if (dataResp.statusCode == 200) {
 // print('RESPONSE: ${dataResp.body}');
 // print('RESPONSE:DSDSD ${dataResp.body}');
@@ -1590,7 +1590,7 @@ class ApiProvider {
       if (dataResp.body.isEmpty) {
         return null;
       }
-      print('RESPONSE:AVISOSALIDA ${dataResp.body}');
+      // print('RESPONSE:AVISOSALIDA ${dataResp.body}');
       if (dataResp.statusCode == 200) {
 
 
@@ -2317,7 +2317,7 @@ class ApiProvider {
       if (dataResp.body.isEmpty) {
         return null;
       }
-      // print('RESPONSE:ffff ${dataResp.body}');
+      print('RESPONSE:ffff ${dataResp.body}');
       if (dataResp.statusCode == 200) {
 
 
@@ -2655,7 +2655,7 @@ Future deleteUrlDelServidor({Map<String, dynamic>? datos, required String token,
       if (dataResp.body.isEmpty) {
         return null;
       }
-      // print('RESPONSE: ${dataResp.body}');
+      print('RESPONSE: ${dataResp.body}');
       if (dataResp.statusCode == 200) {
 
 

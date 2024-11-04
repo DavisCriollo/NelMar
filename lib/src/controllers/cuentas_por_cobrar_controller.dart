@@ -348,7 +348,7 @@ List<dynamic> get allItemsFilters => _allItemsFilters;
 void setListFilter(List<dynamic> _list) {
   _originalItemsFilters = List.from(_list); // Almacenar la lista original
   _allItemsFilters = List.from(_list); // Inicialmente, la lista mostrada es igual a la original
-  // print('LA LISTA _allItemsFilters: $_allItemsFilters');
+  print('LA LISTA _allItemsFilters: $_allItemsFilters');
   notifyListeners();
 }
 
@@ -360,11 +360,15 @@ void search(String query) {
 
 
     _allItemsFilters = _originalItemsFilters.where((item) {
-      return item['ccRucCliente'].toLowerCase().contains(query.toLowerCase()) ||
-          item['ccNomCliente'].toLowerCase().contains(query.toLowerCase()) ||
-          item['ccFactura'].toLowerCase().contains(query.toLowerCase()) ||
-          item['ccFechaFactura'].toLowerCase().contains(query.toLowerCase()) ||
-          item['ccEstado'].toLowerCase().contains(query.toLowerCase());
+      return 
+
+      (item['ccRucCliente'] ?? '').toLowerCase().contains(query.toLowerCase()) ||
+      (item['ccNomCliente'] ?? '').toLowerCase().contains(query.toLowerCase()) ||
+      (item['ccFactura'] ?? '').toLowerCase().contains(query.toLowerCase()) ||
+      (item['ccFechaFactura'] ?? '').toLowerCase().contains(query.toLowerCase()) ||
+      (item['ccOtrosDetalles'] ?? '').toLowerCase().contains(query.toLowerCase()) ||
+      (item['ccConductor'] ?? '').toLowerCase().contains(query.toLowerCase()) ||
+      (item['ccEstado'] ?? '').toLowerCase().contains(query.toLowerCase());
     }).toList();
   }
   notifyListeners();
@@ -401,6 +405,9 @@ double _valorTotalCajasAntes = 0.00;
 void resetValorTotal(){
 _valorTotalCajasHoy = 0.00;
 _valorTotalCajasAntes = 0.00;
+ _totalIngresos = 0.0; 
+  _totalGeneralAyer= 0.0; 
+_totalGeneralHoy= 0.0; 
 notifyListeners();
 }
 
@@ -585,9 +592,17 @@ List _facturas = [];
         dataSort.sort((a, b) => b['ccFecReg']!.compareTo(a['ccFecReg']!));
 
         setPage(response['data']['pagination']['next']);
-        setListFilter(dataSort);
+        // setListFilter(dataSort);
 
-
+          if (tipo==0) {
+          //  setInfoBusquedaFacturasPaginacion([]);
+          setFacturas(dataSort);
+          filtrarFacturasDeHoy();
+        } else {
+          //  setInfoBusquedaFacturasPaginacion([]);
+             setFacturas(dataSort);
+          filtrarFacturasAnteriores();
+        }
         notifyListeners();
         return response;
       }
@@ -1402,11 +1417,11 @@ _valorTotalFacturasAntes = double.parse(_valorTotalFacturasAntes.toStringAsFixed
         if (tipo==0) {
           //  setInfoBusquedaFacturasPaginacion([]);
           setFacturasMateriales(dataSort);
-          filtrarFacturasDeHoy();
+          filtrarFacturasDeHoyMateriales();
         } else {
           //  setInfoBusquedaFacturasPaginacion([]);
              setFacturasMateriales(dataSort);
-          filtrarFacturasAnteriores();
+          filtrarFacturasAnterioresMateriales();
         }
         notifyListeners();
         return response;
@@ -1474,6 +1489,47 @@ List _facturasMateriales = [];
   DateTime hoy = DateTime.now();  // Fecha actual en hora local
   String fechaHoy = DateFormat('yyyy-MM-dd').format(hoy);
 
+  _facturasFiltradas = _facturas.where((factura) {
+    String? fechaFactura = factura['ccFecReg'];
+    if (fechaFactura != null) {
+      // Convertir la fecha de la factura a un DateTime y luego a la hora local
+      DateTime fechaFacturaDateTime = DateTime.parse(fechaFactura).toLocal();
+      String fechaFacturaSoloFecha = DateFormat('yyyy-MM-dd').format(fechaFacturaDateTime);
+      return fechaFacturaSoloFecha == fechaHoy;
+    }
+    return false;
+  }).toList();
+
+  // Actualizar la lista filtrada
+  setListFilter(_facturasFiltradas);
+  notifyListeners();
+}
+
+void filtrarFacturasAnteriores() {
+  DateTime hoy = DateTime.now();  // Fecha actual en hora local
+  String fechaHoy = DateFormat('yyyy-MM-dd').format(hoy);
+
+  _facturasFiltradas = _facturas.where((factura) {
+    String? fechaFactura = factura['ccFecReg'];
+    if (fechaFactura != null) {
+      // Convertir la fecha de la factura a DateTime y luego a la hora local
+      DateTime fechaFacturaDateTime = DateTime.parse(fechaFactura).toLocal();
+      String fechaFacturaSoloFecha = DateFormat('yyyy-MM-dd').format(fechaFacturaDateTime);
+      return fechaFacturaSoloFecha != fechaHoy;  // Filtrar las fechas anteriores o diferentes a hoy
+    }
+    return false;
+  }).toList();
+
+  // Actualizar la lista filtrada
+  setListFilter(_facturasFiltradas);
+  notifyListeners();
+}
+//*********************************************************//
+//*********************************************************//
+  void filtrarFacturasDeHoyMateriales() {
+  DateTime hoy = DateTime.now();  // Fecha actual en hora local
+  String fechaHoy = DateFormat('yyyy-MM-dd').format(hoy);
+
   _facturasFiltradasMateriales = _facturasMateriales.where((factura) {
     String? fechaFactura = factura['venFecReg'];
     if (fechaFactura != null) {
@@ -1489,26 +1545,8 @@ List _facturasMateriales = [];
   setListFilterMateriales(_facturasFiltradasMateriales);
   notifyListeners();
 }
-// void filtrarFacturasAnteriores() {
-//   DateTime hoy = DateTime.now();  // Fecha actual en hora local
-//   String fechaHoy = DateFormat('yyyy-MM-dd').format(hoy);
 
-//   _facturasFiltradasMateriales = _facturasMateriales.where((factura) {
-//     String? fechaFactura = factura['venFecReg'];
-//     if (fechaFactura != null) {
-//       // Convertir la fecha de la factura a DateTime y luego a la hora local
-//       DateTime fechaFacturaDateTime = DateTime.parse(fechaFactura).toLocal();
-//       String fechaFacturaSoloFecha = DateFormat('yyyy-MM-dd').format(fechaFacturaDateTime);
-//       return fechaFacturaSoloFecha != fechaHoy;  // Filtrar las fechas anteriores o diferentes a hoy
-//     }
-//     return false;
-//   }).toList();
-
-//   // Actualizar la lista filtrada
-//   setListFilterMateriales(_facturasFiltradasMateriales);
-//   notifyListeners();
-// }
-void filtrarFacturasAnteriores() {
+void filtrarFacturasAnterioresMateriales() {
   DateTime hoy = DateTime.now();  // Fecha actual en hora local
   String fechaHoy = DateFormat('yyyy-MM-dd').format(hoy);
 
@@ -1528,7 +1566,6 @@ void filtrarFacturasAnteriores() {
   notifyListeners();
 }
 //*********************************************************//
-
 
 
 //************INDEX TAB*****************//
@@ -1577,7 +1614,7 @@ for (var item in _allItemsFiltersMateriales) {
     _valorTotalFacturasHoy += double.tryParse(venTotal.toString()) ?? 0.0;
   }
 }
-
+calculateTotalGeneralHoy();
 // Redondear a 3 decimales
 _valorTotalFacturasHoy = double.parse(_valorTotalFacturasHoy.toStringAsFixed(3));
 
@@ -1596,7 +1633,7 @@ for (var item in _allItemsFiltersMateriales) {
     _valorTotalFacturasAntes += double.tryParse(venTotal.toString()) ?? 0.0;
   }
 }
-
+calculateTotalGeneralAyer();
 // Redondear a 3 decimales
 _valorTotalFacturasAntes = double.parse(_valorTotalFacturasAntes.toStringAsFixed(3));
 
@@ -1609,6 +1646,10 @@ _valorTotalFacturasAntes = double.parse(_valorTotalFacturasAntes.toStringAsFixed
 
   notifyListeners();
  }
+//====================================//
+
+double _totalIngresos = 0.0; // Variable para almacenar el total de ingresos
+double get totalIngresos => _totalIngresos;
 
   void searchMateriales(String query) {
       List<Map<String, dynamic>> originalList = List.from(_facturasFiltradasMateriales); // Copia de la lista original
@@ -1616,21 +1657,40 @@ _valorTotalFacturasAntes = double.parse(_valorTotalFacturasAntes.toStringAsFixed
       _allItemsFiltersMateriales = originalList;
     } else {
       _allItemsFiltersMateriales = originalList.where((material) {
-        return 
-        // resident['resCedula'].toLowerCase().contains(query.toLowerCase()) ||
+      String venFecReg = material['venFecReg'];
+
+      // Formatear `venFecReg` de "2024-09-17T02:17:51.000Z" a "yyyy-MM-dd HH:mm"
+      DateTime parsedDate = DateTime.parse(venFecReg);
+      String fechaFormateada = "${parsedDate.year.toString().padLeft(4, '0')}-${parsedDate.month.toString().padLeft(2, '0')}-${parsedDate.day.toString().padLeft(2, '0')} ${parsedDate.hour.toString().padLeft(2, '0')}:${parsedDate.minute.toString().padLeft(2, '0')}";
+
+      // Comparar con el `query` proporcionado
+      return fechaFormateada.contains(query) ||
+       
                material['venConductor'].toLowerCase().contains(query.toLowerCase()) ||
                  material['venUser'].toLowerCase().contains(query.toLowerCase())||
                   material['venOtrosDetalles'][0].toLowerCase().contains(query.toLowerCase())||
-                  material['venObservacion'][0].toLowerCase().contains(query.toLowerCase())||
+                  material['venObservacion'].toLowerCase().contains(query.toLowerCase())||
                material['venNumFactura'].toLowerCase().contains(query.toLowerCase(),
               
                
                ) ;
       }).toList();
     }
+    calculateTotalIngreso();
     notifyListeners();
   }
 
+// Función para calcular el total de ingresos
+void calculateTotalIngreso() {
+  _totalIngresos = 0.0; // Reiniciar el total antes de cada cálculo
+  for (var item in _allItemsFiltersMateriales) {
+    // Convertir venTotal a número en caso de que sea una cadena
+    double venTotal = double.tryParse(item['venTotal'].toString()) ?? 0.0;
+    _totalIngresos += venTotal;
+  }
+  // Redondear a dos decimales
+  _totalIngresos = double.parse(_totalIngresos.toStringAsFixed(2));
+}
 
 
 
@@ -1648,6 +1708,48 @@ print('_infoMateriales: $_infoMateriales');
 }
 
 
+
+
+//===================  SUMATORIA GENERAL =====================//
+double _totalGeneralAyer = 0.0; // Variable para almacenar el total de ingresos
+double get totalGeneralAyer => _totalGeneralAyer;
+
+// Función para calcular el total de ingresos
+void calculateTotalGeneralAyer() {
+  // _totalGeneralAyer = 0.0; // Reiniciar el total antes de cada cálculo
+  for (var item in _allItemsFilters) {
+    // Convertir venTotal a número en caso de que sea una cadena
+    double venTotal = double.tryParse(item['venTotal'].toString()) ?? 0.0;
+    _totalGeneralAyer += venTotal;
+  }
+  // Redondear a dos decimales
+  _totalGeneralAyer = double.parse(_totalGeneralAyer.toStringAsFixed(2));
+
+  print('TOTAL GENERAL AYER =========> : $_totalGeneralAyer');
+}
+ void restetTotalGenerales(){
+_totalGeneralAyer = 0.0;
+_totalGeneralHoy = 0.0;
+  notifyListeners();
+ }
+
+double _totalGeneralHoy = 0.0; // Variable para almacenar el total de ingresos
+double get totalGeneralHoy => _totalGeneralHoy;
+
+// Función para calcular el total de ingresos
+void calculateTotalGeneralHoy() {
+  // _totalGeneralHoy = 0.0; // Reiniciar el total antes de cada cálculo
+  for (var item in _allItemsFilters) {
+    // Convertir venTotal a número en caso de que sea una cadena
+    double venTotal = double.tryParse(item['venTotal'].toString()) ?? 0.0;
+    _totalGeneralHoy += venTotal;
+  }
+  // Redondear a dos decimales
+  _totalGeneralHoy = double.parse(_totalGeneralHoy.toStringAsFixed(2));
+
+  print('TOTAL GENERAL Hoy =========> : $_totalGeneralHoy');
+}
+//===========================================================//
 
 
 

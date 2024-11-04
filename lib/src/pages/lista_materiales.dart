@@ -413,7 +413,8 @@ Container(
                 children: [
                   Text('HOY', style: TextStyle(fontSize: size.iScreen(1.8))),
                   // Espacio entre los textos
-                  Text('\$${valueHoy.getValorTotalFacturasHoy}', style: TextStyle(fontSize: size.iScreen(2.5))),
+                  // Text('\$${valueHoy.getValorTotalFacturasHoy}', style: TextStyle(fontSize: size.iScreen(2.5))),
+                    // Text('\$${valueHoy.totalGeneralHoyMateriales}', style: TextStyle(fontSize: size.iScreen(2.5))),
                 ],
               );
               },)
@@ -427,7 +428,8 @@ Container(
                 children: [
                   Text('ANTERIORES',style: TextStyle(fontSize: size.iScreen(1.8))),
                    // Espacio entre los textos
-                   Text('\$${valueAnteriores.getValorTotalFacturasAntes}', style: TextStyle(fontSize: size.iScreen(2.5))),
+                  //  Text('\$${valueAnteriores.getValorTotalFacturasAntes}', style: TextStyle(fontSize: size.iScreen(2.5))),
+                    // Text('\$${valueAnteriores.totalGeneralAyerMateriales}', style: TextStyle(fontSize: size.iScreen(2.5))),
                 ],
               );
               },)
@@ -439,6 +441,7 @@ Container(
                         // print('EL INDICE :$index');
                         final ctrl=context.read<PreFacturasController>();
                        ctrl.setTabIndex(index);
+                        ctrl.setPage(0);
                         if (  index==0) {
                           ctrl. setInfoBusquedaPreFacturasPaginacion([]);
                           ctrl.resetValorTotal();
@@ -462,6 +465,7 @@ Container(
                             _controllerPreFacturas.setIsNext(false);
                             _controllerPreFacturas
                                 .setInfoBusquedaMaterialesPaginacion([]);
+                                  ctrl.restetTotalGenerales();
                             _controllerPreFacturas
                                 .buscaAllMaterialesPaginacion('', true,_controllerPreFacturas.getTabIndex);
 
@@ -476,6 +480,8 @@ Container(
                                 context.read<CuentasXCobrarController>();
                            _controllerPreFacturas.setInfoBusquedaMaterialesPaginacion([]);
                            ctrl.resetValorTotal();
+                           ctrl.restetTotalGenerales();
+                            ctrl.setPage(0);
                              _controllerPreFacturas.buscaAllMaterialesPaginacion(
                                 '',false,ctrl.getTabIndex);
                         }
@@ -2547,34 +2553,68 @@ Container(
 
 
 
-   FloatingActionButton(
-              backgroundColor:themeColor.appTheme.primaryColor,
-              onPressed: () {
-                // Acción del primer botón
+   Row(
+    mainAxisAlignment: MainAxisAlignment.end,
+     children: [
+        Consumer<CuentasXCobrarController>(builder: (_, valueTot, __) {  
+              return  Container(
+              height: size.iScreen(5.0),
+  padding: EdgeInsets.symmetric(horizontal:size.iScreen(2.0)), // Espaciado interno
+  margin: EdgeInsets.all(8.0), // Espaciado externo
+  decoration: BoxDecoration(
+    color:  Colors.grey, 
+    borderRadius: BorderRadius.circular(8.0), // Bordes redondeados
+    boxShadow: [
+      BoxShadow(
+        color: Colors.black26,
+        offset: Offset(2, 2),
+        blurRadius: 6.0,
+      ),
+    ],
+  ),
+  child: Center(
+    child: Text(
+     '\$ ${valueTot.totalIngresos}',
+      style: TextStyle(
+        color: Colors.white,
+        fontSize: size.iScreen(2.0),
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+  ),
+);
+
+            },),
+       FloatingActionButton(
+                  backgroundColor:themeColor.appTheme.primaryColor,
+                  onPressed: () {
+                    // Acción del primer botón
   //
 
 
 
   //*************** RESET LA VARIABLE DE RESPONSE SOCKET***************************//
-    final ctrlSocket=context.read<SocketService>();
-     ctrlSocket.resetResponseSocket();
-      //******************************************//
+        final ctrlSocket=context.read<SocketService>();
+         ctrlSocket.resetResponseSocket();
+          //******************************************//
 
   final ctrl=context.read<ComprobantesController>();
   ctrl.resetCalculos();
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) =>
-                                     CrearMateriales(
-                                      tipo: 'CREATE',
-                                      user: widget.user,)));
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) =>
+                                         CrearMateriales(
+                                          tipo: 'CREATE',
+                                          user: widget.user,)));
 
 //******************************************//
 
 
-              },
-              child: Icon(Icons.add), // Imagen 1
-              heroTag: 'btn1', // Etiqueta única
-            ),
+                  },
+                  child: Icon(Icons.add), // Imagen 1
+                  heroTag: 'btn1', // Etiqueta única
+                ),
+     ],
+   ),
             
             
           

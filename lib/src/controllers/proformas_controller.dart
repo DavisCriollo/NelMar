@@ -494,31 +494,58 @@ _allItemsFilters.addAll(_list);
   //   notifyListeners();
   // }
 
+// void search(String query) {
+//   List<Map<String, dynamic>> originalList = List.from(_facturasFiltradas); // Copia de la lista original
+//   if (query.isEmpty) {
+//     _allItemsFilters = originalList;
+//   } else {
+//     _allItemsFilters = originalList.where((item) {
+//       String venFecReg = item['venFecReg'];
+      
+//       // Convertir `venFecReg` a formato de fecha corto si es necesario
+//       String fechaFormateada = venFecReg.split("T").first;
+
+//       return 
+//         fechaFormateada.toLowerCase().contains(query.toLowerCase()) ||
+//         item['venConductor'].toLowerCase().contains(query.toLowerCase())||
+//          item['venUser'].toLowerCase().contains(query.toLowerCase())||
+//            item['venNumFactura'].toLowerCase().contains(query.toLowerCase())||
+//         item['venNomCliente'].toLowerCase().contains(query.toLowerCase());
+//     }).toList();
+//   }
+//   notifyListeners();
+// }
+
+//====================================//
+
 void search(String query) {
   List<Map<String, dynamic>> originalList = List.from(_facturasFiltradas); // Copia de la lista original
+
   if (query.isEmpty) {
     _allItemsFilters = originalList;
   } else {
     _allItemsFilters = originalList.where((item) {
       String venFecReg = item['venFecReg'];
-      
-      // Convertir `venFecReg` a formato de fecha corto si es necesario
-      String fechaFormateada = venFecReg.split("T").first;
 
-      return 
-        fechaFormateada.toLowerCase().contains(query.toLowerCase()) ||
-        item['venConductor'].toLowerCase().contains(query.toLowerCase())||
-         item['venUser'].toLowerCase().contains(query.toLowerCase())||
-        item['venNomCliente'].toLowerCase().contains(query.toLowerCase());
+      // Formatear `venFecReg` de "2024-09-17T02:17:51.000Z" a "yyyy-MM-dd HH:mm"
+      DateTime parsedDate = DateTime.parse(venFecReg);
+      String fechaFormateada = "${parsedDate.year.toString().padLeft(4, '0')}-${parsedDate.month.toString().padLeft(2, '0')}-${parsedDate.day.toString().padLeft(2, '0')} ${parsedDate.hour.toString().padLeft(2, '0')}:${parsedDate.minute.toString().padLeft(2, '0')}";
+
+      // Comparar con el `query` proporcionado
+      return fechaFormateada.contains(query) ||
+          item['venConductor'].toLowerCase().contains(query.toLowerCase()) ||
+          item['venUser'].toLowerCase().contains(query.toLowerCase()) ||
+          item['venNumFactura'].toLowerCase().contains(query.toLowerCase())||
+          item['venNomCliente'].toLowerCase().contains(query.toLowerCase());
     }).toList();
   }
+
   notifyListeners();
 }
-
 //====================================//
 
 
-//====================================//
+
 
 
 
