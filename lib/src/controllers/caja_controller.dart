@@ -188,7 +188,7 @@ notifyListeners();
 
 
   void setInfoBusquedaCajasPaginacion(List data) {
-    _listaCajaPaginacion=[];
+    // _listaCajaPaginacion=[];
     _listaCajaPaginacion.addAll(data);
     // print('Cajas xxx :${_listaCajaPaginacion.length}');
 
@@ -658,6 +658,40 @@ void calculateTotalGeneralHoy() {
 
 
 
+
+//===========================OBTENEMOS LA SUMATORIA GENERAL DIARIA================================//
+Map<String,dynamic> _totalDiario={};
+Map<String,dynamic> get getTotalDiario=>_totalDiario;
+
+
+
+  Future obtieneTotalDiario(String origen,String tipo) async {
+    final dataUser = await Auth.instance.getSession();
+// print('usuario : ${dataUser!.rucempresa}');
+    final response = await _api.getAllTotalDiario(
+       origen: origen,
+      tipo: tipo,
+      token: '${dataUser!.token}',
+    );
+
+    if (response != null) {
+     _totalDiario={};
+     _totalDiario=response;
+        notifyListeners();
+        return response;
+      
+
+      //===========================================//
+
+    }
+    if (response == null) {
+     
+      notifyListeners();
+      return null;
+    }
+  }
+
+//===========================================//
 
 
 

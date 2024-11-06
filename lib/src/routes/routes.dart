@@ -55,6 +55,10 @@ final Map<String, Widget Function(BuildContext)> appRoutes = {
 
   // 'SunmiScreen': (_) =>   InnerPrinterExample(),
    'comprobante': (_) =>  const CrearComprobante(),
+
+
+  //  'prueba': (_) =>   PrintingWidget(),
+   
  
   
 };

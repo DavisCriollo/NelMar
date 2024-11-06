@@ -365,7 +365,8 @@ bool printBinded = false;
                 children: [
                   Text('HOY', style: TextStyle(fontSize: size.iScreen(1.8))),
                   // Espacio entre los textos
-                  Text('\$${valueHoy.getValorTotalFacturasHoy}', style: TextStyle(fontSize: size.iScreen(2.5))),
+                  // Text('\$${valueHoy.getValorTotalFacturasHoy}', style: TextStyle(fontSize: size.iScreen(2.5))),
+                   Text(valueHoy.getTotalDiario.isNotEmpty?  '\$${valueHoy.getTotalDiario['total']}':'-- -- --', style: TextStyle(fontSize: size.iScreen(2.5))),
                 ],
               );
               },)
@@ -379,7 +380,7 @@ bool printBinded = false;
                 children: [
                   Text('ANTERIORES',style: TextStyle(fontSize: size.iScreen(1.8))),
                    // Espacio entre los textos
-                   Text('\$${valueAnteriores.getValorTotalFacturasAntes}', style: TextStyle(fontSize: size.iScreen(2.5))),
+                  //  Text('\$${valueAnteriores.getValorTotalFacturasAntes}', style: TextStyle(fontSize: size.iScreen(2.5))),
                 ],
               );
               },)
@@ -415,8 +416,7 @@ bool printBinded = false;
                             _controllerFacturas.buscaAllFacturasPaginacion(
                                 '',false,_controllerFacturas.getTabIndex);
                           
-                          //   ctrl.buscaAllFacturasPaginacion(
-                          //       '',false,ctrl.getTabIndex);
+                        _controllerFacturas.obtieneTotalDiario('ventas','FACTURAS');
 
                         }
                         if ( index==1) {
@@ -2486,6 +2486,7 @@ Container(
     _controller.setPage(0);
     _controller.setCantidad(25);
     _controller.buscaAllFacturasPaginacion('', true,_controller.getTabIndex);
+     _controller.obtieneTotalDiario('ventas','FACTURAS');
   }
 
   

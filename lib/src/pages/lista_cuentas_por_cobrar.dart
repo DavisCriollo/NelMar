@@ -64,7 +64,7 @@ class _ListarCuentasPorCobrarState
         final _next = context.read<CuentasXCobrarController>();
         if (_next.getpage != null) {
           _next.setPage(_next.getpage);
-          //       providerSearchPropietario.setCantidad(25);
+                _next.setCantidad(25);
           _next.buscaAllCuentasPorCobrar('', false,0);
         } else {
           // print("ES NULL POR ESO NO HACER PETICION ");
@@ -373,7 +373,7 @@ Container(
                 children: [
                   Text('HOY', style: TextStyle(fontSize: size.iScreen(1.8))),
                   // Espacio entre los textos
-                  // Text('\$${valueHoy.totalGeneralHoy}', style: TextStyle(fontSize: size.iScreen(2.5))),
+                 Text(valueHoy.getTotalDiario.isNotEmpty?  '\$${valueHoy.getTotalDiario['total']}':'-- -- --', style: TextStyle(fontSize: size.iScreen(2.5))),
                 ],
               );
               },)
@@ -430,7 +430,7 @@ Container(
                           
                             ctrl.buscaAllCuentasPorCobrar('', true,ctrl.getTabIndex);
 
-
+                          ctrl.obtieneTotalDiario('cuentasporcobrar','');
 
 
 
@@ -442,6 +442,7 @@ Container(
                         
                              ctrl.buscaAllCuentasPorCobrar(
                                 '',false,ctrl.getTabIndex);
+                                
                         }
                       },
         labelColor: Colors.blue,
@@ -2071,6 +2072,8 @@ Container(
     Future<void> onRefresh() async {
                   final _ctrl =context.read<CuentasXCobrarController>();
                   _ctrl.resetValorTotal();
+                   _ctrl.setPage(0);
+    _ctrl.setCantidad(25);
                     _ctrl.buscaAllCuentasPorCobrar(
                                 '',false,0);
    

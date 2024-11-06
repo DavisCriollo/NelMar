@@ -368,7 +368,7 @@ Container(
                   Text('HOY', style: TextStyle(fontSize: size.iScreen(1.8))),
                   // Espacio entre los textos
                   // Text('\$${valueHoy.getValorTotalCajasHoy}', style: TextStyle(fontSize: size.iScreen(2.5))),
-                  Text('\$${valueHoy.totalGeneralHoy}', style: TextStyle(fontSize: size.iScreen(2.5))),
+                  Text(valueHoy.getTotalDiario.isNotEmpty?  '\$${valueHoy.getTotalDiario['total']}':'-- -- --', style: TextStyle(fontSize: size.iScreen(2.5))),
                 ],
               );
               },)
@@ -383,7 +383,7 @@ Container(
                   Text('ANTERIORES',style: TextStyle(fontSize: size.iScreen(1.8))),
                    // Espacio entre los textos
                   //  Text('\$${valueAnteriores.getValorTotalCajasAntes}', style: TextStyle(fontSize: size.iScreen(2.5))),
-                  Text('\$${valueAnteriores.totalGeneralAyer}', style: TextStyle(fontSize: size.iScreen(2.5))),
+                  // Text('\$${valueAnteriores.totalGeneralAyer}', style: TextStyle(fontSize: size.iScreen(2.5))),
                 ],
               );
               },)
@@ -441,7 +441,7 @@ Container(
                            ctrl.resetValorTotal();
                              ctrl.buscaAllCajaPaginacion(
                                 '',false,0);
-
+                                     ctrl.obtieneTotalDiario('cajas','');
 
 
                         }
@@ -750,7 +750,7 @@ Container(
                                                       '${_prefacturas['cajaTipoCaja']}',
                                                       style: GoogleFonts.lexendDeca(
                                                           // fontSize: size.iScreen(2.45),
-                                                          // color: Colors.white,
+                                                          color: _prefacturas['cajaTipoCaja']=='CREDITO'?Colors.orange:Colors.black,
                                                           fontWeight:
                                                               FontWeight.bold),
                                                       overflow: TextOverflow.ellipsis,
@@ -4547,6 +4547,7 @@ Container(
     _controller.setPage(0);
     _controller.setCantidad(25);
     _controller.buscaAllCajaPaginacion('', true,_controller.getTabIndex);
+       _controller.obtieneTotalDiario('cajas','');
   }
 
 void _printTicket(Map<String, dynamic>? _info,String? user) async {

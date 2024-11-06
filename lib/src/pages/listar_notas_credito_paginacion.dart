@@ -295,7 +295,8 @@ class _ListarNotasCreditoPaginacionState extends State<ListarNotasCreditoPaginac
                 children: [
                   Text('HOY', style: TextStyle(fontSize: size.iScreen(1.8))),
                   // Espacio entre los textos
-                  Text('\$${valueHoy.getValorTotalFacturasHoy}', style: TextStyle(fontSize: size.iScreen(2.5))),
+                  // Text('\$${valueHoy.getValorTotalFacturasHoy}', style: TextStyle(fontSize: size.iScreen(2.5))),
+                   Text(valueHoy.getTotalDiario.isNotEmpty?  '\$${valueHoy.getTotalDiario['total']}':'-- -- --', style: TextStyle(fontSize: size.iScreen(2.5))),
                 ],
               );
               },)
@@ -309,7 +310,7 @@ class _ListarNotasCreditoPaginacionState extends State<ListarNotasCreditoPaginac
                 children: [
                   Text('ANTERIORES',style: TextStyle(fontSize: size.iScreen(1.8))),
                    // Espacio entre los textos
-                   Text('\$${valueAnteriores.getValorTotalFacturasAntes}', style: TextStyle(fontSize: size.iScreen(2.5))),
+                  //  Text('\$${valueAnteriores.getValorTotalFacturasAntes}', style: TextStyle(fontSize: size.iScreen(2.5))),
                 ],
               );
               },)
@@ -348,7 +349,7 @@ class _ListarNotasCreditoPaginacionState extends State<ListarNotasCreditoPaginac
                             _controllerNotasCredito.buscaAllNotasCreditosPaginacion(
                                 '', true,_controllerNotasCredito.getTabIndex);
 
-
+                               _controllerNotasCredito.obtieneTotalDiario('ventas','NOTA CREDITOS');
 
                         }
                         if ( index==1) {
@@ -2282,6 +2283,7 @@ class _ListarNotasCreditoPaginacionState extends State<ListarNotasCreditoPaginac
     _controller.setPage(0);
     _controller.setCantidad(25);
     _controller.buscaAllNotasCreditosPaginacion('', true,_controller.getTabIndex);
+    _controller.obtieneTotalDiario('ventas','NOTA CREDITOS');
   }
 
 

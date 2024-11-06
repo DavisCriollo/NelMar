@@ -168,6 +168,7 @@ class MyApp extends StatelessWidget {
       
       
           initialRoute: 'splash',
+          // initialRoute: 'prueba',
 
           // initialRoute: 'SunmiScreen',
 

@@ -419,7 +419,8 @@ Container(
                   // ),
                   // Espacio entre los textos
                   // Text('\$${valueHoy.getValorTotalFacturasHoy}', style: TextStyle(fontSize: size.iScreen(2.5))),
-                   Text('\$${valueHoy.totalGeneralHoy}', style: TextStyle(fontSize: size.iScreen(2.5))),
+                  //  Text('\$${valueHoy.totalGeneralHoy}', style: TextStyle(fontSize: size.iScreen(2.5))),
+                  Text(valueHoy.getTotalDiario.isNotEmpty?  '\$${valueHoy.getTotalDiario['total']}':'-- -- --', style: TextStyle(fontSize: size.iScreen(2.5))),
                 ],
               );
               },)
@@ -440,7 +441,7 @@ Container(
                   // ),
                    // Espacio entre los textos
                   //  Text('\$${valueAnteriores.getValorTotalFacturasAntes}', style: TextStyle(fontSize: size.iScreen(2.5))),
-                    Text('\$${valueAnteriores.totalGeneralAyer}', style: TextStyle(fontSize: size.iScreen(2.5))),
+                    // Text('\$${valueAnteriores.totalGeneralAyer}', style: TextStyle(fontSize: size.iScreen(2.5))),
                 ],
               );
               },)
@@ -484,7 +485,7 @@ Container(
                             _controllerPreFacturas
                                 .buscaAllPreFacturasPaginacion('', true,_controllerPreFacturas.getTabIndex);
 
-
+                               _controllerPreFacturas.obtieneTotalDiario('ventas','NOTA VENTAS');
 
 
 
@@ -3187,7 +3188,7 @@ Container(
     _controller.setPage(0);
     _controller.setCantidad(25);
     _controller.buscaAllPreFacturasPaginacion('', true,_controller.getTabIndex);
-   
+     _controller.obtieneTotalDiario('ventas','NOTA VENTAS');
   }
 
  

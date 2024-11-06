@@ -91,7 +91,7 @@ class SubmenuTransacciones extends StatelessWidget {
                                 .setInfoBusquedaFacturasPaginacion([]);
                             _controllerFacturas.buscaAllFacturasPaginacion(
                                 '',false,0);
-
+                                  _controllerFacturas.obtieneTotalDiario('ventas','FACTURAS');
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) =>
                                      ListarFacturasPaginacion(user: user,)));
@@ -130,7 +130,7 @@ class SubmenuTransacciones extends StatelessWidget {
                                 .setInfoBusquedaPreFacturasPaginacion([]);
                             _controllerPreFacturas
                                 .buscaAllPreFacturasPaginacion('', true,0);
-
+                                 _controllerPreFacturas.obtieneTotalDiario('ventas','NOTA VENTAS');
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) =>
                                      ListarPreFacturasPaginacion(user: user,)));
@@ -161,6 +161,7 @@ class SubmenuTransacciones extends StatelessWidget {
                              _ctrl.buscaAllCajaPaginacion(
                                 '',false,0);
                                  _ctrl.calculateTotalIngreso();
+                                 _ctrl.obtieneTotalDiario('cajas','');
                                Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) =>
                                      ListarCajaPaginacion(user: user,)));
@@ -197,7 +198,7 @@ class SubmenuTransacciones extends StatelessWidget {
                                 .setInfoBusquedaProformasPaginacion([]);
                             _controllerProformas.buscaAllProformasPaginacion(
                                 '', true,0);
-
+                                 _controllerProformas.obtieneTotalDiario('ventas','PROFORMAS');
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) =>
                                      ListarProformasProformas(user: user,)));
@@ -235,7 +236,7 @@ class SubmenuTransacciones extends StatelessWidget {
                             _controllerNotasCredito.buscaAllNotasCreditosPaginacion(
                                 '', true,0);
 
-
+                                   _controllerNotasCredito.obtieneTotalDiario('ventas','NOTA CREDITOS');
 
 
                             Navigator.of(context).push(MaterialPageRoute(
@@ -274,7 +275,7 @@ class SubmenuTransacciones extends StatelessWidget {
                                 .setInfoBusquedaAnuladasPaginacion([]);
                             _controllerAnuladas.buscaAllAnuladasPaginacion(
                                 '', true,0);
-
+                            _controllerAnuladas.obtieneTotalDiario('ventas','ANULADAS');
 
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) =>
@@ -348,9 +349,11 @@ class SubmenuTransacciones extends StatelessWidget {
                final _ctrl =context.read<CuentasXCobrarController>();
                                     
                            _ctrl.resetValorTotal();
+                            _ctrl.setPage(0);
+                            _ctrl.setIsNext(false);
                              _ctrl.buscaAllCuentasPorCobrar(
                                 '',false,0);
-
+_ctrl.obtieneTotalDiario('cuentasporcobrar','');
                                         return Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context)=>
                                      ListarCuentasPorCobrar(user: user,)));

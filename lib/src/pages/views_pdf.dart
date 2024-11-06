@@ -35,9 +35,37 @@ class ViewsPDFs extends StatelessWidget {
             IconButton(
               onPressed: () async {
                 await _checkPermissions();
-                await _downloadPDF(context, infoPdf, labelPdf);
+                // await _downloadPDF(context, infoPdf, labelPdf);
+                 // Mostramos el menú cuando se presiona el botón
+            showMenu(
+              context: context,
+              position: RelativeRect.fromLTRB(10, 80, 0, 0), // Posición del menú
+              items: [
+                PopupMenuItem<String>(
+                  value: '1',
+                  child: Text('Compartir'),
+                ),
+                PopupMenuItem<String>(
+                  value: '2',
+                  child: Text('Descragar'),
+                ),
+                PopupMenuItem<String>(
+                  value: '3',
+                  child: Text('Imprimir'),
+                ),
+              ],
+              elevation: 8.0,
+            ).then((value) {
+              if (value != null) {
+                // Acción al seleccionar una opción
+                print("Seleccionaste: $value");
+              }
+            });
+    
+    
+    
               },
-              icon: const Icon(Icons.download),
+              icon: const Icon(Icons.more_vert_outlined),
             ),
           ],
         ),

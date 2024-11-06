@@ -682,7 +682,8 @@ bool printBinded = false;
                 children: [
                   Text('HOY', style: TextStyle(fontSize: size.iScreen(1.8))),
                   // Espacio entre los textos
-                  Text('\$${valueHoy.getValorTotalFacturasHoy}', style: TextStyle(fontSize: size.iScreen(2.5))),
+                  // Text('\$${valueHoy.getValorTotalFacturasHoy}', style: TextStyle(fontSize: size.iScreen(2.5))),
+                   Text(valueHoy.getTotalDiario.isNotEmpty?  '\$${valueHoy.getTotalDiario['total']}':'-- -- --', style: TextStyle(fontSize: size.iScreen(2.5))),
                 ],
               );
               },)
@@ -736,7 +737,7 @@ bool printBinded = false;
                             _controllerProformas.buscaAllProformasPaginacion(
                                 '', true,_controllerProformas.getTabIndex);
 
-
+                        _controllerProformas.obtieneTotalDiario('ventas','PROFORMAS');
 
                         }
                         if ( index==1) {
@@ -3373,6 +3374,7 @@ Consumer<ProformasController>(
     _controller.setPage(0);
     _controller.setCantidad(25);
     _controller.buscaAllProformasPaginacion('', true,_controller.getTabIndex);
+    _controller.obtieneTotalDiario('ventas','PROFORMAS');
   }
 
 

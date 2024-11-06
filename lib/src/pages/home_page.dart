@@ -377,6 +377,7 @@ _ctrl.resetCalculos();
 ctrlMateriales.resetValorTotalMateriales();
 
 
+
                        _ctrl.setTypeAction('MATERIALES');
 
 
@@ -385,7 +386,7 @@ ctrlMateriales.resetValorTotalMateriales();
 
 
 ctrl.buscaAllMaterialesPaginacion('',false,0);
-
+    ctrl.obtieneTotalDiario('ventas','DESPACHO');
           Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) =>
                                      ListarMaterialesPaginacion(
