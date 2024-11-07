@@ -996,6 +996,12 @@ final _nuevoPago =
   "sector":_infoCuentas['sector'],
   "enviarCorreo": _notificar,
 
+  "ccOtrosDetalles": _infoCuentas['ccOtrosDetalles'],
+  "ccConductor": _infoCuentas['ccConductor'],
+  "ccObservacion": _infoCuentas['ccObservacion'],
+
+
+
        "tabla": "cuentasporcobrar", //DEFECTO
       "rucempresa": dataUser.rucempresa, // LOGIN
       "venUser": dataUser.usuario, // login

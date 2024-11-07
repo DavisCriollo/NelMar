@@ -415,7 +415,7 @@ Container(
                   // Espacio entre los textos
                   // Text('\$${valueHoy.getValorTotalFacturasHoy}', style: TextStyle(fontSize: size.iScreen(2.5))),
                     // Text('\$${valueHoy.totalGeneralHoyMateriales}', style: TextStyle(fontSize: size.iScreen(2.5))),
-                    Text(valueHoy.getTotalDiario.isNotEmpty ?  '\$${valueHoy.getTotalDiario['total']}':'-- -- --', style: TextStyle(fontSize: size.iScreen(2.5))),
+                    Text(valueHoy.getTotalDiario.isNotEmpty ?  '\$${valueHoy.getTotalDiario['total']}':'-- -- --', style: TextStyle(fontSize: size.iScreen(2.0))),
                 ],
               );
               },)

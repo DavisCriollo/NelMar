@@ -368,7 +368,7 @@ Container(
                   Text('HOY', style: TextStyle(fontSize: size.iScreen(1.8))),
                   // Espacio entre los textos
                   // Text('\$${valueHoy.getValorTotalCajasHoy}', style: TextStyle(fontSize: size.iScreen(2.5))),
-                  Text(valueHoy.getTotalDiario.isNotEmpty?  '\$${valueHoy.getTotalDiario['total']}':'-- -- --', style: TextStyle(fontSize: size.iScreen(2.5))),
+                  Text(valueHoy.getTotalDiario.isNotEmpty?  '\$${valueHoy.getTotalDiario['total']}':'-- -- --', style: TextStyle(fontSize: size.iScreen(2.0))),
                 ],
               );
               },)

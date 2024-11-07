@@ -373,7 +373,7 @@ Container(
                 children: [
                   Text('HOY', style: TextStyle(fontSize: size.iScreen(1.8))),
                   // Espacio entre los textos
-                 Text(valueHoy.getTotalDiario.isNotEmpty?  '\$${valueHoy.getTotalDiario['total']}':'-- -- --', style: TextStyle(fontSize: size.iScreen(2.5))),
+                 Text(valueHoy.getTotalDiario.isNotEmpty?  '\$${valueHoy.getTotalDiario['total']}':'-- -- --', style: TextStyle(fontSize: size.iScreen(2.0))),
                 ],
               );
               },)
@@ -1097,7 +1097,8 @@ Container(
                                                   Container(
   child: Text(
     _prefacturas['ccOtrosDetalles'] != null && _prefacturas['ccOtrosDetalles'].isNotEmpty 
-      ? ' ${_prefacturas['ccOtrosDetalles']}'
+      ? 
+      ' ${_prefacturas['ccOtrosDetalles']}'
       : '--- --- --- ---',
     style: GoogleFonts.lexendDeca(
       fontSize: size.iScreen(1.7),

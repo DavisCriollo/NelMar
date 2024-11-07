@@ -1744,7 +1744,7 @@ final _nuevaFactura =
   "venAbono": "0", // Monto del abono; por defecto 0, asignar el valor si existe un abono
   "venDescPorcentaje": "0", // Porcentaje de descuento; de lo contrario, asignar 0
   
-  "venOtrosDetalles": _listaAddPlacas, //lista de placas 
+  "venOtrosDetalles": _listaAddPlacas![0], //lista de placas 
   "venConductor": _nombreConductor,
   "venObservacion": "", // Observaciones sobre la factura; dejar vacío si no hay
   
