@@ -1590,7 +1590,7 @@ class ApiProvider {
       if (dataResp.body.isEmpty) {
         return null;
       }
-      print('RESPONSE:AVISOSALIDA ${dataResp.body}');
+      print('RESPONSE:PREFACTURAS  ${dataResp.body}');
       if (dataResp.statusCode == 200) {
 
 
@@ -2718,6 +2718,62 @@ if (tipo!!='') {
         return null;
       }
       // print('RESPONSE:TOTAL DIARIO ${dataResp.body}');
+      if (dataResp.statusCode == 200) {
+
+
+        final responseData = jsonDecode(dataResp.body);
+
+        return responseData;
+      }
+      if (dataResp.statusCode == 404) {
+        return null;
+      }
+      if (dataResp.statusCode == 401) {
+     
+        return null;
+      }
+    } catch (e) {
+      //  NotificatiosnService.showSnackBarError("SIN 19 ");
+      return null;
+    }
+  }
+
+
+  //=========================GET ALL CUENTAS POR COBRAR=====================================//
+  Future getAllTotalesFlotantes({
+    String? usuario,
+     String? token,
+  }) async {
+    try {
+       final url =
+          // Uri.parse('$_url/proveedores/filtro/0?search=$search&estado=$estado');
+          Uri.parse('$_url/cajas/saldo-total/ingreso-egreso-credito?usuario=$usuario');
+
+
+//           final Uri url = Uri.parse(
+//   '$_url/$origen/saldo/total/diario${tipo!.isNotEmpty ? '?tipodocumento=$tipo' : ''}'
+// );
+
+      // final dynamic url ;
+      // if (tipo!.isNotEmpty) {
+      //   url=Uri.parse('$_url/$origen/saldo/total/diario?tipodocumento=$tipo');
+      // } else {
+      //     url= Uri.parse('$_url/$origen/saldo/total/diario');
+      // }
+      //  Uri.parse('$_url/$origen/saldo/total/diario?tipodocumento=$tipo');
+     
+         
+          // Uri.parse('$_url/cajas/?page=0&cantidad=10&search=&input=cajaId&orden=false&estado=DIARIA');
+
+      final dataResp = await _http.get(
+        url,
+        headers: {"x-auth-token": '$token'},
+      );
+
+      if (dataResp.body.isEmpty) {
+        return null;
+      }
+      print('RESPONSE:TOTAL INGRESO CREDITO ${dataResp.body}');
       if (dataResp.statusCode == 200) {
 
 

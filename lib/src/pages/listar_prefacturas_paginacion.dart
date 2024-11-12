@@ -746,7 +746,7 @@ Container(
                                               Text(
                                                 // '${_prefacturas['venEstado']}',
                                                  _prefacturas['venOtrosDetalles'].isNotEmpty
-                                                             ?'${_prefacturas['venOtrosDetalles'][0]}':'--- --- --- --- --- ---  ',
+                                                             ?'${_prefacturas['venOtrosDetalles']}':'--- --- --- --- --- ---  ',
                                                 // 'Estado: ',
                                                 style: GoogleFonts.lexendDeca(
                                                     fontSize: size.iScreen(1.8),

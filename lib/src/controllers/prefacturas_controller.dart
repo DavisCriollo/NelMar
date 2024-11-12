@@ -381,6 +381,8 @@ _valorTotalFacturasAntes = double.parse(_valorTotalFacturasAntes.toStringAsFixed
              setFacturas(dataSort);
           filtrarFacturasAnteriores(response['data']['pagination']);
         }
+// setListFilter(dataSort);
+
         notifyListeners();
         return response;
       }
@@ -482,7 +484,7 @@ void filtrarFacturasAnteriores(Map<String,dynamic> _pag) {
     }
     return false;
   }).toList();
-
+      print('ANTERIORES: $_facturasFiltradas');
   // Actualizar la lista filtrada
   setListFilter(_facturasFiltradas);
   _paginacionAyer={};

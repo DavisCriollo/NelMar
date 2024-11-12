@@ -264,7 +264,7 @@ _valorTotalCajasAntes = double.parse(_valorTotalCajasAntes.toStringAsFixed(3));
   int? get getpage => _page;
   void setPage(int? _pag) {
     _page = _pag;
-    // print('_page: $_page');
+    print('_page: $_page');
 
     notifyListeners();
   }
@@ -404,12 +404,31 @@ List _facturas = [];
   setListFilter(_facturasFiltradas);
   notifyListeners();
 }
+// void filtrarFacturasAnteriores() {
+//   DateTime hoy = DateTime.now();  // Fecha actual en hora local
+//   String fechaHoy = DateFormat('yyyy-MM-dd').format(hoy);
+
+//   _facturasFiltradas = _facturas.where((factura) {
+//     String? fechaFactura = factura['cajaFecha'];
+//     if (fechaFactura != null) {
+//       // Convertir la fecha de la factura a DateTime y luego a la hora local
+//       DateTime fechaFacturaDateTime = DateTime.parse(fechaFactura).toLocal();
+//       String fechaFacturaSoloFecha = DateFormat('yyyy-MM-dd').format(fechaFacturaDateTime);
+//       return fechaFacturaSoloFecha != fechaHoy;  // Filtrar las fechas anteriores o diferentes a hoy
+//     }
+//     return false;
+//   }).toList();
+
+//   // Actualizar la lista filtrada
+//   setListFilter(_facturasFiltradas);
+//   notifyListeners();
+// }
 void filtrarFacturasAnteriores() {
   DateTime hoy = DateTime.now();  // Fecha actual en hora local
   String fechaHoy = DateFormat('yyyy-MM-dd').format(hoy);
 
   _facturasFiltradas = _facturas.where((factura) {
-    String? fechaFactura = factura['cajaFecha'];
+    String? fechaFactura = factura['venFecReg'];
     if (fechaFactura != null) {
       // Convertir la fecha de la factura a DateTime y luego a la hora local
       DateTime fechaFacturaDateTime = DateTime.parse(fechaFactura).toLocal();
@@ -423,7 +442,6 @@ void filtrarFacturasAnteriores() {
   setListFilter(_facturasFiltradas);
   notifyListeners();
 }
-
 //*********************************************************//
 
 
@@ -436,6 +454,7 @@ int get getTabIndex=>_tabIndex;
 void setTabIndex( int _index)
 {
 _tabIndex=_index;
+print('_tabIndex: ${_tabIndex} ');
 
 notifyListeners();
 
@@ -693,8 +712,54 @@ Map<String,dynamic> get getTotalDiario=>_totalDiario;
 
 //===========================================//
 
+//===========================OBTENEMOS LA SUMATORIA GENERAL DIARIA================================//
+Map<String,dynamic> _totalesFlotantes={};
+Map<String,dynamic> get getTotalesFlotantes=>_totalesFlotantes;
 
 
+
+  Future obtieneTotalesFlotantes( String _user) async {
+    final dataUser = await Auth.instance.getSession();
+// print('usuario : ${dataUser!.rucempresa}');
+    final response = await _api.getAllTotalesFlotantes(
+      usuario: _busquedaUser,
+         token: '${dataUser!.token}',
+    );
+
+    if (response != null) {
+     _totalesFlotantes={};
+     
+     _totalesFlotantes=response;
+      //  mostrarValoresConDosDecimales(valores);
+        notifyListeners();
+        return response;
+      
+
+      //===========================================//
+
+    }
+    if (response == null) {
+     
+      notifyListeners();
+      return null;
+    }
+  }
+
+//===========================================//
+
+//================== DETALLE ==========================//
+  String _busquedaUser = '';
+  String get getBusquedaUser  => _busquedaUser;
+
+  void setBusquedaUser(String _bus) {
+   _busquedaUser =''; 
+   _busquedaUser = _bus;
+ 
+    notifyListeners();
+  }
+
+
+//*************CREAR FACTURA ******************//
 
 
 

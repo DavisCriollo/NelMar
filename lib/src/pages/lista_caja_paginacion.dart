@@ -24,6 +24,7 @@ import 'package:neitorcont/src/services/socket_service.dart';
 import 'package:neitorcont/src/theme/theme_provider.dart';
 import 'package:neitorcont/src/theme/themes_app.dart';
 import 'package:neitorcont/src/utils/fechaLocal.dart';
+import 'package:neitorcont/src/utils/letras_mayusculas_minusculas.dart';
 import 'package:neitorcont/src/utils/responsive.dart';
 import 'package:neitorcont/src/utils/theme.dart';
 import 'package:neitorcont/src/widgets/no_data.dart';
@@ -334,6 +335,18 @@ class _ListarCajaPaginacionState
 
                               }
                             }),
+                             IconButton(
+                                splashRadius: size.iScreen(3.0),
+                                icon: Icon(
+                                  Icons.person_search,
+                                  size: size.iScreen(3.5),
+                                  // color: Colors.white,
+                                ),
+                                onPressed: () {
+                                  //=====================//
+                                  modalBusquedaXUsuario(context,size);
+                                 
+                                })
                       ],
                     ),
                   ],
@@ -442,6 +455,7 @@ Container(
                              ctrl.buscaAllCajaPaginacion(
                                 '',false,0);
                                      ctrl.obtieneTotalDiario('cajas','');
+                                     ctrl.obtieneTotalesFlotantes('TODOS');
 
 
                         }
@@ -489,7 +503,8 @@ Container(
                                             ?
                            RefreshIndicator(
                              onRefresh: () => onRefresh(),
-                            child: ListView.builder(
+                            child: 
+                            ListView.builder(
                               controller: _scrollController,
                               physics: const BouncingScrollPhysics(),
                               itemCount: provider
@@ -515,7 +530,9 @@ Container(
  //==============================================//
   String fechaLocal = convertirFechaLocal(_prefacturas['cajaFecReg']);
  //==============================================//
-                                  return Slidable(
+                                  return 
+                                  _prefacturas['cajaEstado'] != 'ANULADA'?
+                                  Slidable(
                                     startActionPane: ActionPane(
                                       // A motion is a widget used to control how the pane animates.
                                       motion: const ScrollMotion(),
@@ -735,7 +752,7 @@ Container(
                                                   SizedBox(
                                                     // width: size.wScreen(40.0),
                                                     child: Text(
-                                                      'Forma Pago: ',
+                                                      'Documento: ',
                                                       style: GoogleFonts.lexendDeca(
                                                           // fontSize: size.iScreen(2.45),
                                                           color: Colors.grey,
@@ -744,63 +761,19 @@ Container(
                                                       overflow: TextOverflow.ellipsis,
                                                     ),
                                                   ),
-                                                  SizedBox(
-                                                    width: size.wScreen(40.0),
-                                                    child: Text(
-                                                      '${_prefacturas['cajaTipoCaja']}',
-                                                      style: GoogleFonts.lexendDeca(
-                                                          // fontSize: size.iScreen(2.45),
-                                                          color: _prefacturas['cajaTipoCaja']=='CREDITO'?Colors.orange:Colors.black,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                      overflow: TextOverflow.ellipsis,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              Text(
-                                                '${_prefacturas['cajaEstado']}',
-                                                // 'Estado: ',
-                                                style: GoogleFonts.lexendDeca(
-                                                    fontSize: size.iScreen(1.5),
-                                                    color: _color,
-                                                    fontWeight: FontWeight.bold),
-                                              ),
-                                            ],
-                                          ),
-                                          subtitle: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                children: [
-                                                   Container(
-                                                    // color: Colors.red,
-                                                    width: size.wScreen(70.0),
-                                                     child: Row(
-                                                       children: [
-                                                        Container(
-                                                          // color: Colors.green,
-                                                         
-                                                          child: Text(
-                                                            'Documento : ',
-                                                            style:
-                                                                GoogleFonts.lexendDeca(
-                                                                    fontSize: size
-                                                                        .iScreen(1.5),
-                                                                    color:
-                                                                        Colors.grey,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .normal),
-                                                            overflow:
-                                                                TextOverflow.ellipsis,
-                                                          ),
-                                                          
-                                                  ),
-                                                         Container(
+                                                  // SizedBox(
+                                                  //   width: size.wScreen(40.0),
+                                                  //   child: Text(
+                                                  //     '${_prefacturas['cajaTipoCaja']}',
+                                                  //     style: GoogleFonts.lexendDeca(
+                                                  //         // fontSize: size.iScreen(2.45),
+                                                  //         color: _prefacturas['cajaTipoCaja']=='CREDITO'?Colors.orange:Colors.black,
+                                                  //         fontWeight:
+                                                  //             FontWeight.bold),
+                                                  //     overflow: TextOverflow.ellipsis,
+                                                  //   ),
+                                                  // ),
+                                                    Container(
                                                           // color: Colors.green,
                                                           // width: size.wScreen(50.0),
                                                           child: Text(
@@ -817,9 +790,79 @@ Container(
                                                                 TextOverflow.ellipsis,
                                                           ),
                                                   ),
-                                                       ],
-                                                     ),
-                                                   ),
+                                                ],
+                                              ),
+                                              // Text(
+                                              //   // '${_prefacturas['cajaEstado']}',
+                                              //   // 'Estado: ',
+                                              //   style: GoogleFonts.lexendDeca(
+                                              //       fontSize: size.iScreen(1.5),
+                                              //       color: _color,
+                                              //       fontWeight: FontWeight.bold),
+                                              // ),
+                                              Text(
+                                                      '${_prefacturas['cajaTipoCaja']}',
+                                                      style: GoogleFonts.lexendDeca(
+                                                          // fontSize: size.iScreen(2.45),
+                                                          color: _prefacturas['cajaTipoCaja']=='EFECTIVO'?Colors.blue:Colors.orange,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                      overflow: TextOverflow.ellipsis,
+                                                    ),
+                                            ],
+                                          ),
+                                          subtitle: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: [
+                                                  //  Container(
+                                                  //   // color: Colors.red,
+                                                  //   width: size.wScreen(70.0),
+                                                  //    child: Row(
+                                                  //      children: [
+                                                  //       Container(
+                                                  //         // color: Colors.green,
+                                                         
+                                                  //         child: Text(
+                                                  //           'Documento : ',
+                                                  //           style:
+                                                  //               GoogleFonts.lexendDeca(
+                                                  //                   fontSize: size
+                                                  //                       .iScreen(1.5),
+                                                  //                   color:
+                                                  //                       Colors.grey,
+                                                  //                   fontWeight:
+                                                  //                       FontWeight
+                                                  //                           .normal),
+                                                  //           overflow:
+                                                  //               TextOverflow.ellipsis,
+                                                  //         ),
+                                                          
+                                                  // ),
+                                                  //        Container(
+                                                  //         // color: Colors.green,
+                                                  //         // width: size.wScreen(50.0),
+                                                  //         child: Text(
+                                                  //           '${_prefacturas['cajaTipoDocumento']}',
+                                                  //           style:
+                                                  //               GoogleFonts.lexendDeca(
+                                                  //                   fontSize: size
+                                                  //                       .iScreen(1.5),
+                                                  //                   color:_prefacturas['cajaTipoDocumento']=='INGRESO'?Colors.green:_prefacturas['cajaTipoDocumento']=='EGRESO'?Colors.orange:Colors.black,
+                                                  //                   fontWeight:
+                                                  //                       FontWeight
+                                                  //                           .bold),
+                                                  //           overflow:
+                                                  //               TextOverflow.ellipsis,
+                                                  //         ),
+                                                  // ),
+                                                  //      ],
+                                                  //    ),
+                                                  //  ),
                                                   Container(
                                                     // color: Colors.green,
                                                     width: size.wScreen(70.0),
@@ -894,7 +937,7 @@ Container(
                                                 // color: Colors.green,
                                                 // width: size.wScreen(100.0),
                                                 child: Text(
-                                                  '\$${_prefacturas['cajaMonto']}',
+                                                  _prefacturas['cajaTipoCaja']=='CREDITO' || _prefacturas['cajaTipoCaja']=='TRANSFERENCIA'?' \$${_prefacturas['cajaCredito']}':' \$${_prefacturas['cajaMonto']}',
                                                   style: GoogleFonts.lexendDeca(
                                                       fontSize: size.iScreen(2.0),
                                                       color: Colors.black87,
@@ -909,7 +952,7 @@ Container(
                                         ),
                                       ),
                                     ),
-                                  );
+                                  ):Container();
                                 } else {
                                   return Consumer<PreFacturasController>(
                                     builder: (_, valueNext, __) {
@@ -2243,7 +2286,8 @@ Container(
 
 
 //========================TAB 2=======================//
-  Consumer<CajaController>(
+
+Consumer<CajaController>(
                         builder: (_, provider, __) {
                          
                          if (provider.allItemsFilters.isEmpty) {
@@ -2269,7 +2313,8 @@ Container(
                                             ?
                            RefreshIndicator(
                              onRefresh: () => onRefresh(),
-                            child: ListView.builder(
+                            child: 
+                            ListView.builder(
                               controller: _scrollController,
                               physics: const BouncingScrollPhysics(),
                               itemCount: provider
@@ -2295,7 +2340,9 @@ Container(
  //==============================================//
   String fechaLocal = convertirFechaLocal(_prefacturas['cajaFecReg']);
  //==============================================//
-                                  return Slidable(
+                                  return 
+                                  _prefacturas['cajaEstado'] != 'ANULADA'?
+                                  Slidable(
                                     startActionPane: ActionPane(
                                       // A motion is a widget used to control how the pane animates.
                                       motion: const ScrollMotion(),
@@ -2325,7 +2372,7 @@ Container(
                                                       ),
                                                       // message: const Text('Your options are '),
                                                       actions: <Widget>[
-                                                        CupertinoActionSheetAction(
+                                                               CupertinoActionSheetAction(
                                                           child: Row(
                                                             mainAxisAlignment:
                                                                 MainAxisAlignment
@@ -2364,7 +2411,7 @@ Container(
                                                            
                                                           },
                                                         ),
-                                                                 CupertinoActionSheetAction(
+                                                                CupertinoActionSheetAction(
                                                           child: Row(
                                                             mainAxisAlignment:
                                                                 MainAxisAlignment
@@ -2459,7 +2506,7 @@ Container(
                                                      
                                                      
                                                      
-                                                     ],
+                                                      ],
                                                       cancelButton:
                                                           CupertinoActionSheetAction(
                                                         child: Text('Cancel',
@@ -2515,7 +2562,7 @@ Container(
                                                   SizedBox(
                                                     // width: size.wScreen(40.0),
                                                     child: Text(
-                                                      'Forma Pago: ',
+                                                      'Documento: ',
                                                       style: GoogleFonts.lexendDeca(
                                                           // fontSize: size.iScreen(2.45),
                                                           color: Colors.grey,
@@ -2524,63 +2571,19 @@ Container(
                                                       overflow: TextOverflow.ellipsis,
                                                     ),
                                                   ),
-                                                  SizedBox(
-                                                    width: size.wScreen(40.0),
-                                                    child: Text(
-                                                      '${_prefacturas['cajaTipoCaja']}',
-                                                      style: GoogleFonts.lexendDeca(
-                                                          // fontSize: size.iScreen(2.45),
-                                                          // color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                      overflow: TextOverflow.ellipsis,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              Text(
-                                                '${_prefacturas['cajaEstado']}',
-                                                // 'Estado: ',
-                                                style: GoogleFonts.lexendDeca(
-                                                    fontSize: size.iScreen(1.5),
-                                                    color: _color,
-                                                    fontWeight: FontWeight.bold),
-                                              ),
-                                            ],
-                                          ),
-                                          subtitle: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                children: [
-                                                   Container(
-                                                    // color: Colors.red,
-                                                    width: size.wScreen(70.0),
-                                                     child: Row(
-                                                       children: [
-                                                        Container(
-                                                          // color: Colors.green,
-                                                         
-                                                          child: Text(
-                                                            'Documento : ',
-                                                            style:
-                                                                GoogleFonts.lexendDeca(
-                                                                    fontSize: size
-                                                                        .iScreen(1.5),
-                                                                    color:
-                                                                        Colors.grey,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .normal),
-                                                            overflow:
-                                                                TextOverflow.ellipsis,
-                                                          ),
-                                                          
-                                                  ),
-                                                         Container(
+                                                  // SizedBox(
+                                                  //   width: size.wScreen(40.0),
+                                                  //   child: Text(
+                                                  //     '${_prefacturas['cajaTipoCaja']}',
+                                                  //     style: GoogleFonts.lexendDeca(
+                                                  //         // fontSize: size.iScreen(2.45),
+                                                  //         color: _prefacturas['cajaTipoCaja']=='CREDITO'?Colors.orange:Colors.black,
+                                                  //         fontWeight:
+                                                  //             FontWeight.bold),
+                                                  //     overflow: TextOverflow.ellipsis,
+                                                  //   ),
+                                                  // ),
+                                                    Container(
                                                           // color: Colors.green,
                                                           // width: size.wScreen(50.0),
                                                           child: Text(
@@ -2597,9 +2600,79 @@ Container(
                                                                 TextOverflow.ellipsis,
                                                           ),
                                                   ),
-                                                       ],
-                                                     ),
-                                                   ),
+                                                ],
+                                              ),
+                                              // Text(
+                                              //   // '${_prefacturas['cajaEstado']}',
+                                              //   // 'Estado: ',
+                                              //   style: GoogleFonts.lexendDeca(
+                                              //       fontSize: size.iScreen(1.5),
+                                              //       color: _color,
+                                              //       fontWeight: FontWeight.bold),
+                                              // ),
+                                              Text(
+                                                      '${_prefacturas['cajaTipoCaja']}',
+                                                      style: GoogleFonts.lexendDeca(
+                                                          // fontSize: size.iScreen(2.45),
+                                                          color: _prefacturas['cajaTipoCaja']=='EFECTIVO'?Colors.blue:Colors.orange,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                      overflow: TextOverflow.ellipsis,
+                                                    ),
+                                            ],
+                                          ),
+                                          subtitle: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: [
+                                                  //  Container(
+                                                  //   // color: Colors.red,
+                                                  //   width: size.wScreen(70.0),
+                                                  //    child: Row(
+                                                  //      children: [
+                                                  //       Container(
+                                                  //         // color: Colors.green,
+                                                         
+                                                  //         child: Text(
+                                                  //           'Documento : ',
+                                                  //           style:
+                                                  //               GoogleFonts.lexendDeca(
+                                                  //                   fontSize: size
+                                                  //                       .iScreen(1.5),
+                                                  //                   color:
+                                                  //                       Colors.grey,
+                                                  //                   fontWeight:
+                                                  //                       FontWeight
+                                                  //                           .normal),
+                                                  //           overflow:
+                                                  //               TextOverflow.ellipsis,
+                                                  //         ),
+                                                          
+                                                  // ),
+                                                  //        Container(
+                                                  //         // color: Colors.green,
+                                                  //         // width: size.wScreen(50.0),
+                                                  //         child: Text(
+                                                  //           '${_prefacturas['cajaTipoDocumento']}',
+                                                  //           style:
+                                                  //               GoogleFonts.lexendDeca(
+                                                  //                   fontSize: size
+                                                  //                       .iScreen(1.5),
+                                                  //                   color:_prefacturas['cajaTipoDocumento']=='INGRESO'?Colors.green:_prefacturas['cajaTipoDocumento']=='EGRESO'?Colors.orange:Colors.black,
+                                                  //                   fontWeight:
+                                                  //                       FontWeight
+                                                  //                           .bold),
+                                                  //           overflow:
+                                                  //               TextOverflow.ellipsis,
+                                                  //         ),
+                                                  // ),
+                                                  //      ],
+                                                  //    ),
+                                                  //  ),
                                                   Container(
                                                     // color: Colors.green,
                                                     width: size.wScreen(70.0),
@@ -2618,24 +2691,28 @@ Container(
                                                           TextOverflow.ellipsis,
                                                     ),
                                                   ),
-                                                  Container(
-                                                    // color: Colors.green,
-                                                    width: size.wScreen(70.0),
-                                                    child: Text(
-                                                      fechaLocal !=
-                                                              ''
-                                                          ? fechaLocal
-                                                          : '--- --- ---',
-                                                      style:
-                                                          GoogleFonts.lexendDeca(
-                                                              // fontSize: size.iScreen(2.45),
-                                                              color: Colors.grey,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .normal),
-                                                    ),
+                                                  Column(
+                                                    children: [
+                                                      Container(
+                                                        // color: Colors.green,
+                                                        width: size.wScreen(70.0),
+                                                        child: Text(
+                                                          fechaLocal !=
+                                                                  ''
+                                                              ? fechaLocal
+                                                              : '--- --- ---',
+                                                          style:
+                                                              GoogleFonts.lexendDeca(
+                                                                  // fontSize: size.iScreen(2.45),
+                                                                  color: Colors.grey,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .normal),
+                                                        ),
+                                                      ),
+                                                    ],
                                                   ),
-                                                       Container(
+                                                    Container(
                                                     // color: Colors.green,
                                                     width: size.wScreen(70.0),
                                                     child: Row(
@@ -2670,7 +2747,7 @@ Container(
                                                 // color: Colors.green,
                                                 // width: size.wScreen(100.0),
                                                 child: Text(
-                                                  '\$${_prefacturas['cajaMonto']}',
+                                                  _prefacturas['cajaTipoCaja']=='CREDITO' || _prefacturas['cajaTipoCaja']=='TRANSFERENCIA'?' \$${_prefacturas['cajaCredito']}':' \$${_prefacturas['cajaMonto']}',
                                                   style: GoogleFonts.lexendDeca(
                                                       fontSize: size.iScreen(2.0),
                                                       color: Colors.black87,
@@ -2685,7 +2762,7 @@ Container(
                                         ),
                                       ),
                                     ),
-                                  );
+                                  ):Container();
                                 } else {
                                   return Consumer<PreFacturasController>(
                                     builder: (_, valueNext, __) {
@@ -3019,6 +3096,1597 @@ Container(
                           //   );
                         },
                       ),
+  
+
+
+
+
+//  Consumer<CajaController>(
+//                         builder: (_, provider, __) {
+                         
+//                          if (provider.allItemsFilters.isEmpty) {
+//                             return const NoData(
+//                               label: 'No existen datos para mostar',
+//                             );
+//                             // Text("sin datos");
+//                           }
+
+//                           return 
+                          
+//                           (provider.allItemsFilters.isEmpty)
+//                                         ? Center(
+//                                             child: Column(
+//                                               mainAxisAlignment: MainAxisAlignment.center,
+//                                             children: [
+                                              
+//                                               CircularProgressIndicator(),
+//                                               Text('Por favor espere ....')
+//                                             ],
+//                                           ))
+//                                         : (provider.allItemsFilters.length > 0)
+//                                             ?
+//                            RefreshIndicator(
+//                              onRefresh: () => onRefresh(),
+//                             child: 
+//                             ListView.builder(
+//                               controller: _scrollController,
+//                               physics: const BouncingScrollPhysics(),
+//                               itemCount: provider
+//                                       .allItemsFilters.length +
+//                                   1,
+//                               itemBuilder: (BuildContext context, int index) {
+//                                 if (index <
+//                                     provider
+//                                         .allItemsFilters.length) {
+//                                   var _color;
+//                                   final _prefacturas = provider
+//                                       .allItemsFilters[index];
+                          
+//                                   if (_prefacturas['cajaEstado'] == 'AUTORIZADO') {
+//                                     _color = Colors.green;
+//                                   } else if (_prefacturas['cajaEstado'] ==
+//                                       'SIN AUTORIZAR') {
+//                                     _color = Colors.orange;
+//                                   }
+//                                   if (_prefacturas['cajaEstado'] == 'ANULADA') {
+//                                     _color = Colors.red;
+//                                   }
+//  //==============================================//
+//   String fechaLocal = convertirFechaLocal(_prefacturas['cajaFecReg']);
+//  //==============================================//
+//                                   return 
+//                                   _prefacturas['cajaEstado'] != 'ANULADA'?
+//                                   Slidable(
+//                                     startActionPane: ActionPane(
+//                                       // A motion is a widget used to control how the pane animates.
+//                                       motion: const ScrollMotion(),
+                          
+//                                       children: [
+//                                         SlidableAction(
+//                                               backgroundColor: Colors.grey,
+//                                           foregroundColor: Colors.white,
+//                                           icon: Icons.list_alt_outlined,
+//                                           label: 'Más acciones',
+//                                           onPressed: (context) {
+//                                             showCupertinoModalPopup(
+//                                               context: context,
+//                                               builder: (BuildContext context) =>
+//                                                   CupertinoActionSheet(
+//                                                       title: Text(
+//                                                         'Acciones',
+//                                                         style: GoogleFonts
+//                                                             .lexendDeca(
+//                                                                 fontSize: size
+//                                                                     .iScreen(2.0),
+//                                                                 color:
+//                                                                     primaryColor,
+//                                                                 fontWeight:
+//                                                                     FontWeight
+//                                                                         .normal),
+//                                                       ),
+//                                                       // message: const Text('Your options are '),
+//                                                       actions: <Widget>[
+//                                                                CupertinoActionSheetAction(
+//                                                           child: Row(
+//                                                             mainAxisAlignment:
+//                                                                 MainAxisAlignment
+//                                                                     .center,
+//                                                             children: [
+//                                                               Container(
+//                                                                 margin: EdgeInsets.only(
+//                                                                     right: size
+//                                                                         .iScreen(
+//                                                                             2.0)),
+//                                                                 child: Text(
+//                                                                   'Imprimir',
+//                                                                   style: GoogleFonts.lexendDeca(
+//                                                                       fontSize: size
+//                                                                           .iScreen(
+//                                                                               1.8),
+//                                                                       color: Colors
+//                                                                           .black87,
+//                                                                       fontWeight:
+//                                                                           FontWeight
+//                                                                               .normal),
+//                                                                 ),
+//                                                               ),
+//                                                               const Icon(
+//                                                                 FontAwesomeIcons
+//                                                                     .print,
+//                                                                 color: Colors.green,
+//                                                               )
+//                                                             ],
+//                                                           ),
+//                                                           onPressed: () {
+//                                                             Navigator.pop(
+//                                                                 context);
+//                                                                 _printTicket(_prefacturas,widget.user!.logo);
+
+                                                           
+//                                                           },
+//                                                         ),
+//                                                                 CupertinoActionSheetAction(
+//                                                           child: Row(
+//                                                             mainAxisAlignment:
+//                                                                 MainAxisAlignment
+//                                                                     .center,
+//                                                             children: [
+//                                                               Container(
+//                                                                 margin: EdgeInsets.only(
+//                                                                     right: size
+//                                                                         .iScreen(
+//                                                                             2.0)),
+//                                                                 child: Text(
+//                                                                   'Ver Detalle',
+//                                                                   style: GoogleFonts.lexendDeca(
+//                                                                       fontSize: size
+//                                                                           .iScreen(
+//                                                                               1.8),
+//                                                                       color: Colors
+//                                                                           .black87,
+//                                                                       fontWeight:
+//                                                                           FontWeight
+//                                                                               .normal),
+//                                                                 ),
+//                                                               ),
+//                                                               const Icon(
+//                                                                 FontAwesomeIcons
+//                                                                     .infoCircle,
+//                                                                 color: Colors.blue,
+//                                                               )
+//                                                             ],
+//                                                           ),
+//                                                           onPressed: () {
+//                                                             provider.setInfoCaja(_prefacturas);
+//                                                             Navigator.pop(
+//                                                                 context);
+                          
+//                                                             Navigator.push(
+//                                                               context,
+//                                                               MaterialPageRoute(
+//                                                                   builder: (context) =>
+//                                                                      DetalleCaja()),
+//                                                             );
+//                                                           },
+//                                                         ),
+//                                                         // CupertinoActionSheetAction(
+//                                                         //   child: Row(
+//                                                         //     mainAxisAlignment:
+//                                                         //         MainAxisAlignment
+//                                                         //             .center,
+//                                                         //     children: [
+//                                                         //       Container(
+//                                                         //         margin: EdgeInsets.only(
+//                                                         //             right: size
+//                                                         //                 .iScreen(
+//                                                         //                     2.0)),
+//                                                         //         child: Text(
+//                                                         //           'Ver PDF',
+//                                                         //           style: GoogleFonts.lexendDeca(
+//                                                         //               fontSize: size
+//                                                         //                   .iScreen(
+//                                                         //                       1.8),
+//                                                         //               color: Colors
+//                                                         //                   .black87,
+//                                                         //               fontWeight:
+//                                                         //                   FontWeight
+//                                                         //                       .normal),
+//                                                         //         ),
+//                                                         //       ),
+//                                                         //       const Icon(
+//                                                         //         FontAwesomeIcons
+//                                                         //             .filePdf,
+//                                                         //         color: Colors.red,
+//                                                         //       )
+//                                                         //     ],
+//                                                         //   ),
+//                                                         //   onPressed: () {
+//                                                         //     Navigator.pop(
+//                                                         //         context);
+                          
+//                                                         //     Navigator.push(
+//                                                         //       context,
+//                                                         //       MaterialPageRoute(
+//                                                         //           builder: (context) =>
+//                                                         //               ViewsPDFs(
+//                                                         //                   infoPdf:
+//                                                         //                       // 'https://sysvet.neitor.com/reportes/carnet.php?id=${factura['venId']}&empresa=${_usuario!.rucempresa}',
+//                                                         //                       'https://syscontable.neitor.com/reportes/factura.php?codigo=${_prefacturas['venId']}&empresa=${_usuario!.rucempresa}',
+//                                                         //                   labelPdf:
+//                                                         //                       'infoFactura.pdf')),
+//                                                         //     );
+//                                                         //   },
+//                                                         // ),
+                                                     
+                                                     
+                                                     
+//                                                       ],
+//                                                       cancelButton:
+//                                                           CupertinoActionSheetAction(
+//                                                         child: Text('Cancel',
+//                                                             style: GoogleFonts
+//                                                                 .lexendDeca(
+//                                                                     fontSize: size
+//                                                                         .iScreen(
+//                                                                             2.0),
+//                                                                     color: Colors
+//                                                                         .red,
+//                                                                     fontWeight:
+//                                                                         FontWeight
+//                                                                             .normal)),
+//                                                         isDefaultAction: true,
+//                                                         onPressed: () {
+//                                                           Navigator.pop(
+//                                                               context, 'Cancel');
+//                                                         },
+//                                                       )),
+//                                             );
+//                                           },
+//                                         ),
+//                                       ],
+//                                     ),
+//                                     child: Card(
+//                                       elevation: 5,
+//                                       child: Container(
+//                                         margin: EdgeInsets.only(
+//                                             bottom: size.iScreen(0.0)),
+//                                         color: index % 2 == 0
+//                                             ? Colors.grey.shade50
+//                                             : Colors.grey.shade200,
+//                                         child: ListTile(
+//                                           dense: true,
+//                                           visualDensity:
+//                                               VisualDensity.comfortable,
+                                      
+//                                           //  leading: CircleAvatar(
+//                                           //   child: Text(
+//                                           //      '${_prefacturas['venNomCliente'].substring(0, 1)}',
+//                                           //     style: Theme.of(context)
+//                                           //         .textTheme
+//                                           //         .subtitle1,
+//                                           //   ),
+//                                           //   backgroundColor: Colors.grey[300],
+//                                           // ),
+//                                           title: Row(
+//                                             mainAxisAlignment:
+//                                                 MainAxisAlignment.spaceBetween,
+//                                             children: [
+//                                               Row(
+//                                                 children: [
+//                                                   SizedBox(
+//                                                     // width: size.wScreen(40.0),
+//                                                     child: Text(
+//                                                       'Documento: ',
+//                                                       style: GoogleFonts.lexendDeca(
+//                                                           // fontSize: size.iScreen(2.45),
+//                                                           color: Colors.grey,
+//                                                           fontWeight:
+//                                                               FontWeight.normal),
+//                                                       overflow: TextOverflow.ellipsis,
+//                                                     ),
+//                                                   ),
+//                                                   // SizedBox(
+//                                                   //   width: size.wScreen(40.0),
+//                                                   //   child: Text(
+//                                                   //     '${_prefacturas['cajaTipoCaja']}',
+//                                                   //     style: GoogleFonts.lexendDeca(
+//                                                   //         // fontSize: size.iScreen(2.45),
+//                                                   //         color: _prefacturas['cajaTipoCaja']=='CREDITO'?Colors.orange:Colors.black,
+//                                                   //         fontWeight:
+//                                                   //             FontWeight.bold),
+//                                                   //     overflow: TextOverflow.ellipsis,
+//                                                   //   ),
+//                                                   // ),
+//                                                     Container(
+//                                                           // color: Colors.green,
+//                                                           // width: size.wScreen(50.0),
+//                                                           child: Text(
+//                                                             '${_prefacturas['cajaTipoDocumento']}',
+//                                                             style:
+//                                                                 GoogleFonts.lexendDeca(
+//                                                                     fontSize: size
+//                                                                         .iScreen(1.5),
+//                                                                     color:_prefacturas['cajaTipoDocumento']=='INGRESO'?Colors.green:_prefacturas['cajaTipoDocumento']=='EGRESO'?Colors.orange:Colors.black,
+//                                                                     fontWeight:
+//                                                                         FontWeight
+//                                                                             .bold),
+//                                                             overflow:
+//                                                                 TextOverflow.ellipsis,
+//                                                           ),
+//                                                   ),
+//                                                 ],
+//                                               ),
+//                                               // Text(
+//                                               //   // '${_prefacturas['cajaEstado']}',
+//                                               //   // 'Estado: ',
+//                                               //   style: GoogleFonts.lexendDeca(
+//                                               //       fontSize: size.iScreen(1.5),
+//                                               //       color: _color,
+//                                               //       fontWeight: FontWeight.bold),
+//                                               // ),
+//                                               Text(
+//                                                       '${_prefacturas['cajaTipoCaja']}',
+//                                                       style: GoogleFonts.lexendDeca(
+//                                                           // fontSize: size.iScreen(2.45),
+//                                                           color: _prefacturas['cajaTipoCaja']=='EFECTIVO'?Colors.blue:Colors.orange,
+//                                                           fontWeight:
+//                                                               FontWeight.bold),
+//                                                       overflow: TextOverflow.ellipsis,
+//                                                     ),
+//                                             ],
+//                                           ),
+//                                           subtitle: Row(
+//                                             mainAxisAlignment:
+//                                                 MainAxisAlignment.spaceBetween,
+//                                             children: [
+//                                               Column(
+//                                                 mainAxisAlignment:
+//                                                     MainAxisAlignment.start,
+//                                                 children: [
+//                                                   //  Container(
+//                                                   //   // color: Colors.red,
+//                                                   //   width: size.wScreen(70.0),
+//                                                   //    child: Row(
+//                                                   //      children: [
+//                                                   //       Container(
+//                                                   //         // color: Colors.green,
+                                                         
+//                                                   //         child: Text(
+//                                                   //           'Documento : ',
+//                                                   //           style:
+//                                                   //               GoogleFonts.lexendDeca(
+//                                                   //                   fontSize: size
+//                                                   //                       .iScreen(1.5),
+//                                                   //                   color:
+//                                                   //                       Colors.grey,
+//                                                   //                   fontWeight:
+//                                                   //                       FontWeight
+//                                                   //                           .normal),
+//                                                   //           overflow:
+//                                                   //               TextOverflow.ellipsis,
+//                                                   //         ),
+                                                          
+//                                                   // ),
+//                                                   //        Container(
+//                                                   //         // color: Colors.green,
+//                                                   //         // width: size.wScreen(50.0),
+//                                                   //         child: Text(
+//                                                   //           '${_prefacturas['cajaTipoDocumento']}',
+//                                                   //           style:
+//                                                   //               GoogleFonts.lexendDeca(
+//                                                   //                   fontSize: size
+//                                                   //                       .iScreen(1.5),
+//                                                   //                   color:_prefacturas['cajaTipoDocumento']=='INGRESO'?Colors.green:_prefacturas['cajaTipoDocumento']=='EGRESO'?Colors.orange:Colors.black,
+//                                                   //                   fontWeight:
+//                                                   //                       FontWeight
+//                                                   //                           .bold),
+//                                                   //           overflow:
+//                                                   //               TextOverflow.ellipsis,
+//                                                   //         ),
+//                                                   // ),
+//                                                   //      ],
+//                                                   //    ),
+//                                                   //  ),
+//                                                   Container(
+//                                                     // color: Colors.green,
+//                                                     width: size.wScreen(70.0),
+//                                                     child: Text(
+//                                                       '${_prefacturas['cajaNumero']}',
+//                                                       style:
+//                                                           GoogleFonts.lexendDeca(
+//                                                               fontSize: size
+//                                                                   .iScreen(1.5),
+//                                                               // color:
+//                                                               //     Colors.black54,
+//                                                               fontWeight:
+//                                                                   FontWeight
+//                                                                       .normal),
+//                                                       overflow:
+//                                                           TextOverflow.ellipsis,
+//                                                     ),
+//                                                   ),
+//                                                   Column(
+//                                                     children: [
+//                                                       Container(
+//                                                         // color: Colors.green,
+//                                                         width: size.wScreen(70.0),
+//                                                         child: Text(
+//                                                           fechaLocal !=
+//                                                                   ''
+//                                                               ? fechaLocal
+//                                                               : '--- --- ---',
+//                                                           style:
+//                                                               GoogleFonts.lexendDeca(
+//                                                                   // fontSize: size.iScreen(2.45),
+//                                                                   color: Colors.grey,
+//                                                                   fontWeight:
+//                                                                       FontWeight
+//                                                                           .normal),
+//                                                         ),
+//                                                       ),
+//                                                     ],
+//                                                   ),
+//                                                     Container(
+//                                                     // color: Colors.green,
+//                                                     width: size.wScreen(70.0),
+//                                                     child: Row(
+//                                                       children: [
+//                                                         Text(
+//                                                           'Usuario: ',
+//                                                           style:
+//                                                               GoogleFonts.lexendDeca(
+//                                                                   // fontSize: size.iScreen(1.9),
+//                                                                   color: Colors.grey,
+//                                                                   fontWeight:
+//                                                                       FontWeight
+//                                                                           .bold),
+//                                                         ),
+//                                                         Text(
+//                                                            _prefacturas['cajaUser']!=null
+//                                                            ?'${_prefacturas['cajaUser']}':'--- --- --- --- --- ---  ',
+//                                                           style:
+//                                                               GoogleFonts.lexendDeca(
+//                                                                   // fontSize: size.iScreen(1.8),
+//                                                                   // color: Colors.grey,
+//                                                                   fontWeight:
+//                                                                       FontWeight
+//                                                                           .bold),
+//                                                         ),
+//                                                       ],
+//                                                     ),
+//                                                   ),
+//                                                 ],
+//                                               ),
+//                                               Container(
+//                                                 // color: Colors.green,
+//                                                 // width: size.wScreen(100.0),
+//                                                 child: Text(
+//                                                   '\$${_prefacturas['cajaMonto']}',
+//                                                   style: GoogleFonts.lexendDeca(
+//                                                       fontSize: size.iScreen(2.0),
+//                                                       color: Colors.black87,
+//                                                       fontWeight:
+//                                                           FontWeight.normal),
+//                                                   overflow: TextOverflow.ellipsis,
+//                                                 ),
+//                                               ),
+//                                             ],
+//                                           ),
+//                                           // trailing: Icon(Icons.more_vert),
+//                                         ),
+//                                       ),
+//                                     ),
+//                                   ):Container();
+//                                 } else {
+//                                   return Consumer<PreFacturasController>(
+//                                     builder: (_, valueNext, __) {
+//                                       return valueNext.getpage == null
+//                                           ? Container(
+//                                               margin: EdgeInsets.symmetric(
+//                                                   vertical: size.iScreen(2.0)),
+//                                               child: Center(
+//                                                 child: Text(
+//                                                   'No existen más datos',
+//                                                   style: GoogleFonts.lexendDeca(
+//                                                       fontSize: size.iScreen(1.8),
+//                                                       // color: primaryColor,
+//                                                       fontWeight:
+//                                                           FontWeight.normal),
+//                                                 ),
+//                                               ))
+//                                           // : Container();
+                          
+//                                           : provider.allItemsFilters.length > 25
+//                                               ? Container(
+//                                                   margin: EdgeInsets.symmetric(
+//                                                       vertical:
+//                                                           size.iScreen(2.0)),
+//                                                   child: const Center(
+//                                                       child:
+//                                                           CircularProgressIndicator()))
+//                                               : Container();
+//                                     },
+//                                   );
+//                                 }
+//                               },
+//                             ),
+//                           ): const NoData(
+//                               label: 'No existen datos para mostar',
+//                             );
+
+
+                          
+//                           // ListView.builder(
+//                           //   itemCount: provider.allItemsFilters.length,
+//                           //   itemBuilder: (BuildContext context, int index) {
+//                           //     final producto =
+//                           //         provider.allItemsFilters[index];
+//                           //     return 
+//                           //    RefreshIndicator(
+//                           //    onRefresh: () => onRefresh(),
+//                           //   child: ListView.builder(
+//                           //     controller: _scrollController,
+//                           //     physics: const BouncingScrollPhysics(),
+//                           //     itemCount: provider
+//                           //             .allItemsFilters.length +
+//                           //         1,
+//                           //     itemBuilder: (BuildContext context, int index) {
+//                           //       if (index <
+//                           //           provider
+//                           //               .allItemsFilters.length) {
+//                           //         var _color;
+//                           //         final _prefacturas = provider
+//                           //             .allItemsFilters[index];
+                          
+//                           //         if (_prefacturas['cajaEstado'] == 'AUTORIZADO') {
+//                           //           _color = Colors.green;
+//                           //         } else if (_prefacturas['cajaEstado'] ==
+//                           //             'SIN AUTORIZAR') {
+//                           //           _color = Colors.orange;
+//                           //         }
+//                           //         if (_prefacturas['cajaEstado'] == 'ANULADA') {
+//                           //           _color = Colors.red;
+//                           //         }
+                          
+//                           //         return Slidable(
+//                           //           startActionPane: ActionPane(
+//                           //             // A motion is a widget used to control how the pane animates.
+//                           //             motion: const ScrollMotion(),
+                          
+//                           //             children: [
+//                           //               SlidableAction(
+//                           //                     backgroundColor: Colors.grey,
+//                           //                 foregroundColor: Colors.white,
+//                           //                 icon: Icons.list_alt_outlined,
+//                           //                 label: 'Más acciones',
+//                           //                 onPressed: (context) {
+//                           //                   showCupertinoModalPopup(
+//                           //                     context: context,
+//                           //                     builder: (BuildContext context) =>
+//                           //                         CupertinoActionSheet(
+//                           //                             title: Text(
+//                           //                               'Acciones',
+//                           //                               style: GoogleFonts
+//                           //                                   .lexendDeca(
+//                           //                                       fontSize: size
+//                           //                                           .iScreen(2.0),
+//                           //                                       color:
+//                           //                                           primaryColor,
+//                           //                                       fontWeight:
+//                           //                                           FontWeight
+//                           //                                               .normal),
+//                           //                             ),
+//                           //                             // message: const Text('Your options are '),
+//                           //                             actions: <Widget>[
+//                           //                               CupertinoActionSheetAction(
+//                           //                                 child: Row(
+//                           //                                   mainAxisAlignment:
+//                           //                                       MainAxisAlignment
+//                           //                                           .center,
+//                           //                                   children: [
+//                           //                                     Container(
+//                           //                                       margin: EdgeInsets.only(
+//                           //                                           right: size
+//                           //                                               .iScreen(
+//                           //                                                   2.0)),
+//                           //                                       child: Text(
+//                           //                                         'Ver PDF',
+//                           //                                         style: GoogleFonts.lexendDeca(
+//                           //                                             fontSize: size
+//                           //                                                 .iScreen(
+//                           //                                                     1.8),
+//                           //                                             color: Colors
+//                           //                                                 .black87,
+//                           //                                             fontWeight:
+//                           //                                                 FontWeight
+//                           //                                                     .normal),
+//                           //                                       ),
+//                           //                                     ),
+//                           //                                     const Icon(
+//                           //                                       FontAwesomeIcons
+//                           //                                           .filePdf,
+//                           //                                       color: Colors.red,
+//                           //                                     )
+//                           //                                   ],
+//                           //                                 ),
+//                           //                                 onPressed: () {
+//                           //                                   Navigator.pop(
+//                           //                                       context);
+                          
+//                           //                                   Navigator.push(
+//                           //                                     context,
+//                           //                                     MaterialPageRoute(
+//                           //                                         builder: (context) =>
+//                           //                                             ViewsPDFs(
+//                           //                                                 infoPdf:
+//                           //                                                     // 'https://sysvet.neitor.com/reportes/carnet.php?id=${factura['venId']}&empresa=${_usuario!.rucempresa}',
+//                           //                                                     'https://syscontable.neitor.com/reportes/factura.php?codigo=${_prefacturas['venId']}&empresa=${_usuario!.rucempresa}',
+//                           //                                                 labelPdf:
+//                           //                                                     'infoFactura.pdf')),
+//                           //                                   );
+//                           //                                 },
+//                           //                               ),
+//                           //                             ],
+//                           //                             cancelButton:
+//                           //                                 CupertinoActionSheetAction(
+//                           //                               child: Text('Cancel',
+//                           //                                   style: GoogleFonts
+//                           //                                       .lexendDeca(
+//                           //                                           fontSize: size
+//                           //                                               .iScreen(
+//                           //                                                   2.0),
+//                           //                                           color: Colors
+//                           //                                               .red,
+//                           //                                           fontWeight:
+//                           //                                               FontWeight
+//                           //                                                   .normal)),
+//                           //                               isDefaultAction: true,
+//                           //                               onPressed: () {
+//                           //                                 Navigator.pop(
+//                           //                                     context, 'Cancel');
+//                           //                               },
+//                           //                             )),
+//                           //                   );
+//                           //                 },
+//                           //               ),
+//                           //             ],
+//                           //           ),
+//                           //           child: Card(
+//                           //             elevation: 5,
+//                           //             child: Container(
+//                           //               margin: EdgeInsets.only(
+//                           //                   bottom: size.iScreen(0.0)),
+//                           //               color: index % 2 == 0
+//                           //                   ? Colors.grey.shade50
+//                           //                   : Colors.grey.shade200,
+//                           //               child: ListTile(
+//                           //                 dense: true,
+//                           //                 visualDensity:
+//                           //                     VisualDensity.comfortable,
+                                      
+//                           //                  leading: CircleAvatar(
+//                           //                   child: Text(
+//                           //                      '${_prefacturas['venNomCliente'].substring(0, 1)}',
+//                           //                     style: Theme.of(context)
+//                           //                         .textTheme
+//                           //                         .subtitle1,
+//                           //                   ),
+//                           //                   backgroundColor: Colors.grey[300],
+//                           //                 ),
+//                           //                 title: Row(
+//                           //                   mainAxisAlignment:
+//                           //                       MainAxisAlignment.spaceBetween,
+//                           //                   children: [
+//                           //                     SizedBox(
+//                           //                       width: size.wScreen(40.0),
+//                           //                       child: Text(
+//                           //                         '${_prefacturas['venNomCliente']}',
+//                           //                         style: GoogleFonts.lexendDeca(
+//                           //                             // fontSize: size.iScreen(2.45),
+//                           //                             // color: Colors.white,
+//                           //                             fontWeight:
+//                           //                                 FontWeight.normal),
+//                           //                         overflow: TextOverflow.ellipsis,
+//                           //                       ),
+//                           //                     ),
+//                           //                     Text(
+//                           //                       '${_prefacturas['cajaEstado']}',
+//                           //                       // 'Estado: ',
+//                           //                       style: GoogleFonts.lexendDeca(
+//                           //                           fontSize: size.iScreen(1.5),
+//                           //                           color: _color,
+//                           //                           fontWeight: FontWeight.bold),
+//                           //                     ),
+//                           //                   ],
+//                           //                 ),
+//                           //                 subtitle: Row(
+//                           //                   mainAxisAlignment:
+//                           //                       MainAxisAlignment.spaceBetween,
+//                           //                   children: [
+//                           //                     Column(
+//                           //                       mainAxisAlignment:
+//                           //                           MainAxisAlignment.start,
+//                           //                       children: [
+//                           //                         Container(
+//                           //                           // color: Colors.green,
+//                           //                           width: size.wScreen(50.0),
+//                           //                           child: Text(
+//                           //                             '${_prefacturas['venNumFactura']}',
+//                           //                             style:
+//                           //                                 GoogleFonts.lexendDeca(
+//                           //                                     fontSize: size
+//                           //                                         .iScreen(1.5),
+//                           //                                     color:
+//                           //                                         Colors.black54,
+//                           //                                     fontWeight:
+//                           //                                         FontWeight
+//                           //                                             .normal),
+//                           //                             overflow:
+//                           //                                 TextOverflow.ellipsis,
+//                           //                           ),
+//                           //                         ),
+//                           //                         Container(
+//                           //                           // color: Colors.green,
+//                           //                           width: size.wScreen(50.0),
+//                           //                           child: Text(
+//                           //                             _prefacturas['venFecReg'] !=
+//                           //                                     ''
+//                           //                                 ? '${_prefacturas['venFecReg'].replaceAll('T', "  ").replaceAll('.000Z', "  ")}'
+//                           //                                 : '--- --- ---',
+//                           //                             style:
+//                           //                                 GoogleFonts.lexendDeca(
+//                           //                                     // fontSize: size.iScreen(2.45),
+//                           //                                     color: Colors.grey,
+//                           //                                     fontWeight:
+//                           //                                         FontWeight
+//                           //                                             .normal),
+//                           //                           ),
+//                           //                         ),
+//                           //                       ],
+//                           //                     ),
+//                           //                     Container(
+//                           //                       // color: Colors.green,
+//                           //                       // width: size.wScreen(100.0),
+//                           //                       child: Text(
+//                           //                         '\$${_prefacturas['venTotal']}',
+//                           //                         style: GoogleFonts.lexendDeca(
+//                           //                             fontSize: size.iScreen(2.0),
+//                           //                             color: Colors.black87,
+//                           //                             fontWeight:
+//                           //                                 FontWeight.normal),
+//                           //                         overflow: TextOverflow.ellipsis,
+//                           //                       ),
+//                           //                     ),
+//                           //                   ],
+//                           //                 ),
+//                           //                 // trailing: Icon(Icons.more_vert),
+//                           //               ),
+//                           //             ),
+//                           //           ),
+//                           //         );
+//                           //       } else {
+//                           //         return Consumer<PreFacturasController>(
+//                           //           builder: (_, valueNext, __) {
+//                           //             return valueNext.getpage == null
+//                           //                 ? Container(
+//                           //                     margin: EdgeInsets.symmetric(
+//                           //                         vertical: size.iScreen(2.0)),
+//                           //                     child: Center(
+//                           //                       child: Text(
+//                           //                         'No existen más datos',
+//                           //                         style: GoogleFonts.lexendDeca(
+//                           //                             fontSize: size.iScreen(1.8),
+//                           //                             // color: primaryColor,
+//                           //                             fontWeight:
+//                           //                                 FontWeight.normal),
+//                           //                       ),
+//                           //                     ))
+//                           //                 // : Container();
+                          
+//                           //                 : provider.allItemsFilters.length > 25
+//                           //                     ? Container(
+//                           //                         margin: EdgeInsets.symmetric(
+//                           //                             vertical:
+//                           //                                 size.iScreen(2.0)),
+//                           //                         child: const Center(
+//                           //                             child:
+//                           //                                 CircularProgressIndicator()))
+//                           //                     : Container();
+//                           //           },
+//                           //         );
+//                           //       }
+//                           //     },
+//                           //   ),
+//                           // );
+
+
+
+
+
+                              
+//                           //   },
+//                           // ) : const NoData(
+//                           //     label: 'No existen datos para mostar',
+//                           //   );
+//                         },
+//                       ),
+  
+//   Consumer<CajaController>(
+//                         builder: (_, provider, __) {
+                         
+//                          if (provider.allItemsFilters.isEmpty) {
+//                             return const NoData(
+//                               label: 'No existen datos para mostar',
+//                             );
+//                             // Text("sin datos");
+//                           }
+
+//                           return 
+                          
+//                           (provider.allItemsFilters.isEmpty)
+//                                         ? Center(
+//                                             child: Column(
+//                                               mainAxisAlignment: MainAxisAlignment.center,
+//                                             children: [
+                                              
+//                                               CircularProgressIndicator(),
+//                                               Text('Por favor espere ....')
+//                                             ],
+//                                           ))
+//                                         : (provider.allItemsFilters.length > 0)
+//                                             ?
+//                            RefreshIndicator(
+//                              onRefresh: () => onRefresh(),
+//                             child: ListView.builder(
+//                               controller: _scrollController,
+//                               physics: const BouncingScrollPhysics(),
+//                               itemCount: provider
+//                                       .allItemsFilters.length +
+//                                   1,
+//                               itemBuilder: (BuildContext context, int index) {
+//                                 if (index <
+//                                     provider
+//                                         .allItemsFilters.length) {
+//                                   var _color;
+//                                   final _prefacturas = provider
+//                                       .allItemsFilters[index];
+                          
+//                                   if (_prefacturas['cajaEstado'] == 'AUTORIZADO') {
+//                                     _color = Colors.green;
+//                                   } else if (_prefacturas['cajaEstado'] ==
+//                                       'SIN AUTORIZAR') {
+//                                     _color = Colors.orange;
+//                                   }
+//                                   if (_prefacturas['cajaEstado'] == 'ANULADA') {
+//                                     _color = Colors.red;
+//                                   }
+//  //==============================================//
+//   String fechaLocal = convertirFechaLocal(_prefacturas['cajaFecReg']);
+//  //==============================================//
+//                                   return Slidable(
+//                                     startActionPane: ActionPane(
+//                                       // A motion is a widget used to control how the pane animates.
+//                                       motion: const ScrollMotion(),
+                          
+//                                       children: [
+//                                         SlidableAction(
+//                                               backgroundColor: Colors.grey,
+//                                           foregroundColor: Colors.white,
+//                                           icon: Icons.list_alt_outlined,
+//                                           label: 'Más acciones',
+//                                           onPressed: (context) {
+//                                             showCupertinoModalPopup(
+//                                               context: context,
+//                                               builder: (BuildContext context) =>
+//                                                   CupertinoActionSheet(
+//                                                       title: Text(
+//                                                         'Acciones',
+//                                                         style: GoogleFonts
+//                                                             .lexendDeca(
+//                                                                 fontSize: size
+//                                                                     .iScreen(2.0),
+//                                                                 color:
+//                                                                     primaryColor,
+//                                                                 fontWeight:
+//                                                                     FontWeight
+//                                                                         .normal),
+//                                                       ),
+//                                                       // message: const Text('Your options are '),
+//                                                       actions: <Widget>[
+//                                                         CupertinoActionSheetAction(
+//                                                           child: Row(
+//                                                             mainAxisAlignment:
+//                                                                 MainAxisAlignment
+//                                                                     .center,
+//                                                             children: [
+//                                                               Container(
+//                                                                 margin: EdgeInsets.only(
+//                                                                     right: size
+//                                                                         .iScreen(
+//                                                                             2.0)),
+//                                                                 child: Text(
+//                                                                   'Imprimir',
+//                                                                   style: GoogleFonts.lexendDeca(
+//                                                                       fontSize: size
+//                                                                           .iScreen(
+//                                                                               1.8),
+//                                                                       color: Colors
+//                                                                           .black87,
+//                                                                       fontWeight:
+//                                                                           FontWeight
+//                                                                               .normal),
+//                                                                 ),
+//                                                               ),
+//                                                               const Icon(
+//                                                                 FontAwesomeIcons
+//                                                                     .print,
+//                                                                 color: Colors.green,
+//                                                               )
+//                                                             ],
+//                                                           ),
+//                                                           onPressed: () {
+//                                                             Navigator.pop(
+//                                                                 context);
+//                                                                 _printTicket(_prefacturas,widget.user!.logo);
+
+                                                           
+//                                                           },
+//                                                         ),
+//                                                                  CupertinoActionSheetAction(
+//                                                           child: Row(
+//                                                             mainAxisAlignment:
+//                                                                 MainAxisAlignment
+//                                                                     .center,
+//                                                             children: [
+//                                                               Container(
+//                                                                 margin: EdgeInsets.only(
+//                                                                     right: size
+//                                                                         .iScreen(
+//                                                                             2.0)),
+//                                                                 child: Text(
+//                                                                   'Ver Detalle',
+//                                                                   style: GoogleFonts.lexendDeca(
+//                                                                       fontSize: size
+//                                                                           .iScreen(
+//                                                                               1.8),
+//                                                                       color: Colors
+//                                                                           .black87,
+//                                                                       fontWeight:
+//                                                                           FontWeight
+//                                                                               .normal),
+//                                                                 ),
+//                                                               ),
+//                                                               const Icon(
+//                                                                 FontAwesomeIcons
+//                                                                     .infoCircle,
+//                                                                 color: Colors.blue,
+//                                                               )
+//                                                             ],
+//                                                           ),
+//                                                           onPressed: () {
+//                                                             provider.setInfoCaja(_prefacturas);
+//                                                             Navigator.pop(
+//                                                                 context);
+                          
+//                                                             Navigator.push(
+//                                                               context,
+//                                                               MaterialPageRoute(
+//                                                                   builder: (context) =>
+//                                                                      DetalleCaja()),
+//                                                             );
+//                                                           },
+//                                                         ),
+//                                                         // CupertinoActionSheetAction(
+//                                                         //   child: Row(
+//                                                         //     mainAxisAlignment:
+//                                                         //         MainAxisAlignment
+//                                                         //             .center,
+//                                                         //     children: [
+//                                                         //       Container(
+//                                                         //         margin: EdgeInsets.only(
+//                                                         //             right: size
+//                                                         //                 .iScreen(
+//                                                         //                     2.0)),
+//                                                         //         child: Text(
+//                                                         //           'Ver PDF',
+//                                                         //           style: GoogleFonts.lexendDeca(
+//                                                         //               fontSize: size
+//                                                         //                   .iScreen(
+//                                                         //                       1.8),
+//                                                         //               color: Colors
+//                                                         //                   .black87,
+//                                                         //               fontWeight:
+//                                                         //                   FontWeight
+//                                                         //                       .normal),
+//                                                         //         ),
+//                                                         //       ),
+//                                                         //       const Icon(
+//                                                         //         FontAwesomeIcons
+//                                                         //             .filePdf,
+//                                                         //         color: Colors.red,
+//                                                         //       )
+//                                                         //     ],
+//                                                         //   ),
+//                                                         //   onPressed: () {
+//                                                         //     Navigator.pop(
+//                                                         //         context);
+                          
+//                                                         //     Navigator.push(
+//                                                         //       context,
+//                                                         //       MaterialPageRoute(
+//                                                         //           builder: (context) =>
+//                                                         //               ViewsPDFs(
+//                                                         //                   infoPdf:
+//                                                         //                       // 'https://sysvet.neitor.com/reportes/carnet.php?id=${factura['venId']}&empresa=${_usuario!.rucempresa}',
+//                                                         //                       'https://syscontable.neitor.com/reportes/factura.php?codigo=${_prefacturas['venId']}&empresa=${_usuario!.rucempresa}',
+//                                                         //                   labelPdf:
+//                                                         //                       'infoFactura.pdf')),
+//                                                         //     );
+//                                                         //   },
+//                                                         // ),
+                                                     
+                                                     
+                                                     
+//                                                      ],
+//                                                       cancelButton:
+//                                                           CupertinoActionSheetAction(
+//                                                         child: Text('Cancel',
+//                                                             style: GoogleFonts
+//                                                                 .lexendDeca(
+//                                                                     fontSize: size
+//                                                                         .iScreen(
+//                                                                             2.0),
+//                                                                     color: Colors
+//                                                                         .red,
+//                                                                     fontWeight:
+//                                                                         FontWeight
+//                                                                             .normal)),
+//                                                         isDefaultAction: true,
+//                                                         onPressed: () {
+//                                                           Navigator.pop(
+//                                                               context, 'Cancel');
+//                                                         },
+//                                                       )),
+//                                             );
+//                                           },
+//                                         ),
+//                                       ],
+//                                     ),
+//                                     child: Card(
+//                                       elevation: 5,
+//                                       child: Container(
+//                                         margin: EdgeInsets.only(
+//                                             bottom: size.iScreen(0.0)),
+//                                         color: index % 2 == 0
+//                                             ? Colors.grey.shade50
+//                                             : Colors.grey.shade200,
+//                                         child: ListTile(
+//                                           dense: true,
+//                                           visualDensity:
+//                                               VisualDensity.comfortable,
+                                      
+//                                           //  leading: CircleAvatar(
+//                                           //   child: Text(
+//                                           //      '${_prefacturas['venNomCliente'].substring(0, 1)}',
+//                                           //     style: Theme.of(context)
+//                                           //         .textTheme
+//                                           //         .subtitle1,
+//                                           //   ),
+//                                           //   backgroundColor: Colors.grey[300],
+//                                           // ),
+//                                           title: Row(
+//                                             mainAxisAlignment:
+//                                                 MainAxisAlignment.spaceBetween,
+//                                             children: [
+//                                               Row(
+//                                                 children: [
+//                                                   SizedBox(
+//                                                     // width: size.wScreen(40.0),
+//                                                     child: Text(
+//                                                       'Forma Pago: ',
+//                                                       style: GoogleFonts.lexendDeca(
+//                                                           // fontSize: size.iScreen(2.45),
+//                                                           color: Colors.grey,
+//                                                           fontWeight:
+//                                                               FontWeight.normal),
+//                                                       overflow: TextOverflow.ellipsis,
+//                                                     ),
+//                                                   ),
+//                                                   SizedBox(
+//                                                     width: size.wScreen(40.0),
+//                                                     child: Text(
+//                                                       '${_prefacturas['cajaTipoCaja']}',
+//                                                       style: GoogleFonts.lexendDeca(
+//                                                           // fontSize: size.iScreen(2.45),
+//                                                           // color: Colors.white,
+//                                                           fontWeight:
+//                                                               FontWeight.bold),
+//                                                       overflow: TextOverflow.ellipsis,
+//                                                     ),
+//                                                   ),
+//                                                 ],
+//                                               ),
+//                                               Text(
+//                                                 '${_prefacturas['cajaEstado']}',
+//                                                 // 'Estado: ',
+//                                                 style: GoogleFonts.lexendDeca(
+//                                                     fontSize: size.iScreen(1.5),
+//                                                     color: _color,
+//                                                     fontWeight: FontWeight.bold),
+//                                               ),
+//                                             ],
+//                                           ),
+//                                           subtitle: Row(
+//                                             mainAxisAlignment:
+//                                                 MainAxisAlignment.spaceBetween,
+//                                             children: [
+//                                               Column(
+//                                                 mainAxisAlignment:
+//                                                     MainAxisAlignment.start,
+//                                                 children: [
+//                                                    Container(
+//                                                     // color: Colors.red,
+//                                                     width: size.wScreen(70.0),
+//                                                      child: Row(
+//                                                        children: [
+//                                                         Container(
+//                                                           // color: Colors.green,
+                                                         
+//                                                           child: Text(
+//                                                             'Documento : ',
+//                                                             style:
+//                                                                 GoogleFonts.lexendDeca(
+//                                                                     fontSize: size
+//                                                                         .iScreen(1.5),
+//                                                                     color:
+//                                                                         Colors.grey,
+//                                                                     fontWeight:
+//                                                                         FontWeight
+//                                                                             .normal),
+//                                                             overflow:
+//                                                                 TextOverflow.ellipsis,
+//                                                           ),
+                                                          
+//                                                   ),
+//                                                          Container(
+//                                                           // color: Colors.green,
+//                                                           // width: size.wScreen(50.0),
+//                                                           child: Text(
+//                                                             '${_prefacturas['cajaTipoDocumento']}',
+//                                                             style:
+//                                                                 GoogleFonts.lexendDeca(
+//                                                                     fontSize: size
+//                                                                         .iScreen(1.5),
+//                                                                     color:_prefacturas['cajaTipoDocumento']=='INGRESO'?Colors.green:_prefacturas['cajaTipoDocumento']=='EGRESO'?Colors.orange:Colors.black,
+//                                                                     fontWeight:
+//                                                                         FontWeight
+//                                                                             .bold),
+//                                                             overflow:
+//                                                                 TextOverflow.ellipsis,
+//                                                           ),
+//                                                   ),
+//                                                        ],
+//                                                      ),
+//                                                    ),
+//                                                   Container(
+//                                                     // color: Colors.green,
+//                                                     width: size.wScreen(70.0),
+//                                                     child: Text(
+//                                                       '${_prefacturas['cajaNumero']}',
+//                                                       style:
+//                                                           GoogleFonts.lexendDeca(
+//                                                               fontSize: size
+//                                                                   .iScreen(1.5),
+//                                                               // color:
+//                                                               //     Colors.black54,
+//                                                               fontWeight:
+//                                                                   FontWeight
+//                                                                       .normal),
+//                                                       overflow:
+//                                                           TextOverflow.ellipsis,
+//                                                     ),
+//                                                   ),
+//                                                   Container(
+//                                                     // color: Colors.green,
+//                                                     width: size.wScreen(70.0),
+//                                                     child: Text(
+//                                                       fechaLocal !=
+//                                                               ''
+//                                                           ? fechaLocal
+//                                                           : '--- --- ---',
+//                                                       style:
+//                                                           GoogleFonts.lexendDeca(
+//                                                               // fontSize: size.iScreen(2.45),
+//                                                               color: Colors.grey,
+//                                                               fontWeight:
+//                                                                   FontWeight
+//                                                                       .normal),
+//                                                     ),
+//                                                   ),
+//                                                        Container(
+//                                                     // color: Colors.green,
+//                                                     width: size.wScreen(70.0),
+//                                                     child: Row(
+//                                                       children: [
+//                                                         Text(
+//                                                           'Usuario: ',
+//                                                           style:
+//                                                               GoogleFonts.lexendDeca(
+//                                                                   // fontSize: size.iScreen(1.9),
+//                                                                   color: Colors.grey,
+//                                                                   fontWeight:
+//                                                                       FontWeight
+//                                                                           .bold),
+//                                                         ),
+//                                                         Text(
+//                                                            _prefacturas['cajaUser']!=null
+//                                                            ?'${_prefacturas['cajaUser']}':'--- --- --- --- --- ---  ',
+//                                                           style:
+//                                                               GoogleFonts.lexendDeca(
+//                                                                   // fontSize: size.iScreen(1.8),
+//                                                                   // color: Colors.grey,
+//                                                                   fontWeight:
+//                                                                       FontWeight
+//                                                                           .bold),
+//                                                         ),
+//                                                       ],
+//                                                     ),
+//                                                   ),
+//                                                 ],
+//                                               ),
+//                                               Container(
+//                                                 // color: Colors.green,
+//                                                 // width: size.wScreen(100.0),
+//                                                 child: Text(
+//                                                   '\$${_prefacturas['cajaMonto']}',
+//                                                   style: GoogleFonts.lexendDeca(
+//                                                       fontSize: size.iScreen(2.0),
+//                                                       color: Colors.black87,
+//                                                       fontWeight:
+//                                                           FontWeight.normal),
+//                                                   overflow: TextOverflow.ellipsis,
+//                                                 ),
+//                                               ),
+//                                             ],
+//                                           ),
+//                                           // trailing: Icon(Icons.more_vert),
+//                                         ),
+//                                       ),
+//                                     ),
+//                                   );
+//                                 } else {
+//                                   return Consumer<PreFacturasController>(
+//                                     builder: (_, valueNext, __) {
+//                                       return valueNext.getpage == null
+//                                           ? Container(
+//                                               margin: EdgeInsets.symmetric(
+//                                                   vertical: size.iScreen(2.0)),
+//                                               child: Center(
+//                                                 child: Text(
+//                                                   'No existen más datos',
+//                                                   style: GoogleFonts.lexendDeca(
+//                                                       fontSize: size.iScreen(1.8),
+//                                                       // color: primaryColor,
+//                                                       fontWeight:
+//                                                           FontWeight.normal),
+//                                                 ),
+//                                               ))
+//                                           // : Container();
+                          
+//                                           : provider.allItemsFilters.length > 25
+//                                               ? Container(
+//                                                   margin: EdgeInsets.symmetric(
+//                                                       vertical:
+//                                                           size.iScreen(2.0)),
+//                                                   child: const Center(
+//                                                       child:
+//                                                           CircularProgressIndicator()))
+//                                               : Container();
+//                                     },
+//                                   );
+//                                 }
+//                               },
+//                             ),
+//                           ): const NoData(
+//                               label: 'No existen datos para mostar',
+//                             );
+
+
+                          
+//                           // ListView.builder(
+//                           //   itemCount: provider.allItemsFilters.length,
+//                           //   itemBuilder: (BuildContext context, int index) {
+//                           //     final producto =
+//                           //         provider.allItemsFilters[index];
+//                           //     return 
+//                           //    RefreshIndicator(
+//                           //    onRefresh: () => onRefresh(),
+//                           //   child: ListView.builder(
+//                           //     controller: _scrollController,
+//                           //     physics: const BouncingScrollPhysics(),
+//                           //     itemCount: provider
+//                           //             .allItemsFilters.length +
+//                           //         1,
+//                           //     itemBuilder: (BuildContext context, int index) {
+//                           //       if (index <
+//                           //           provider
+//                           //               .allItemsFilters.length) {
+//                           //         var _color;
+//                           //         final _prefacturas = provider
+//                           //             .allItemsFilters[index];
+                          
+//                           //         if (_prefacturas['cajaEstado'] == 'AUTORIZADO') {
+//                           //           _color = Colors.green;
+//                           //         } else if (_prefacturas['cajaEstado'] ==
+//                           //             'SIN AUTORIZAR') {
+//                           //           _color = Colors.orange;
+//                           //         }
+//                           //         if (_prefacturas['cajaEstado'] == 'ANULADA') {
+//                           //           _color = Colors.red;
+//                           //         }
+                          
+//                           //         return Slidable(
+//                           //           startActionPane: ActionPane(
+//                           //             // A motion is a widget used to control how the pane animates.
+//                           //             motion: const ScrollMotion(),
+                          
+//                           //             children: [
+//                           //               SlidableAction(
+//                           //                     backgroundColor: Colors.grey,
+//                           //                 foregroundColor: Colors.white,
+//                           //                 icon: Icons.list_alt_outlined,
+//                           //                 label: 'Más acciones',
+//                           //                 onPressed: (context) {
+//                           //                   showCupertinoModalPopup(
+//                           //                     context: context,
+//                           //                     builder: (BuildContext context) =>
+//                           //                         CupertinoActionSheet(
+//                           //                             title: Text(
+//                           //                               'Acciones',
+//                           //                               style: GoogleFonts
+//                           //                                   .lexendDeca(
+//                           //                                       fontSize: size
+//                           //                                           .iScreen(2.0),
+//                           //                                       color:
+//                           //                                           primaryColor,
+//                           //                                       fontWeight:
+//                           //                                           FontWeight
+//                           //                                               .normal),
+//                           //                             ),
+//                           //                             // message: const Text('Your options are '),
+//                           //                             actions: <Widget>[
+//                           //                               CupertinoActionSheetAction(
+//                           //                                 child: Row(
+//                           //                                   mainAxisAlignment:
+//                           //                                       MainAxisAlignment
+//                           //                                           .center,
+//                           //                                   children: [
+//                           //                                     Container(
+//                           //                                       margin: EdgeInsets.only(
+//                           //                                           right: size
+//                           //                                               .iScreen(
+//                           //                                                   2.0)),
+//                           //                                       child: Text(
+//                           //                                         'Ver PDF',
+//                           //                                         style: GoogleFonts.lexendDeca(
+//                           //                                             fontSize: size
+//                           //                                                 .iScreen(
+//                           //                                                     1.8),
+//                           //                                             color: Colors
+//                           //                                                 .black87,
+//                           //                                             fontWeight:
+//                           //                                                 FontWeight
+//                           //                                                     .normal),
+//                           //                                       ),
+//                           //                                     ),
+//                           //                                     const Icon(
+//                           //                                       FontAwesomeIcons
+//                           //                                           .filePdf,
+//                           //                                       color: Colors.red,
+//                           //                                     )
+//                           //                                   ],
+//                           //                                 ),
+//                           //                                 onPressed: () {
+//                           //                                   Navigator.pop(
+//                           //                                       context);
+                          
+//                           //                                   Navigator.push(
+//                           //                                     context,
+//                           //                                     MaterialPageRoute(
+//                           //                                         builder: (context) =>
+//                           //                                             ViewsPDFs(
+//                           //                                                 infoPdf:
+//                           //                                                     // 'https://sysvet.neitor.com/reportes/carnet.php?id=${factura['venId']}&empresa=${_usuario!.rucempresa}',
+//                           //                                                     'https://syscontable.neitor.com/reportes/factura.php?codigo=${_prefacturas['venId']}&empresa=${_usuario!.rucempresa}',
+//                           //                                                 labelPdf:
+//                           //                                                     'infoFactura.pdf')),
+//                           //                                   );
+//                           //                                 },
+//                           //                               ),
+//                           //                             ],
+//                           //                             cancelButton:
+//                           //                                 CupertinoActionSheetAction(
+//                           //                               child: Text('Cancel',
+//                           //                                   style: GoogleFonts
+//                           //                                       .lexendDeca(
+//                           //                                           fontSize: size
+//                           //                                               .iScreen(
+//                           //                                                   2.0),
+//                           //                                           color: Colors
+//                           //                                               .red,
+//                           //                                           fontWeight:
+//                           //                                               FontWeight
+//                           //                                                   .normal)),
+//                           //                               isDefaultAction: true,
+//                           //                               onPressed: () {
+//                           //                                 Navigator.pop(
+//                           //                                     context, 'Cancel');
+//                           //                               },
+//                           //                             )),
+//                           //                   );
+//                           //                 },
+//                           //               ),
+//                           //             ],
+//                           //           ),
+//                           //           child: Card(
+//                           //             elevation: 5,
+//                           //             child: Container(
+//                           //               margin: EdgeInsets.only(
+//                           //                   bottom: size.iScreen(0.0)),
+//                           //               color: index % 2 == 0
+//                           //                   ? Colors.grey.shade50
+//                           //                   : Colors.grey.shade200,
+//                           //               child: ListTile(
+//                           //                 dense: true,
+//                           //                 visualDensity:
+//                           //                     VisualDensity.comfortable,
+                                      
+//                           //                  leading: CircleAvatar(
+//                           //                   child: Text(
+//                           //                      '${_prefacturas['venNomCliente'].substring(0, 1)}',
+//                           //                     style: Theme.of(context)
+//                           //                         .textTheme
+//                           //                         .subtitle1,
+//                           //                   ),
+//                           //                   backgroundColor: Colors.grey[300],
+//                           //                 ),
+//                           //                 title: Row(
+//                           //                   mainAxisAlignment:
+//                           //                       MainAxisAlignment.spaceBetween,
+//                           //                   children: [
+//                           //                     SizedBox(
+//                           //                       width: size.wScreen(40.0),
+//                           //                       child: Text(
+//                           //                         '${_prefacturas['venNomCliente']}',
+//                           //                         style: GoogleFonts.lexendDeca(
+//                           //                             // fontSize: size.iScreen(2.45),
+//                           //                             // color: Colors.white,
+//                           //                             fontWeight:
+//                           //                                 FontWeight.normal),
+//                           //                         overflow: TextOverflow.ellipsis,
+//                           //                       ),
+//                           //                     ),
+//                           //                     Text(
+//                           //                       '${_prefacturas['cajaEstado']}',
+//                           //                       // 'Estado: ',
+//                           //                       style: GoogleFonts.lexendDeca(
+//                           //                           fontSize: size.iScreen(1.5),
+//                           //                           color: _color,
+//                           //                           fontWeight: FontWeight.bold),
+//                           //                     ),
+//                           //                   ],
+//                           //                 ),
+//                           //                 subtitle: Row(
+//                           //                   mainAxisAlignment:
+//                           //                       MainAxisAlignment.spaceBetween,
+//                           //                   children: [
+//                           //                     Column(
+//                           //                       mainAxisAlignment:
+//                           //                           MainAxisAlignment.start,
+//                           //                       children: [
+//                           //                         Container(
+//                           //                           // color: Colors.green,
+//                           //                           width: size.wScreen(50.0),
+//                           //                           child: Text(
+//                           //                             '${_prefacturas['venNumFactura']}',
+//                           //                             style:
+//                           //                                 GoogleFonts.lexendDeca(
+//                           //                                     fontSize: size
+//                           //                                         .iScreen(1.5),
+//                           //                                     color:
+//                           //                                         Colors.black54,
+//                           //                                     fontWeight:
+//                           //                                         FontWeight
+//                           //                                             .normal),
+//                           //                             overflow:
+//                           //                                 TextOverflow.ellipsis,
+//                           //                           ),
+//                           //                         ),
+//                           //                         Container(
+//                           //                           // color: Colors.green,
+//                           //                           width: size.wScreen(50.0),
+//                           //                           child: Text(
+//                           //                             _prefacturas['venFecReg'] !=
+//                           //                                     ''
+//                           //                                 ? '${_prefacturas['venFecReg'].replaceAll('T', "  ").replaceAll('.000Z', "  ")}'
+//                           //                                 : '--- --- ---',
+//                           //                             style:
+//                           //                                 GoogleFonts.lexendDeca(
+//                           //                                     // fontSize: size.iScreen(2.45),
+//                           //                                     color: Colors.grey,
+//                           //                                     fontWeight:
+//                           //                                         FontWeight
+//                           //                                             .normal),
+//                           //                           ),
+//                           //                         ),
+//                           //                       ],
+//                           //                     ),
+//                           //                     Container(
+//                           //                       // color: Colors.green,
+//                           //                       // width: size.wScreen(100.0),
+//                           //                       child: Text(
+//                           //                         '\$${_prefacturas['venTotal']}',
+//                           //                         style: GoogleFonts.lexendDeca(
+//                           //                             fontSize: size.iScreen(2.0),
+//                           //                             color: Colors.black87,
+//                           //                             fontWeight:
+//                           //                                 FontWeight.normal),
+//                           //                         overflow: TextOverflow.ellipsis,
+//                           //                       ),
+//                           //                     ),
+//                           //                   ],
+//                           //                 ),
+//                           //                 // trailing: Icon(Icons.more_vert),
+//                           //               ),
+//                           //             ),
+//                           //           ),
+//                           //         );
+//                           //       } else {
+//                           //         return Consumer<PreFacturasController>(
+//                           //           builder: (_, valueNext, __) {
+//                           //             return valueNext.getpage == null
+//                           //                 ? Container(
+//                           //                     margin: EdgeInsets.symmetric(
+//                           //                         vertical: size.iScreen(2.0)),
+//                           //                     child: Center(
+//                           //                       child: Text(
+//                           //                         'No existen más datos',
+//                           //                         style: GoogleFonts.lexendDeca(
+//                           //                             fontSize: size.iScreen(1.8),
+//                           //                             // color: primaryColor,
+//                           //                             fontWeight:
+//                           //                                 FontWeight.normal),
+//                           //                       ),
+//                           //                     ))
+//                           //                 // : Container();
+                          
+//                           //                 : provider.allItemsFilters.length > 25
+//                           //                     ? Container(
+//                           //                         margin: EdgeInsets.symmetric(
+//                           //                             vertical:
+//                           //                                 size.iScreen(2.0)),
+//                           //                         child: const Center(
+//                           //                             child:
+//                           //                                 CircularProgressIndicator()))
+//                           //                     : Container();
+//                           //           },
+//                           //         );
+//                           //       }
+//                           //     },
+//                           //   ),
+//                           // );
+
+
+
+
+
+                              
+//                           //   },
+//                           // ) : const NoData(
+//                           //     label: 'No existen datos para mostar',
+//                           //   );
+//                         },
+//                       ),
                      
 
             // Consumer<PreFacturasController>(
@@ -4343,11 +6011,11 @@ Container(
          Row(
           mainAxisAlignment: MainAxisAlignment.end,
            children: [
-             Consumer<CajaController>(builder: (_, valueTot, __) {  
+            Consumer<CajaController>(builder: (_, valueTot, __) {  
               return  Container(
               height: size.iScreen(5.0),
   padding: EdgeInsets.symmetric(horizontal:size.iScreen(2.0)), // Espaciado interno
-  margin: EdgeInsets.all(8.0), // Espaciado externo
+  margin: EdgeInsets.all(2.0), // Espaciado externo
   decoration: BoxDecoration(
     color: Colors.grey, // Color de fondo
     borderRadius: BorderRadius.circular(8.0), // Bordes redondeados
@@ -4360,13 +6028,107 @@ Container(
     ],
   ),
   child: Center(
-    child: Text(
-      '\$ ${valueTot.totalIngresos}', // Monto a mostrar
-      style: TextStyle(
-        color: Colors.white,
-        fontSize: size.iScreen(2.2),
-        fontWeight: FontWeight.bold,
+    child: Column(
+      children: [
+        Text(
+          'Ingreso', // Monto a mostrar
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: size.iScreen(1.5),
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        Text(
+          '\$ ${valueTot.getTotalesFlotantes['Ingreso']}', // Monto a mostrar
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: size.iScreen(1.8),
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
+    ),
+  ),
+);
+
+            },),
+            Consumer<CajaController>(builder: (_, valueTot, __) {  
+              return  Container(
+              height: size.iScreen(5.0),
+  padding: EdgeInsets.symmetric(horizontal:size.iScreen(2.0)), // Espaciado interno
+  margin: EdgeInsets.all(2.0), // Espaciado externo
+  decoration: BoxDecoration(
+    color: Colors.grey, // Color de fondo
+    borderRadius: BorderRadius.circular(8.0), // Bordes redondeados
+    boxShadow: [
+      BoxShadow(
+        color: Colors.black26,
+        offset: Offset(2, 2),
+        blurRadius: 6.0,
       ),
+    ],
+  ),
+  child: Center(
+    child: Column(
+      children: [
+        Text(
+          'Egreso', // Monto a mostrar
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: size.iScreen(1.5),
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        Text(
+         '\$ ${valueTot.getTotalesFlotantes['Egreso']}',// Monto a mostrar
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: size.iScreen(1.8),
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
+    ),
+  ),
+);
+
+            },),
+             Consumer<CajaController>(builder: (_, valueTot, __) {  
+              return  Container(
+              height: size.iScreen(5.0),
+  padding: EdgeInsets.symmetric(horizontal:size.iScreen(2.0)), // Espaciado interno
+  margin: EdgeInsets.all(2.0), // Espaciado externo
+  decoration: BoxDecoration(
+    color: Colors.grey, // Color de fondo
+    borderRadius: BorderRadius.circular(8.0), // Bordes redondeados
+    boxShadow: [
+      BoxShadow(
+        color: Colors.black26,
+        offset: Offset(2, 2),
+        blurRadius: 6.0,
+      ),
+    ],
+  ),
+  child: Center(
+    child: Column(
+      children: [
+        Text(
+          'Crédito', // Monto a mostrar
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: size.iScreen(1.5),
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        Text(
+          '\$ ${valueTot.getTotalesFlotantes['Credito']}', // Monto a mostrar
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: size.iScreen(1.8),
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
     ),
   ),
 );
@@ -4376,7 +6138,7 @@ Container(
 
 
 
-            SizedBox(width: 20), 
+           
              FloatingActionButton(
                           child: const Icon(
                             Icons.add,
@@ -4548,6 +6310,7 @@ Container(
     _controller.setCantidad(25);
     _controller.buscaAllCajaPaginacion('', true,_controller.getTabIndex);
        _controller.obtieneTotalDiario('cajas','');
+         _controller.obtieneTotalesFlotantes('');
   }
 
 void _printTicket(Map<String, dynamic>? _info,String? user) async {
@@ -4648,3 +6411,107 @@ String validarCampo(dynamic valor) {
 
 
 }
+
+
+  //**********************************************MODAL TIPO  **********************************************************************//
+  Future<bool?> modalBusquedaXUsuario(
+      BuildContext context, Responsive size) {
+    return showDialog<bool>(
+      barrierColor: Colors.black54,
+      context: context,
+      builder: (context) {
+
+       return AlertDialog(
+          title: const Text("BUSCAR POR USUARIO"),
+          content: SizedBox(
+            width: size.wScreen(100),
+            // height: size.hScreen(20.0), // Ajusta la altura según sea necesario
+            child: Column(
+              mainAxisSize:MainAxisSize.min,
+              children: [
+                Consumer<CajaController>(builder: (_, value, __) {  
+
+                      
+                            return 
+                            
+                              Column(
+                                children: [
+                                  TextFormField(
+                       
+                           
+                            decoration: InputDecoration(
+                                  label:  const Text( 'Ingrese Usuario'),
+                                  // Texto de sugerencia dentro del campo
+                                  // border: OutlineInputBorder(), // Opcional: Añade un borde al campo
+                                  helperStyle: TextStyle(color: Colors.grey.shade50),
+                            ),
+                            style: TextStyle(
+                                  fontSize:
+                                      size.iScreen(2.3), // Ajusta el tamaño de la letra
+                                  // fontWeight: FontWeight.bold, // Opcional: Aplica un peso de fuente más grueso
+                            ),
+                            textAlign: TextAlign.left,
+                          onChanged: (text) {
+                        value.setBusquedaUser(text);
+                      },
+                      validator: (text) {
+                        if (text!.trim().isNotEmpty) {
+                          return null;
+                        } else {
+                          return 'Ingrese campo de busqueda';
+                        }
+                      },
+
+
+
+                          ),
+                            TextButton(
+                        onPressed: () {
+                      // Validar si el campo de texto no está vacío
+                        if (value.getBusquedaUser.trim().isEmpty) {
+                          // Si está vacío, mostrar un mensaje de error
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('El campo no puede estar vacío')),
+                          );
+                        } else {
+                         
+                         value.obtieneTotalesFlotantes(value.getBusquedaUser);
+                         
+                        }
+                        },
+                        child: 
+                    Consumer<ThemeProvider>(builder: (_, valueTheme, __) { 
+                          return    Container(
+                          decoration: BoxDecoration(
+                              color: valueTheme.appTheme.primaryColor,
+                              borderRadius: BorderRadius.circular(5.0)),
+                          // color: primaryColor,
+                          padding: EdgeInsets.symmetric(
+                              vertical: size.iScreen(0.5),
+                              horizontal: size.iScreen(0.5)),
+                          child: Text('Agregar',
+                              style: GoogleFonts.lexendDeca(
+                                  // fontSize: size.iScreen(2.0),
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.white)),
+                        );
+
+                       },)
+                        
+                        
+                     
+                    )
+                                ],
+                              );
+      
+
+                },),
+                
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
