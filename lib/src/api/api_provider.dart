@@ -2256,6 +2256,9 @@ class ApiProvider {
   }) async {
     try {
 
+  print('PARAMETROS:  search:$search - page:$page - cantidad:$cantidad -input:$input -orden:$orden - estado:$estado');
+    
+
       final url =
        Uri.parse('$_url/cajas?cantidad=$cantidad&page=$page&search=$search&input=$input&orden=$orden&estado=$estado');
          
@@ -2741,13 +2744,13 @@ if (tipo!!='') {
 
   //=========================GET ALL CUENTAS POR COBRAR=====================================//
   Future getAllTotalesFlotantes({
-    String? usuario,
+    String? search,
      String? token,
   }) async {
     try {
        final url =
           // Uri.parse('$_url/proveedores/filtro/0?search=$search&estado=$estado');
-          Uri.parse('$_url/cajas/saldo-total/ingreso-egreso-credito?usuario=$usuario');
+          Uri.parse('$_url/cajas/saldo-total/ingreso-egreso-credito?search=$search');
 
 
 //           final Uri url = Uri.parse(

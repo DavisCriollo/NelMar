@@ -343,6 +343,32 @@ class _ListarCajaPaginacionState
                                   // color: Colors.white,
                                 ),
                                 onPressed: () {
+                                   providerSearchCaja
+                                  .onSearchTextCajaPaginacion("");
+                              _textSearchController.text = '';
+
+                              providerSearchCaja
+                                  .setBtnSearchCajaPaginacion(
+                                      !providerSearchCaja
+                                          .btnSearchCajaPaginacion);
+
+                              if (providerSearchCaja
+                                      .btnSearchCajaPaginacion ==
+                                  false) {
+                                //=====================//
+                                providerSearchCaja
+                                    .setErrorCajaPaginacion(null);
+
+                                providerSearchCaja
+                                    .setError401CajaPaginacion(false);
+
+                                providerSearchCaja.setPage(0);
+                                providerSearchCaja.setCantidad(25);
+                                providerSearchCaja
+                                    .buscaAllCajaPaginacion('', true,providerSearchCaja.getTabIndex);
+                                // } //=====================//
+
+                              }
                                   //=====================//
                                   modalBusquedaXUsuario(context,size);
                                  
@@ -461,10 +487,13 @@ Container(
                         }
                         if ( index==1) {
                             ctrl.setPage(0);
-                           ctrl.setInfoBusquedaCajasPaginacion([]);
+                          
                            ctrl.resetValorTotal();
+                            ctrl.setCantidad(1000);
+                             ctrl.setInfoBusquedaCajasPaginacion([]);
+                             ctrl.setListFilter([]);
                              ctrl.buscaAllCajaPaginacion(
-                                '',false,ctrl.getTabIndex);
+                                '',false,1);
                         }
                       },
           labelColor: Colors.blue,
@@ -2292,7 +2321,7 @@ Consumer<CajaController>(
                          
                          if (provider.allItemsFilters.isEmpty) {
                             return const NoData(
-                              label: 'No existen datos para mostar',
+                              label: 'Por favor espere ....',
                             );
                             // Text("sin datos");
                           }
@@ -6307,7 +6336,7 @@ Consumer<CajaController>(
     Future<void> onRefresh() async {
     final _controller = Provider.of<CajaController>(context, listen: false);
     _controller.setPage(0);
-    _controller.setCantidad(25);
+    _controller.setCantidad(1000);
     _controller.buscaAllCajaPaginacion('', true,_controller.getTabIndex);
        _controller.obtieneTotalDiario('cajas','');
          _controller.obtieneTotalesFlotantes('');
@@ -6476,6 +6505,7 @@ String validarCampo(dynamic valor) {
                         } else {
                          
                          value.obtieneTotalesFlotantes(value.getBusquedaUser);
+                         Navigator.pop(context);
                          
                         }
                         },

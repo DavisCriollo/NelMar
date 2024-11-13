@@ -425,7 +425,7 @@ Container(
                         //      _controllerPreFacturas.resetValorTotal();
                               ctrl.restetTotalGenerales();
                             ctrl.setPage(0);
-                            ctrl.setCantidadElementos(25);
+                            ctrl.setCantidadElementos(1000);
                             ctrl.setIsNext(false);
                           
                             ctrl.buscaAllCuentasPorCobrar('', true,ctrl.getTabIndex);
@@ -439,7 +439,7 @@ Container(
                              ctrl.setPage(0);
                            ctrl.setInfoBusquedaCuentasPorCobrar([]);
                           ctrl.resetValorTotal();
-                        
+                         ctrl.setCantidadElementos(1000);
                              ctrl.buscaAllCuentasPorCobrar(
                                 '',false,ctrl.getTabIndex);
                                 
@@ -460,10 +460,20 @@ Container(
                         builder: (_, provider, __) {
                          
                          if (provider.allItemsFilters.isEmpty) {
-                            return const NoData(
-                              label: 'No existen datos para mostar',
-                            );
-                            // Text("sin datos");
+                            return 
+                            // const NoData(
+                            //   label: 'No existen datos para mostar',
+                            // );
+                             Center(
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              
+                                              CircularProgressIndicator(),
+                                              Text('Por favor espere ....')
+                                            ],
+                                          ));
+                           
                           }
 
                           return 
@@ -2074,7 +2084,7 @@ Container(
                   final _ctrl =context.read<CuentasXCobrarController>();
                   _ctrl.resetValorTotal();
                    _ctrl.setPage(0);
-    _ctrl.setCantidad(25);
+    _ctrl.setCantidad(1000);
                     _ctrl.buscaAllCuentasPorCobrar(
                                 '',false,0);
    

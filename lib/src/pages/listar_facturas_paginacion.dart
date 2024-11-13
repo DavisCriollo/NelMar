@@ -422,6 +422,8 @@ bool printBinded = false;
                         if ( index==1) {
                            ctrl.setInfoBusquedaFacturasPaginacion([]);
                            ctrl.resetValorTotal();
+                           ctrl.setCantidad(1000);
+                           ctrl.setListFilter([]);
                              ctrl.buscaAllFacturasPaginacion(
                                 '',false,ctrl.getTabIndex);
                         }
@@ -448,9 +450,16 @@ bool printBinded = false;
                   builder: (_, providersfactura, __) {
                    
                     if (providersfactura.allItemsFilters.isEmpty) {
-                            return const NoData(
-                              label: 'No existen datos para mostar',
-                            );
+                            return 
+                            Center(
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              
+                                              CircularProgressIndicator(),
+                                              Text('Por favor espere ....')
+                                            ],
+                                          ));
                             // Text("sin datos");
                           }
 
@@ -2484,7 +2493,7 @@ Container(
   Future<void> onRefresh() async {
     final _controller = Provider.of<FacturasController>(context, listen: false);
     _controller.setPage(0);
-    _controller.setCantidad(25);
+    _controller.setCantidad(1000);
     _controller.buscaAllFacturasPaginacion('', true,_controller.getTabIndex);
      _controller.obtieneTotalDiario('ventas','FACTURAS');
   }

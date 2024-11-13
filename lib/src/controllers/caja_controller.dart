@@ -318,12 +318,12 @@ _valorTotalCajasAntes = double.parse(_valorTotalCajasAntes.toStringAsFixed(3));
               // setInfoBusquedaCajasPaginacion(dataSort);
 
         if (tipo==0) {
-          //  setInfoBusquedaFacturasPaginacion([]);
-          setFacturas(dataSort);
+        
+          setFacturas(response['data']['results']);
           filtrarFacturasDeHoy();
         } else {
-          //  setInfoBusquedaFacturasPaginacion([]);
-             setFacturas(dataSort);
+        
+             setFacturas(response['data']['results']);
           filtrarFacturasAnteriores();
         }
         notifyListeners();
@@ -385,15 +385,57 @@ List _facturas = [];
   //   notifyListeners();
   // }
 //*********************************************************//
-  void filtrarFacturasDeHoy() {
-  DateTime hoy = DateTime.now();  // Fecha actual en hora local
+//   void filtrarFacturasDeHoy() {
+//   DateTime hoy = DateTime.now();  // Fecha actual en hora local
+//   String fechaHoy = DateFormat('yyyy-MM-dd').format(hoy);
+
+//   _facturasFiltradas = _facturas.where((factura) {
+//     String? fechaFactura = factura['cajaFecha'];
+//     if (fechaFactura != null) {
+//       // Convertir la fecha de la factura a un DateTime y luego a la hora local
+//       DateTime fechaFacturaDateTime = DateTime.parse(fechaFactura).toLocal();
+//       String fechaFacturaSoloFecha = DateFormat('yyyy-MM-dd').format(fechaFacturaDateTime);
+//       return fechaFacturaSoloFecha == fechaHoy;
+//     }
+//     return false;
+//   }).toList();
+
+//   // Actualizar la lista filtrada
+//   setListFilter(_facturasFiltradas);
+//   notifyListeners();
+// }
+
+
+// void filtrarFacturasDeHoy() {
+//   DateTime hoy = DateTime.now();
+//   String fechaHoy = DateFormat('yyyy-MM-dd').format(hoy);
+
+//   _facturasFiltradas = _facturas.where((factura) {
+//     String? fechaFactura = factura['cajaFecha'];
+//     if (fechaFactura != null) {
+//       // Convertir la fecha de la factura a un DateTime en hora local
+//       DateTime fechaFacturaDateTime = DateTime.parse(fechaFactura).toLocal();
+//       // Comparar solo la fecha, sin la hora
+//       String fechaFacturaSoloFecha = DateFormat('yyyy-MM-dd').format(fechaFacturaDateTime);
+//       return fechaFacturaSoloFecha == fechaHoy;
+//     }
+//     return false;
+//   }).toList();
+
+//   // Actualizar la lista filtrada
+//   setListFilter(_facturasFiltradas);
+//   notifyListeners();
+// }
+void filtrarFacturasDeHoy() {
+  DateTime hoy = DateTime.now();
   String fechaHoy = DateFormat('yyyy-MM-dd').format(hoy);
 
   _facturasFiltradas = _facturas.where((factura) {
     String? fechaFactura = factura['cajaFecha'];
     if (fechaFactura != null) {
-      // Convertir la fecha de la factura a un DateTime y luego a la hora local
+      // Convertir la fecha de la factura a DateTime en UTC y luego a la hora local
       DateTime fechaFacturaDateTime = DateTime.parse(fechaFactura).toLocal();
+      // Comparar solo la fecha, sin la hora
       String fechaFacturaSoloFecha = DateFormat('yyyy-MM-dd').format(fechaFacturaDateTime);
       return fechaFacturaSoloFecha == fechaHoy;
     }
@@ -404,36 +446,20 @@ List _facturas = [];
   setListFilter(_facturasFiltradas);
   notifyListeners();
 }
-// void filtrarFacturasAnteriores() {
-//   DateTime hoy = DateTime.now();  // Fecha actual en hora local
-//   String fechaHoy = DateFormat('yyyy-MM-dd').format(hoy);
 
-//   _facturasFiltradas = _facturas.where((factura) {
-//     String? fechaFactura = factura['cajaFecha'];
-//     if (fechaFactura != null) {
-//       // Convertir la fecha de la factura a DateTime y luego a la hora local
-//       DateTime fechaFacturaDateTime = DateTime.parse(fechaFactura).toLocal();
-//       String fechaFacturaSoloFecha = DateFormat('yyyy-MM-dd').format(fechaFacturaDateTime);
-//       return fechaFacturaSoloFecha != fechaHoy;  // Filtrar las fechas anteriores o diferentes a hoy
-//     }
-//     return false;
-//   }).toList();
 
-//   // Actualizar la lista filtrada
-//   setListFilter(_facturasFiltradas);
-//   notifyListeners();
-// }
 void filtrarFacturasAnteriores() {
-  DateTime hoy = DateTime.now();  // Fecha actual en hora local
+ DateTime hoy = DateTime.now();
   String fechaHoy = DateFormat('yyyy-MM-dd').format(hoy);
 
   _facturasFiltradas = _facturas.where((factura) {
-    String? fechaFactura = factura['venFecReg'];
+    String? fechaFactura = factura['cajaFecReg'];
     if (fechaFactura != null) {
-      // Convertir la fecha de la factura a DateTime y luego a la hora local
+      // Convertir la fecha de la factura a DateTime en UTC, luego a la hora local
       DateTime fechaFacturaDateTime = DateTime.parse(fechaFactura).toLocal();
+      // Comparar solo la fecha, sin la hora
       String fechaFacturaSoloFecha = DateFormat('yyyy-MM-dd').format(fechaFacturaDateTime);
-      return fechaFacturaSoloFecha != fechaHoy;  // Filtrar las fechas anteriores o diferentes a hoy
+      return fechaFacturaSoloFecha.compareTo(fechaHoy) < 0;
     }
     return false;
   }).toList();
@@ -471,13 +497,7 @@ notifyListeners();
    void setListFilter( List<dynamic> _list){
   _allItemsFilters = [];
 
-// _sortList();
-
-
-
 _allItemsFilters.addAll(_list);
-// print('LA LISTA DE LOS ESTUDIANTES _allItemsFilters: ${_allItemsFilters.length} ');
-// print('LA LISTA DE LOS ESTUDIANTES _allItemsFilters: $_allItemsFilters ');
 
 //====================== REALIZA LA SUMATORIA EN CADA CONSULTA  =============================//
 
@@ -722,7 +742,7 @@ Map<String,dynamic> get getTotalesFlotantes=>_totalesFlotantes;
     final dataUser = await Auth.instance.getSession();
 // print('usuario : ${dataUser!.rucempresa}');
     final response = await _api.getAllTotalesFlotantes(
-      usuario: _busquedaUser,
+      search: _busquedaUser,
          token: '${dataUser!.token}',
     );
 

@@ -683,7 +683,7 @@ bool printBinded = false;
                   Text('HOY', style: TextStyle(fontSize: size.iScreen(1.8))),
                   // Espacio entre los textos
                   // Text('\$${valueHoy.getValorTotalFacturasHoy}', style: TextStyle(fontSize: size.iScreen(2.5))),
-                   Text(valueHoy.getTotalDiario.isNotEmpty?  '\$${valueHoy.getTotalDiario['total']}':'-- -- --', style: TextStyle(fontSize: size.iScreen(2.0))),
+                   Text(valueHoy.getTotalDiario.isNotEmpty?'\$${valueHoy.getTotalDiario['total']}':'-- -- --', style: TextStyle(fontSize: size.iScreen(2.0))),
                 ],
               );
               },)
@@ -697,7 +697,7 @@ bool printBinded = false;
                 children: [
                   Text('ANTERIORES',style: TextStyle(fontSize: size.iScreen(1.8))),
                    // Espacio entre los textos
-                   Text('\$${valueAnteriores.getValorTotalFacturasAntes}', style: TextStyle(fontSize: size.iScreen(2.5))),
+                  //  Text('\$${valueAnteriores.getValorTotalFacturasAntes}', style: TextStyle(fontSize: size.iScreen(2.5))),
                 ],
               );
               },)
@@ -743,6 +743,12 @@ bool printBinded = false;
                         if ( index==1) {
                            ctrl.setInfoBusquedaProformasPaginacion([]);
                            ctrl.resetValorTotal();
+                         ctrl.setPage(0);
+                          
+                           ctrl.resetValorTotal();
+                            ctrl.setCantidad(1000);
+                            
+                             ctrl.setListFilter([]);
                              ctrl.buscaAllProformasPaginacion(
                                 '',false,ctrl.getTabIndex);
                         }
@@ -3372,7 +3378,7 @@ Consumer<ProformasController>(
   Future<void> onRefresh() async {
     final _controller = Provider.of<ProformasController>(context, listen: false);
     _controller.setPage(0);
-    _controller.setCantidad(25);
+    _controller.setCantidad(1000);
     _controller.buscaAllProformasPaginacion('', true,_controller.getTabIndex);
     _controller.obtieneTotalDiario('ventas','PROFORMAS');
   }

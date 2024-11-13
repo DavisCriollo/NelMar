@@ -166,6 +166,7 @@ class SubmenuTransacciones extends StatelessWidget {
                                Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) =>
                                      ListarCajaPaginacion(user: user,)));
+                                      _ctrl.setCantidad(25);
                                    _ctrl.setPage(0);
 
                           },
@@ -351,6 +352,7 @@ class SubmenuTransacciones extends StatelessWidget {
                                     
                            _ctrl.resetValorTotal();
                             _ctrl.setPage(0);
+                            _ctrl.setCantidadElementos(1000);
                             _ctrl.setIsNext(false);
                              _ctrl.buscaAllCuentasPorCobrar(
                                 '',false,0);

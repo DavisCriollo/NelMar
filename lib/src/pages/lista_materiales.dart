@@ -483,6 +483,7 @@ Container(
                            ctrl.resetValorTotal();
                            ctrl.restetTotalGenerales();
                             ctrl.setPage(0);
+                             ctrl.setCantidad(1000);
                              _controllerPreFacturas.buscaAllMaterialesPaginacion(
                                 '',false,ctrl.getTabIndex);
                         }
@@ -2626,7 +2627,7 @@ Container(
     Future<void> onRefresh() async {
     final _controller = Provider.of<CuentasXCobrarController>(context, listen: false);
     _controller.setPage(0);
-    _controller.setCantidad(25);
+    _controller.setCantidad(1000);
     _controller.buscaAllMaterialesPaginacion('', true,_controller.getTabIndex);
      _controller.obtieneTotalDiario('ventas','DESPACHO');
   }

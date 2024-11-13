@@ -355,6 +355,7 @@ class _ListarNotasCreditoPaginacionState extends State<ListarNotasCreditoPaginac
                         if ( index==1) {
                            ctrl.setInfoBusquedaNotasCreditosPaginacion([]);
                            ctrl.resetValorTotal();
+                           ctrl.setCantidad(1000);
                              ctrl.buscaAllNotasCreditosPaginacion(
                                 '',false,ctrl.getTabIndex);
                         }
@@ -2281,7 +2282,7 @@ class _ListarNotasCreditoPaginacionState extends State<ListarNotasCreditoPaginac
   Future<void> onRefresh() async {
     final _controller = Provider.of<NotasCreditosController>(context, listen: false);
     _controller.setPage(0);
-    _controller.setCantidad(25);
+    _controller.setCantidad(100);
     _controller.buscaAllNotasCreditosPaginacion('', true,_controller.getTabIndex);
     _controller.obtieneTotalDiario('ventas','NOTA CREDITOS');
   }

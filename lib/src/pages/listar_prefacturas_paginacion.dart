@@ -492,8 +492,10 @@ Container(
                         }
                         if ( index==1) {
                              ctrl.setPage(0);
+                             ctrl.setCantidad(1000);
                            ctrl.setInfoBusquedaPreFacturasPaginacion([]);
                            ctrl.resetValorTotal();
+                           ctrl.setListFilter([]);
                              ctrl.buscaAllPreFacturasPaginacion(
                                 '',false,ctrl.getTabIndex);
                         }
@@ -513,9 +515,17 @@ Container(
                         builder: (_, provider, __) {
                          
                          if (provider.allItemsFilters.isEmpty) {
-                            return const NoData(
-                              label: 'No existen datos para mostar',
-                            );
+                            return 
+                            // const NoData(
+                            //   label: 'No existen datos para mostar',
+                            // );
+                            Center(
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              
+                                              CircularProgressIndicator(),
+                                              Text('Por favor espere ....')]));
                             // Text("sin datos");
                           }
 
@@ -1556,10 +1566,18 @@ Container(
                         builder: (_, provider, __) {
                          
                          if (provider.allItemsFilters.isEmpty) {
-                            return const NoData(
-                              label: 'No existen datos para mostar',
-                            );
-                            // Text("sin datos");
+                            return  
+                            // NoData(
+                            //   label: 'Por favor espere ....',
+                            // );
+                           Center(
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              
+                                              CircularProgressIndicator(),
+                                              Text('Por favor espere ....')
+            ]));
                           }
 
                           return 
@@ -1787,7 +1805,7 @@ Container(
                                               Text(
                                                 // '${_prefacturas['venEstado']}',
                                                  _prefacturas['venOtrosDetalles'].isNotEmpty
-                                                             ?'${_prefacturas['venOtrosDetalles'][0]}':'--- --- --- --- --- ---  ',
+                                                             ?'${_prefacturas['venOtrosDetalles']}':'--- --- --- --- --- ---  ',
                                                 // 'Estado: ',
                                                 style: GoogleFonts.lexendDeca(
                                                     fontSize: size.iScreen(1.8),
@@ -3186,7 +3204,7 @@ Container(
     final _controller = Provider.of<PreFacturasController>(context, listen: false);
     _controller.restetTotalGenerales();
     _controller.setPage(0);
-    _controller.setCantidad(25);
+    _controller.setCantidad(1000);
     _controller.buscaAllPreFacturasPaginacion('', true,_controller.getTabIndex);
      _controller.obtieneTotalDiario('ventas','NOTA VENTAS');
   }

@@ -643,6 +643,62 @@ _valorTotalFacturasAntes = double.parse(_valorTotalFacturasAntes.toStringAsFixed
 double _totalIngresos = 0.0; // Variable para almacenar el total de ingresos
 double get totalIngresos => _totalIngresos;
 
+// void search(String query) {
+//   List<Map<String, dynamic>> originalList = List.from(_facturasFiltradas); // Copia de la lista original
+
+//   if (query.isEmpty) {
+//     _allItemsFilters = originalList;
+//   } else {
+//     _allItemsFilters = originalList.where((item) {
+//       String venFecReg = item['venFecReg'];
+
+//       // Formatear `venFecReg` de "2024-09-17T02:17:51.000Z" a "yyyy-MM-dd HH:mm"
+//       DateTime parsedDate = DateTime.parse(venFecReg);
+//       String fechaFormateada = "${parsedDate.year.toString().padLeft(4, '0')}-${parsedDate.month.toString().padLeft(2, '0')}-${parsedDate.day.toString().padLeft(2, '0')} ${parsedDate.hour.toString().padLeft(2, '0')}:${parsedDate.minute.toString().padLeft(2, '0')}";
+
+//       // Comparar con el `query` proporcionado
+//       return fechaFormateada.contains(query) ||
+//           item['venConductor'].toLowerCase().contains(query.toLowerCase()) ||
+//           item['venUser'].toLowerCase().contains(query.toLowerCase()) ||
+//             item['venNumFactura'].toLowerCase().contains(query.toLowerCase())||
+//           item['venNomCliente'].toLowerCase().contains(query.toLowerCase());
+//     }).toList();
+//   }
+
+//   // Calcular el total de ingresos después de filtrar
+//   calculateTotalIngreso();
+
+//   notifyListeners();
+// }
+// void search(String query) {
+//   List<Map<String, dynamic>> originalList = List.from(_facturasFiltradas); // Copia de la lista original
+
+//   if (query.isEmpty) {
+//     _allItemsFilters = originalList;
+//   } else {
+//     _allItemsFilters = originalList.where((item) {
+//       String venFecReg = item['venFecReg'] ?? '';
+
+//       // Formatear `venFecReg` de "2024-09-17T02:17:51.000Z" a "yyyy-MM-dd HH:mm"
+//       DateTime parsedDate = DateTime.parse(venFecReg);
+//       String fechaFormateada = "${parsedDate.year.toString().padLeft(4, '0')}-${parsedDate.month.toString().padLeft(2, '0')}-${parsedDate.day.toString().padLeft(2, '0')} ${parsedDate.hour.toString().padLeft(2, '0')}:${parsedDate.minute.toString().padLeft(2, '0')}";
+
+//       // Comparar con el `query` proporcionado, verificando si cada campo es `null`
+//       return fechaFormateada.contains(query) ||
+//           (item['venConductor']?.toLowerCase() ?? '').contains(query.toLowerCase()) ||
+//           (item['venUser']?.toLowerCase() ?? '').contains(query.toLowerCase()) ||
+//           (item['venNumFactura']?.toLowerCase() ?? '').contains(query.toLowerCase()) ||
+//             (item['venOtrosDetalles']?.toLowerCase() ?? '').contains(query.toLowerCase()) ||
+//           (item['venNomCliente']?.toLowerCase() ?? '').contains(query.toLowerCase());
+//     }).toList();
+//   }
+
+//   // Calcular el total de ingresos después de filtrar
+//   calculateTotalIngreso();
+
+//   notifyListeners();
+// }
+
 void search(String query) {
   List<Map<String, dynamic>> originalList = List.from(_facturasFiltradas); // Copia de la lista original
 
@@ -650,18 +706,24 @@ void search(String query) {
     _allItemsFilters = originalList;
   } else {
     _allItemsFilters = originalList.where((item) {
-      String venFecReg = item['venFecReg'];
+      String venFecReg = item['venFecReg'] ?? '';
 
       // Formatear `venFecReg` de "2024-09-17T02:17:51.000Z" a "yyyy-MM-dd HH:mm"
       DateTime parsedDate = DateTime.parse(venFecReg);
       String fechaFormateada = "${parsedDate.year.toString().padLeft(4, '0')}-${parsedDate.month.toString().padLeft(2, '0')}-${parsedDate.day.toString().padLeft(2, '0')} ${parsedDate.hour.toString().padLeft(2, '0')}:${parsedDate.minute.toString().padLeft(2, '0')}";
 
+      // Función para verificar si el valor es una cadena y contiene el `query`
+      bool containsQuery(dynamic value) {
+        return value is String && value.toLowerCase().contains(query.toLowerCase());
+      }
+
       // Comparar con el `query` proporcionado
       return fechaFormateada.contains(query) ||
-          item['venConductor'].toLowerCase().contains(query.toLowerCase()) ||
-          item['venUser'].toLowerCase().contains(query.toLowerCase()) ||
-            item['venNumFactura'].toLowerCase().contains(query.toLowerCase())||
-          item['venNomCliente'].toLowerCase().contains(query.toLowerCase());
+          containsQuery(item['venConductor']) ||
+          containsQuery(item['venUser']) ||
+          containsQuery(item['venNumFactura']) ||
+          containsQuery(item['venOtrosDetalles']) ||
+          containsQuery(item['venNomCliente']);
     }).toList();
   }
 
@@ -670,6 +732,7 @@ void search(String query) {
 
   notifyListeners();
 }
+
 
 // Función para calcular el total de ingresos
 void calculateTotalIngreso() {
