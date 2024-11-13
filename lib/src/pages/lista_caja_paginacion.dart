@@ -6451,7 +6451,7 @@ String validarCampo(dynamic valor) {
       builder: (context) {
 
        return AlertDialog(
-          title: const Text("BUSCAR POR USUARIO"),
+          title: const Text("BUSCAR TOTALES DEL DÍA POR USUARIO"),
           content: SizedBox(
             width: size.wScreen(100),
             // height: size.hScreen(20.0), // Ajusta la altura según sea necesario

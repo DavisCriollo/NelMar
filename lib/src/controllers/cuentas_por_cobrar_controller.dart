@@ -589,7 +589,35 @@ List _facturas = [];
           _listaCajaPaginacion = [];
         }
         List<dynamic> dataSort = response['data']['results'];
-        dataSort.sort((a, b) => b['ccFecReg']!.compareTo(a['ccFecReg']!));
+        // dataSort.sort((a, b) => b['ccFecReg']!.compareTo(a['ccFecReg']!));
+       
+// dataSort.sort((a, b) {
+//   // Comparar fechas
+//   int fechaComparison = b['ccFecReg']!.compareTo(a['ccFecReg']!);
+  
+//   if (fechaComparison != 0) {
+//     return fechaComparison; // Usar la comparación de fechas si son distintas
+//   } else {
+//     // Comparar estados alfabéticamente si las fechas son iguales
+//     return a['ccEstado']!.compareTo(b['ccEstado']!);
+//   }
+// });
+dataSort.sort((a, b) {
+  // Verifica si el estado es "CANCELADO" para cada elemento
+  bool esCanceladoA = a['ccEstado'] == 'CANCELADO';
+  bool esCanceladoB = b['ccEstado'] == 'CANCELADO';
+
+  // Coloca elementos "CANCELADO" al final
+  if (esCanceladoA && !esCanceladoB) {
+    return 1;  // a después de b
+  } else if (!esCanceladoA && esCanceladoB) {
+    return -1; // a antes de b
+  } else {
+    // Si ambos elementos tienen el mismo estado (ambos "CANCELADO" o ambos no "CANCELADO"),
+    // ordena por fecha de forma descendente
+    return b['ccFecReg']!.compareTo(a['ccFecReg']!);
+  }
+});
 
         setPage(response['data']['pagination']['next']);
         // setListFilter(dataSort);
