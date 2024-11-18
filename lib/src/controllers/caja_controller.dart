@@ -743,6 +743,7 @@ Map<String,dynamic> get getTotalesFlotantes=>_totalesFlotantes;
 // print('usuario : ${dataUser!.rucempresa}');
     final response = await _api.getAllTotalesFlotantes(
       search: _busquedaUser,
+      fecha: _fechaCaja,
          token: '${dataUser!.token}',
     );
 
@@ -779,10 +780,29 @@ Map<String,dynamic> get getTotalesFlotantes=>_totalesFlotantes;
   }
 
 
-//*************CREAR FACTURA ******************//
+  //========================================FECHA ==================================================//
+
+  String? _fechaCaja =
+     '${DateTime.now().year}-${(DateTime.now().month) < 10 ? '0${DateTime.now().month}' : '${DateTime.now().month}'}-${(DateTime.now().day) < 10 ? '0${DateTime.now().day}' : '${DateTime.now().day}'}';
+  get getFechaCaja => _fechaCaja;
+  void setFechaCaja(String? date) async {
+    _fechaCaja = date;
+
+    notifyListeners();
+  }
 
 
 
+  
+// Función que verifica si alguna propiedad en el mapa es null
+bool isAnyPropertyNull(Map<String, double?> mapa) {
+  for (var entry in mapa.entries) {
+    if (entry.value == null) {
+      return true; // Si encontramos un valor null, devolvemos true
+    }
+  }
+  return false; // Si no se encuentra null, devolvemos false
+}
 
 
 

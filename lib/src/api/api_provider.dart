@@ -2033,13 +2033,12 @@ class ApiProvider {
         return null;
       }
        final responseData = jsonDecode(dataResp.body);
-      // print('RESPONSE: ${dataResp.statusCode}');
+     
       
       // print('RESPONSE: ${dataResp.body}');
       if (dataResp.statusCode == 200) {
 // print('RESPONSE: ${dataResp.body}');
-// print('RESPONSE:DSDSD ${dataResp.body}');
-        // final responseData = AllInformesGuardias.fromJson(dataResp.body);
+
 
         return responseData['data'];
       }
@@ -2745,28 +2744,13 @@ if (tipo!!='') {
   //=========================GET ALL CUENTAS POR COBRAR=====================================//
   Future getAllTotalesFlotantes({
     String? search,
+    String? fecha,
      String? token,
   }) async {
     try {
        final url =
           // Uri.parse('$_url/proveedores/filtro/0?search=$search&estado=$estado');
-          Uri.parse('$_url/cajas/saldo-total/ingreso-egreso-credito?search=$search');
-
-
-//           final Uri url = Uri.parse(
-//   '$_url/$origen/saldo/total/diario${tipo!.isNotEmpty ? '?tipodocumento=$tipo' : ''}'
-// );
-
-      // final dynamic url ;
-      // if (tipo!.isNotEmpty) {
-      //   url=Uri.parse('$_url/$origen/saldo/total/diario?tipodocumento=$tipo');
-      // } else {
-      //     url= Uri.parse('$_url/$origen/saldo/total/diario');
-      // }
-      //  Uri.parse('$_url/$origen/saldo/total/diario?tipodocumento=$tipo');
-     
-         
-          // Uri.parse('$_url/cajas/?page=0&cantidad=10&search=&input=cajaId&orden=false&estado=DIARIA');
+          Uri.parse('$_url/cajas/saldo-total/ingreso-egreso-credito?search=$search&fecha=$fecha');
 
       final dataResp = await _http.get(
         url,

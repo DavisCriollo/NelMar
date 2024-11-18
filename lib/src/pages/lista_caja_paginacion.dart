@@ -23,6 +23,7 @@ import 'package:neitorcont/src/services/notifications_service.dart';
 import 'package:neitorcont/src/services/socket_service.dart';
 import 'package:neitorcont/src/theme/theme_provider.dart';
 import 'package:neitorcont/src/theme/themes_app.dart';
+import 'package:neitorcont/src/utils/dialogs.dart';
 import 'package:neitorcont/src/utils/fechaLocal.dart';
 import 'package:neitorcont/src/utils/letras_mayusculas_minusculas.dart';
 import 'package:neitorcont/src/utils/responsive.dart';
@@ -370,7 +371,8 @@ class _ListarCajaPaginacionState
 
                               }
                                   //=====================//
-                                  modalBusquedaXUsuario(context,size);
+                                  providerSearchCaja.setFechaCaja('');
+                                  modalBusquedaXUsuario(context,size, widget.user!);
                                  
                                 })
                       ],
@@ -481,7 +483,7 @@ Container(
                              ctrl.buscaAllCajaPaginacion(
                                 '',false,0);
                                      ctrl.obtieneTotalDiario('cajas','');
-                                     ctrl.obtieneTotalesFlotantes('TODOS');
+                                     ctrl.obtieneTotalesFlotantes('');
 
 
                         }
@@ -6068,7 +6070,7 @@ Consumer<CajaController>(
           ),
         ),
         Text(
-          '\$ ${valueTot.getTotalesFlotantes['Ingreso']}', // Monto a mostrar
+          valueTot.getTotalesFlotantes['Ingreso']!=null?'\$ ${valueTot.getTotalesFlotantes['Ingreso']}':'0.0', // Monto a mostrar
           style: TextStyle(
             color: Colors.white,
             fontSize: size.iScreen(1.8),
@@ -6109,7 +6111,7 @@ Consumer<CajaController>(
           ),
         ),
         Text(
-         '\$ ${valueTot.getTotalesFlotantes['Egreso']}',// Monto a mostrar
+        valueTot.getTotalesFlotantes['Egreso']!=null? '\$ ${valueTot.getTotalesFlotantes['Egreso']}':'0.0',// Monto a mostrar
           style: TextStyle(
             color: Colors.white,
             fontSize: size.iScreen(1.8),
@@ -6150,7 +6152,7 @@ Consumer<CajaController>(
           ),
         ),
         Text(
-          '\$ ${valueTot.getTotalesFlotantes['Credito']}', // Monto a mostrar
+          valueTot.getTotalesFlotantes['Credito']!=null? '\$ ${valueTot.getTotalesFlotantes['Credito']}':'0.0', // Monto a mostrar
           style: TextStyle(
             color: Colors.white,
             fontSize: size.iScreen(1.8),
@@ -6444,7 +6446,7 @@ String validarCampo(dynamic valor) {
 
   //**********************************************MODAL TIPO  **********************************************************************//
   Future<bool?> modalBusquedaXUsuario(
-      BuildContext context, Responsive size) {
+      BuildContext context, Responsive size, Session user) {
     return showDialog<bool>(
       barrierColor: Colors.black54,
       context: context,
@@ -6491,16 +6493,85 @@ String validarCampo(dynamic valor) {
                         }
                       },
 
-
-
                           ),
-                            TextButton(
+                           //***********************************************/
+                            SizedBox(
+                              height: size.iScreen(2.0),
+                            ),
+                            //*****************************************/
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+
+                              Row(
+                                children: [
+                                  Text('Fecha: ',
+                                      style: GoogleFonts.lexendDeca(
+                                          // fontSize: size.iScreen(2.0),
+                                          fontWeight: FontWeight.normal,
+                                          color: Colors.grey)),
+                                          Consumer<CajaController>(builder: (_, value,__) { 
+                                            return  Text(' ${value.getFechaCaja}',
+                                  style: GoogleFonts.lexendDeca(
+                                      fontSize: size.iScreen(2.5),
+                                      fontWeight: FontWeight.normal,
+                                      color: Colors.black));
+                                           },)
+                                         
+                                ],
+                              ),
+                                      
+                                          ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: GestureDetector(
+                                onTap: () {
+
+                                        _fechaCaja(context,value);
+
+//*******************************************/
+                                },
+                                child: 
+                                
+                                 Consumer<ThemeProvider>(builder: (_, valueTheme, __) {  
+                                    return Container(
+                                      alignment: Alignment.center,
+                                      color: valueTheme.appTheme.primaryColor,
+                                      width: size.iScreen(5.0),
+                                      height: size.iScreen(4.0),
+                                      padding: EdgeInsets.only(
+                                        top: size.iScreen(0.5),
+                                        bottom: size.iScreen(0.5),
+                                        left: size.iScreen(0.5),
+                                        right: size.iScreen(0.5),
+                                      ),
+                                      child: Icon(
+                                        Icons.calendar_month_outlined,
+                                        color: Colors.white,
+                                        size: size.iScreen(2.0),
+                                      ),
+                                    );
+                                  },
+                                  ),
+                              ),
+                            ),
+                           
+                            ],
+                          ),
+                                //***********************************************/
+                            SizedBox(
+                              height: size.iScreen(1.0),
+                            ),
+                            //*****************************************/   
+                            Row( 
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                TextButton(
                         onPressed: () {
                       // Validar si el campo de texto no está vacío
                         if (value.getBusquedaUser.trim().isEmpty) {
                           // Si está vacío, mostrar un mensaje de error
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('El campo no puede estar vacío')),
+                                SnackBar(content: Text('El campo no puede estar vacío')),
                           );
                         } else {
                          
@@ -6513,24 +6584,95 @@ String validarCampo(dynamic valor) {
                     Consumer<ThemeProvider>(builder: (_, valueTheme, __) { 
                           return    Container(
                           decoration: BoxDecoration(
-                              color: valueTheme.appTheme.primaryColor,
-                              borderRadius: BorderRadius.circular(5.0)),
+                                  color: valueTheme.appTheme.primaryColor,
+                                  borderRadius: BorderRadius.circular(5.0)),
                           // color: primaryColor,
                           padding: EdgeInsets.symmetric(
-                              vertical: size.iScreen(0.5),
-                              horizontal: size.iScreen(0.5)),
-                          child: Text('Agregar',
-                              style: GoogleFonts.lexendDeca(
-                                  // fontSize: size.iScreen(2.0),
-                                  fontWeight: FontWeight.normal,
-                                  color: Colors.white)),
+                                  vertical: size.iScreen(0.5),
+                                  horizontal: size.iScreen(0.5)),
+                          child: Text('Buscar',
+                                  style: GoogleFonts.lexendDeca(
+                                      fontSize: size.iScreen(2.0),
+                                      fontWeight: FontWeight.normal,
+                                      color: Colors.white)),
                         );
 
-                       },)
+                       },),
                         
                         
                      
-                    )
+                    ),
+                    ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: GestureDetector(
+                                onTap: () async{
+
+                               //*******************************************//
+                               if (value.getBusquedaUser.isNotEmpty) {
+                                 ProgressDialog.show(context);
+                                     await value.obtieneTotalesFlotantes(value.getBusquedaUser);
+            ProgressDialog.dissmiss(context);
+                                 
+                                   // Verificar si 'Ingreso', 'Egreso' y 'Credito' no son null
+                                    if (value.getTotalesFlotantes['Ingreso'] != null &&
+                                        value.getTotalesFlotantes['Egreso'] != null &&
+                                        value.getTotalesFlotantes['Credito'] != null) {
+
+                                              final _dataPrint={
+                                                "logo":user.logo.toString(),
+                                                "usuario":user.usuario,
+                                                "fecha":value.getFechaCaja,
+                                                "ingreso":value.getTotalesFlotantes['Ingreso'],
+                                                "egreso":value.getTotalesFlotantes['Egreso'],
+                                                "credito":value.getTotalesFlotantes['Credito']
+                                              };
+
+                                      // print('LA DATA PARA IMPRIMIR: $_dataPrint');
+                                      _printTotalesPorUsuario(_dataPrint);
+                                      Navigator.pop(context);
+
+                                    } else {
+                                      NotificatiosnService.showSnackBarError('NO HAY DATOS PARA IMPRIMIR');
+                                    }
+
+
+
+                               } else {
+                                 NotificatiosnService.showSnackBarDanger('Ingrese Usuario');
+                               }
+                            
+                        //  Navigator.pop(context);
+                               
+                               
+                               //*******************************************//
+                                },
+                                child: 
+                                
+                                 Consumer<ThemeProvider>(builder: (_, valueTheme, __) {  
+                                    return Container(
+                                      alignment: Alignment.center,
+                                      color: valueTheme.appTheme.accentColor,
+                                      width: size.iScreen(5.0),
+                                      height: size.iScreen(4.0),
+                                      padding: EdgeInsets.only(
+                                        top: size.iScreen(0.5),
+                                        bottom: size.iScreen(0.5),
+                                        left: size.iScreen(0.5),
+                                        right: size.iScreen(0.5),
+                                      ),
+                                      child: Icon(
+                                        Icons.print_outlined,
+                                        color: Colors.white,
+                                        size: size.iScreen(2.0),
+                                      ),
+                                    );
+                                  },
+                                  ),
+                              ),
+                            ),
+                           
+                              ],
+                            )
                                 ],
                               );
       
@@ -6544,4 +6686,97 @@ String validarCampo(dynamic valor) {
       },
     );
   }
+
+  _fechaCaja(BuildContext context, CajaController controller) async {
+    DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2024),
+      lastDate: DateTime(2100),
+      // locale: const Locale('es', 'ES'),
+    );
+    if (picked != null) {
+      String? anio, mes, dia;
+      anio = '${picked.year}';
+      mes = (picked.month < 10) ? '0${picked.month}' : '${picked.month}';
+      dia = (picked.day < 10) ? '0${picked.day}' : '${picked.day}';
+
+      // setState(() {
+      final _fechaInicio =
+          '${anio.toString()}-${mes.toString()}-${dia.toString()}';
+      // _fechaController.text = _fechaInicio;
+      controller.setFechaCaja(_fechaInicio);
+      // print('FechaInicio: $_fechaInicio');
+      // });
+    }
+  }
+
+
+  void _printTotalesPorUsuario(Map<String, dynamic>? _info,) async {
+
+  if (_info == null) return;
+
+// Función principal de impresión
+
+  // Imprime el logo (si existe)
+  if (_info['logo']!.isNotEmpty) {
+    String url = _info['logo'];
+    
+    // Convertir la imagen a formato Uint8List
+    Uint8List byte = (await NetworkAssetBundle(Uri.parse(url)).load(url))
+        .buffer
+        .asUint8List();
+
+    // Decodificar la imagen
+    img.Image? originalImage = img.decodeImage(byte);
+
+    if (originalImage != null) {
+      // Redimensionar la imagen (ajusta width y height según tus necesidades)
+      img.Image resizedImage = img.copyResize(originalImage, width: 150, height: 150);
+
+      // Convertir la imagen redimensionada de vuelta a Uint8List
+      Uint8List resizedByte = Uint8List.fromList(img.encodePng(resizedImage));
+
+      // Alinear la imagen y comenzar la transacción de impresión
+      await SunmiPrinter.setAlignment(SunmiPrintAlign.CENTER);
+      await SunmiPrinter.printImage(resizedByte);
+
+      // Agregar un salto de línea para asegurar que el texto se imprima debajo
+      await SunmiPrinter.lineWrap(2); // Esto asegura que haya espacio debajo del logo
+    }
+  } else {
+    // Si no hay logo, imprimir el texto "NO LOGO"
+    await SunmiPrinter.printText('NO LOGO');
+    await SunmiPrinter.lineWrap(1); // Saltar una línea para separación
+  }
+
+
+// Imprime el resto de la información 
+await SunmiPrinter.setAlignment(SunmiPrintAlign.LEFT);
+await SunmiPrinter.printText('Usuario: ${validarCampo(_info['usuario'])}');
+
+await SunmiPrinter.line();
+await SunmiPrinter.printText('Fecha: ${_info['fecha']}'); // O utiliza formattedDate si corresponde
+await SunmiPrinter.line();
+await SunmiPrinter.printText('Ingreso: ${validarCampo(_info['ingreso'])}');
+await SunmiPrinter.printText('Egreso: ${validarCampo(_info['egreso'])}');
+await SunmiPrinter.printText('Crédito: ${validarCampo(_info['credito'])}');
+
+await SunmiPrinter.line();
+
+  await SunmiPrinter.lineWrap(2);
+  await SunmiPrinter.exitTransactionPrint(true);
+}
+
+// Función para validar si una propiedad es null
+String validarCampo(dynamic valor) {
+  return valor == null || valor.toString().isEmpty ? '--- --- ---' : valor.toString();
+}
+
+
+
+
+
+
+
 

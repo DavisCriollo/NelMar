@@ -162,7 +162,7 @@ class SubmenuTransacciones extends StatelessWidget {
                                 '',false,0);
                                  _ctrl.calculateTotalIngreso();
                                  _ctrl.obtieneTotalDiario('cajas','');
-                                    _ctrl.obtieneTotalesFlotantes('TODOS');
+                                    _ctrl.obtieneTotalesFlotantes('');
                                Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) =>
                                      ListarCajaPaginacion(user: user,)));

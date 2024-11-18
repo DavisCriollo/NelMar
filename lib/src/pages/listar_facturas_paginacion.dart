@@ -2730,7 +2730,7 @@ void _printTicket(Map<String, dynamic>? _info,String? user) async {
   await SunmiPrinter.printText('Fecha: $fechaLocal'); // O utiliza formattedDate si corresponde
  await SunmiPrinter.line();
   await SunmiPrinter.printText('Conductor: ${_info['venConductor']}');
-  await SunmiPrinter.printText('Placa: ${_info['venOtrosDetalles'][0]}');
+  await SunmiPrinter.printText('Placa: ${_info['venOtrosDetalles']}');
   // Imprime el encabezado de la tabla
   await SunmiPrinter.setAlignment(SunmiPrintAlign.LEFT);
   await SunmiPrinter.line();

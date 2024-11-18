@@ -3794,7 +3794,7 @@ ctrlPropi.setDocumento(value.getDocumento);
                               children: [
                                 SizedBox(width: size.iScreen(0.5),),
                                 Container(
-                                  width: size.iScreen(20),
+                                  width: size.iScreen(16),
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
@@ -3811,7 +3811,7 @@ ctrlPropi.setDocumento(value.getDocumento);
                                           UpperCaseText(), // Limita a 13 dígitos
                                         ],
                                         style: TextStyle(
-                                          fontSize: size.iScreen( 2.8), // Ajusta el tamaño de la letra
+                                          fontSize: size.iScreen( 2.0), // Ajusta el tamaño de la letra
                                           // fontWeight: FontWeight.bold, // Opcional: Aplica un peso de fuente más grueso
                                         ),
                                         textAlign: TextAlign.center,
@@ -5874,7 +5874,7 @@ void _printTicket(Map<String, dynamic>? _info,String? user,String fechaLocal) as
    await SunmiPrinter.printText('Ticket: ${_info['venNumFactura']}'); 
  await SunmiPrinter.line();
   await SunmiPrinter.printText('Conductor: ${_info['venConductor']}');
-  await SunmiPrinter.printText('Placa: ${_info['venOtrosDetalles'][0]}');
+  await SunmiPrinter.printText('Placa: ${_info['venOtrosDetalles']}');
   // Imprime el encabezado de la tabla
   await SunmiPrinter.setAlignment(SunmiPrintAlign.LEFT);
   await SunmiPrinter.line();
