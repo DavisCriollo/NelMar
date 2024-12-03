@@ -1900,9 +1900,9 @@ _allItemsFilters.addAll(_list);
   }
   resetCorreos(){
      _listaAddCorreos!.clear();
+     notifyListeners();
+
   }
-
-
 
 
 

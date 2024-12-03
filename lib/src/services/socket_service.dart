@@ -290,12 +290,31 @@ _estadoPrintVenta=false;
 
         if (data['tabla'] == 'proveedor' && data['perUser']==dataUser!.usuario && data['rucempresa']==dataUser.rucempresa) {
         final _ctrlPropietario=PropietariosController();
+        final _ctrlComprobante=ComprobantesController();
         
         _ctrlPropietario.buscaAllPropietarios('');
-         _latestResponseVantes={};
-         _latestResponseVantes=data;
-          print('DATA PROPIETARIO: $_latestResponseVantes');
-        //  _showSnackbar('Registro guardado exitosamente');
+
+        //  _latestResponseVantes={};
+        //  _latestResponseVantes=data;
+    //       print('DATA PROPIETARIO: $data');
+       
+
+    //    _ctrlComprobante.setClienteComprbante({
+		// 	"perId":data['perId'],
+		// 	"perNombre":data['perNombre'],
+		// 	"perDocNumero":data['perDocNumero'],
+		// 	"perDocTipo":data['perDocTipo'],
+		// 	"perTelefono":data['perTelefono'],
+		// 	"perDireccion":data['perDireccion'],
+		// 	"perEmail": data['perEmail'],
+		// 	"perCelular": data['perCelular'],
+		// 	"perOtros": data['perOtros']
+		// });
+
+
+  _showSnackbar('Registro guardado exitosamente');
+
+
          notifyListeners();
         }
         // Condición para la tabla 'factura'

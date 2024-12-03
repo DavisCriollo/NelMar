@@ -3675,7 +3675,7 @@ Consumer<ComprobantesController>(builder: (_, value, __) {
                       ):Container(),
       Container(
         // color: Colors.red,
-                              width: value.getTypeAction=='VEHICULOS'?size.iScreen(15.0):size.iScreen(20.0),
+                              width: value.getTypeAction=='VEHICULOS'?size.iScreen(12.0):size.iScreen(20.0),
                               child: TextFormField(
                                 textAlign: TextAlign.center,
                                 autofocus: false,
@@ -3713,7 +3713,227 @@ Consumer<ComprobantesController>(builder: (_, value, __) {
 },),
  
 
-//********************************//
+// //********************************//
+
+
+//                           Consumer<ComprobantesController>(builder: (_, value, __) { 
+//                             return  
+//                             value.getExistCliente==false
+//                             ?ClipRRect(
+//                           borderRadius: BorderRadius.circular(8),
+//                           child: GestureDetector(
+//                             onTap:() {
+                           
+//                                      final ctrlPropi=  context.read<PropietariosController>();
+//                      ctrlPropi.resetFormPropietario();
+
+
+// ctrlPropi.setDocumento(value.getDocumento);
+//  ctrlPropi.setGeneros('');
+//   ctrlPropi.setNombres('');
+//                  ctrlPropi.setDireccion('');
+//                    ctrlPropi.setLabelTelefono('');
+//                   ctrlPropi.seItemAddPlaca('');
+//                    ctrlPropi.resetPlacas();
+//                      ctrlPropi.resetCelulares();
+//                     ctrlPropi.resetCorreos();
+//                 ctrlPropi.setObservacion('');
+
+//                  ctrlPropi.setPais('');
+//                   ctrlPropi.setListaTodosLosPaises([]);
+//                   ctrlPropi.setProvincia('');
+//                   ctrlPropi.setListaTodasLasProvincias([]);
+//                    ctrlPropi.setCanton('');
+//                     ctrlPropi.setListaTodosLosCantones([]);
+
+
+//                   Navigator.of(context)
+//                       .push(MaterialPageRoute(
+//                           builder: (context) =>
+//                                CrearPropietario(action: 'CREATE',tipo:'comprobantes',
+//                               user: widget.user,)));
+//                                   },
+//                             child:
+                               
+//                                 Consumer<ThemeProvider>(
+//                               builder: (_, valueTheme, __) {
+//                                 return Container(
+//                                   alignment: Alignment.center,
+//                                   color: valueTheme.appTheme.accentColor,
+//                                   width: size.iScreen(4.5),
+//                                   height: size.iScreen(4.5),
+//                                   padding: EdgeInsets.only(
+//                                     top: size.iScreen(0.5),
+//                                     bottom: size.iScreen(0.5),
+//                                     left: size.iScreen(0.5),
+//                                     right: size.iScreen(0.5),
+//                                   ),
+//                                   child: Icon(
+//                                     Icons.person_add_alt,
+//                                     color: Colors.white,
+//                                     size: size.iScreen(2.0),
+//                                   ),
+//                                 );
+//                               },
+//                             ),
+//                           ),
+//                         ):Container();
+                            
+//                            },),
+
+                            
+                          
+                              
+                  //               Consumer<ComprobantesController>(
+                  //         builder: (_, tipo, __) {
+                  //           return 
+                  //             ctrl.getTypeAction=='VEHICULOS'
+
+                  // ?
+                  //           Row(
+                  //             children: [
+                  //               SizedBox(width: size.iScreen(0.5),),
+                  //               Container(
+                  //                 width: size.iScreen(16),
+                  //                 child: Column(
+                  //                   crossAxisAlignment: CrossAxisAlignment.start,
+                  //                   children: [
+                  //                     TextField(
+                  //                       decoration: InputDecoration(
+                  //                         label: Text( 'Documento'),
+                  //                         labelStyle:TextStyle(color: Colors.grey,fontSize: size.iScreen(1.9)),
+                  //                         // hintText: 'Ingrese Documento', // Texto de sugerencia dentro del campo
+                  //                         // border: OutlineInputBorder(), // Opcional: Añade un borde al campo
+                  //                         helperStyle:
+                  //                             TextStyle(color: Colors.grey,fontSize: size.iScreen(1.5)),
+                  //                       ),
+                  //                       inputFormatters: [
+                  //                         UpperCaseText(), // Limita a 13 dígitos
+                  //                       ],
+                  //                       style: TextStyle(
+                  //                         fontSize: size.iScreen( 2.0), // Ajusta el tamaño de la letra
+                  //                         // fontWeight: FontWeight.bold, // Opcional: Aplica un peso de fuente más grueso
+                  //                       ),
+                  //                       textAlign: TextAlign.center,
+                  //                       onChanged: (text) {
+                  //                         ctrl.setDocumento(text);
+                  //                       },
+                  //                     ),
+                  //                   ],
+                  //                 ),
+                  //               ),
+                  //               Consumer<ComprobantesController>(builder: (_, value, __) { 
+                  //           return  ClipRRect(
+                  //         borderRadius: BorderRadius.circular(8),
+                  //         child: GestureDetector(
+                  //           onTap: value.getDocumento!.isNotEmpty
+                  //               ? () async {
+                  //                   ProgressDialog.show(context);
+                  //                   final response = await value.buscaClienteComprobante();
+                  //                   ProgressDialog.dissmiss(context);
+                  //                   if (response != null) {
+                  //                      if(value.getClienteComprobante.isNotEmpty){
+                                       
+                  //                     //  NotificatiosnService.showSnackBarDanger( '${value.getClienteComprobante}');
+                  //                    }else{
+                  //                      value.setExistCliente(false);
+
+                  //                      final _ctrl =context.read<ComprobantesController>();
+                  //      _ctrl.resetListasProdutos();
+                  //    _ctrl.resetPlacas();
+                  //           // _ctrl.setDocumento('');
+                  //           _ctrl.setFormaDePago('EFECTIVO');
+                  //           _ctrl.setFacturaOk(false);
+                           
+                  //            _ctrl.setClienteComprbante({});
+                  //            _ctrl.resetCorreos();
+
+
+
+                  //                     NotificatiosnService.showSnackBarDanger( 'No se encuentra información,ingrese datos manualmente');
+                                   
+                  //                    }
+                                     
+                  //                   } else {
+            
+                  //                   }
+                                    
+            
+                  //                   //     .searchAllPersinas('');
+                  //                   // Navigator.of(context).push(
+                  //                   //     MaterialPageRoute(
+                  //                   //         builder: (context) =>
+                  //                   //             BuscarPropietario()));
+                  //                 }
+                  //               : () {
+                  //                   NotificatiosnService.showSnackBarDanger(
+                  //                       'Debe ingresar Documento para buscar');
+                  //                 },
+                  //           child:
+                  //               // Container(
+                  //               //   alignment: Alignment.center,
+                  //               //   color: primaryColor,
+                  //               //   width: size.iScreen(3.5),
+                  //               //   padding: EdgeInsets.only(
+                  //               //     top: size.iScreen(0.5),
+                  //               //     bottom: size.iScreen(0.5),
+                  //               //     left: size.iScreen(0.5),
+                  //               //     right: size.iScreen(0.5),
+                  //               //   ),
+                  //               //   child: Icon(
+                  //               //     Icons.search_outlined,
+                  //               //     color: Colors.white,
+                  //               //     size: size.iScreen(2.0),
+                  //               //   ),
+                  //               // ),
+                  //               Consumer<ThemeProvider>(
+                  //             builder: (_, valueTheme, __) {
+                  //               return Container(
+                  //                 alignment: Alignment.center,
+                  //                 color: valueTheme.appTheme.primaryColor,
+                  //                 width: size.iScreen(4.5),
+                  //                 height: size.iScreen(4.5),
+                  //                 padding: EdgeInsets.only(
+                  //                   top: size.iScreen(0.5),
+                  //                   bottom: size.iScreen(0.5),
+                  //                   left: size.iScreen(0.5),
+                  //                   right: size.iScreen(0.5),
+                  //                 ),
+                  //                 child: Icon(
+                  //                   Icons.search_outlined,
+                  //                   color: Colors.white,
+                  //                   size: size.iScreen(2.0),
+                  //                 ),
+                  //               );
+                  //             },
+                  //           ),
+                  //         ),
+                  //       );
+                      
+                  //          },)
+            
+                  //             ],
+                  //           ):Container();
+                  //         },
+                  //       ),
+                         
+                             ],
+                         
+                    ),
+                  ),
+
+                       
+                                Consumer<ComprobantesController>(
+                          builder: (_, tipo, __) {
+                            return 
+                              ctrl.getFormaDePago != 'EFECTIVO'
+
+                  ?
+                            Row(
+                              children: [
+                                //********************************//
+                                SizedBox(width: size.iScreen(0.5),),
+                                //********************************//
 
 
                           Consumer<ComprobantesController>(builder: (_, value, __) { 
@@ -3778,23 +3998,13 @@ ctrlPropi.setDocumento(value.getDocumento);
                             ),
                           ),
                         ):Container();
-                            
-                           },),
-
-                            
-                          
                               
-                                Consumer<ComprobantesController>(
-                          builder: (_, tipo, __) {
-                            return 
-                              ctrl.getTypeAction=='VEHICULOS'
-
-                  ?
-                            Row(
-                              children: [
-                                SizedBox(width: size.iScreen(0.5),),
+                           },),
+                           //********************************//
+                                SizedBox(width: size.iScreen(2.0)),
+                                //********************************//
                                 Container(
-                                  width: size.iScreen(16),
+                                  width: size.iScreen(20),
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
@@ -3842,7 +4052,7 @@ ctrlPropi.setDocumento(value.getDocumento);
                        _ctrl.resetListasProdutos();
                      _ctrl.resetPlacas();
                             // _ctrl.setDocumento('');
-                            _ctrl.setFormaDePago('EFECTIVO');
+                            // _ctrl.setFormaDePago('EFECTIVO');
                             _ctrl.setFacturaOk(false);
                            
                              _ctrl.setClienteComprbante({});
@@ -3916,11 +4126,6 @@ ctrlPropi.setDocumento(value.getDocumento);
                             ):Container();
                           },
                         ),
-                         
-                             ],
-                         
-                    ),
-                  ),
                   //***********************************************/
                   
                   SizedBox(
@@ -4466,6 +4671,28 @@ ctrlPropi.setDocumento(value.getDocumento);
                   GestureDetector(
                           onTap: () {
                             value.setFormaDePago( e['fpagoNombre'],);
+                              if (e['fpagoNombre']!='EFECTIVO') {
+                                 value.setClienteComprbante({});
+                                 value.resetCorreos();
+                              } else {
+                              value.setClienteComprbante({
+			"perId": 1,
+			"perNombre": "CONSUMIDOR FINAL",
+			"perDocNumero": "9999999999999",
+			"perDocTipo": "RUC",
+			"perTelefono": "0000000001",
+			"perDireccion": "s/n",
+			"perEmail": [
+				"sin@sincorreo.com"
+			],
+			"perCelular": [],
+			"perOtros": [
+				
+			]
+		});
+                              }
+                            
+   
                        
                           },
                           child: Container(
