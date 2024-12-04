@@ -376,7 +376,7 @@ void obtenerFacturasDeHoy(List listaFacturasPaginacion) {
 
   print('LA LISTA VERIFICADA : ${listaFiltrada}'); // Solo mostrará los elementos con fecha de hoy
 
-
+  _isLoading = false;
 
         //=============================//
           
@@ -716,8 +716,15 @@ Map<String,dynamic> get getTotalDiario=>_totalDiario;
   }
 
 //===========================================//
+  bool _isLoading = true;
+ 
 
+  bool get isLoading => _isLoading;
 
+ void setLoading(bool value) {
+    _isLoading = value;
+    notifyListeners();
+  }
 
 
 
