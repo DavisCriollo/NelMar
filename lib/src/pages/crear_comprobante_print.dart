@@ -3926,7 +3926,7 @@ Consumer<ComprobantesController>(builder: (_, value, __) {
                                 Consumer<ComprobantesController>(
                           builder: (_, tipo, __) {
                             return 
-                              ctrl.getFormaDePago != 'EFECTIVO'
+                              ctrl.getClienteComprobante.isEmpty
 
                   ?
                             Row(
@@ -4122,6 +4122,14 @@ ctrlPropi.setDocumento(value.getDocumento);
                       
                            },)
             
+//******************************************//
+
+
+
+
+//******************************************//
+
+
                               ],
                             ):Container();
                           },
@@ -4132,6 +4140,8 @@ ctrlPropi.setDocumento(value.getDocumento);
                     height: size.iScreen(1.0),
                   ),
                   //*****************************************/
+                 
+            
             
             Consumer<ComprobantesController>(builder: (_, value, __) {  
             
@@ -4143,12 +4153,55 @@ ctrlPropi.setDocumento(value.getDocumento);
                         width: size.wScreen(100.0),
             
                         // color: Colors.blue,
-                        child:  Text(value.getClienteComprobante.isEmpty?'--- --- --- --- ---':'${value.getClienteComprobante['perNombre']}',
-                            style: GoogleFonts.lexendDeca(
-                              fontSize: size.iScreen(2.3),
-                              fontWeight: FontWeight.normal,
-                              color: value.getClienteComprobante.isEmpty?Colors.grey:Colors.black
-                            )),
+                        child:  Row(
+                          children: [
+                            Text(value.getClienteComprobante.isEmpty?'--- --- --- --- ---':'${value.getClienteComprobante['perNombre']}',
+                                style: GoogleFonts.lexendDeca(
+                                  fontSize: size.iScreen(2.3),
+                                  fontWeight: FontWeight.normal,
+                                  color: value.getClienteComprobante.isEmpty?Colors.grey:Colors.black
+                                )),
+                                SizedBox(width: size.iScreen(2.0),),
+                                  Consumer<ComprobantesController>(builder: (_, value, __) { 
+                            return  ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: GestureDetector(
+                            onTap:  ()  {
+                                value.setClienteComprbante({});
+                                 value.resetCorreos();
+                                    
+                                    NotificatiosnService.showSnackBarError(
+                                        'Debe ingresar Documento para buscar');
+                                  },
+                            child:
+                                
+                                Consumer<ThemeProvider>(
+                              builder: (_, valueTheme, __) {
+                                return Container(
+                                  alignment: Alignment.center,
+                                  color: valueTheme.appTheme.primaryColor,
+                                  width: size.iScreen(3.0),
+                                  height: size.iScreen(3.0),
+                                  padding: EdgeInsets.only(
+                                    top: size.iScreen(0.5),
+                                    bottom: size.iScreen(0.5),
+                                    left: size.iScreen(0.5),
+                                    right: size.iScreen(0.5),
+                                  ),
+                                  child: Icon(
+                                    Icons.clear_outlined,
+                                    color:  Colors.white,
+                                    size: size.iScreen(2.0),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        );
+                      
+                           },),
+                          ],
+                        ),
                       ),
                   //***********************************************/
                   SizedBox(
@@ -6003,14 +6056,15 @@ Future<bool?> _agregaPlaca(BuildContext context,
       } else if (controller.getRespuestaCalculoItem.isEmpty) {
         NotificatiosnService.showSnackBarDanger(
             'Debe agregar producto');
-      } else if (controller.getlistaAddCorreos!.isEmpty) {
+      } 
+      else if (controller.getlistaAddCorreos!.isEmpty) {
         NotificatiosnService.showSnackBarDanger(
             'Debe agregar correo');
       }
       else{
            final ctrl = context.read<ComprobantesController>();
           ctrl.createFactura(context);
-
+         
 
       }
 
